@@ -47,8 +47,9 @@ public class ClaimTypeDAO {
 	
 	public ClaimType createClaimType(ClaimType claim_type) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (claim_type, ID_team) values (:claim_type, :ID_team)",
+				"insert into "+TABLE_NAME+" (claim_type, ID_team) values (:claim_type, 1)",
 				new BeanPropertySqlParameterSource(claim_type), generatedKeyHolder);
 		
 		ClaimType createdClaimType = getClaimTypeById(generatedKeyHolder.getKey().intValue());
