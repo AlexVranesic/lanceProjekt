@@ -5,7 +5,6 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Person {
-	private helloAlex;
 	private Integer id;
 	private String firstname;
 	private String lastname;

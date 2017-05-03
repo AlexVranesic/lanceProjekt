@@ -34,17 +34,17 @@ public class RepairServiceController {
 	@RequestMapping( path="/repairservices", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createRepairService(@RequestBody RepairService repairService){
 		
-		if(repairService.getCreated_by() == null){
+		/*if(repairService.getCreated_by() == null){
 			//possible extension: use api key header and map from key to user  
 			repairService.setCreated_by("anonymous");	
-		}
+		}*/
 		
 		//optionally validate repairService
 		RepairService createdRepairService = repairServiceDAO.createRepairService(repairService); // this will set the id on the repairService object
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdRepairService.getId()).toUri();
+				.buildAndExpand(createdRepairService.getID_repair_service()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
@@ -53,7 +53,7 @@ public class RepairServiceController {
 	
 	@RequestMapping( path="/repairservices/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateRepairService(@PathVariable(name="id") Integer id, @RequestBody RepairService repairService){
-		repairService.setId(id);
+		repairService.setID_repair_service(id);
 		int updatedRows = repairServiceDAO.updateRepairService(repairService);
 		
 		if(updatedRows == 0 ){

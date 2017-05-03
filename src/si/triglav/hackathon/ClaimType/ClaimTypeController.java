@@ -21,15 +21,10 @@ public class ClaimTypeController {
 	private ClaimTypeDAO claimTypeDAO;
 
 
+	
 	@RequestMapping( path="/claimtypes", method=RequestMethod.GET)
 	public @ResponseBody List<ClaimType> getClaimTypeList(){
 		return claimTypeDAO.getClaimTypeList();
-	}
-	
-	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/claimtypes/{id}/{team_key}", method=RequestMethod.GET)
-	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id") Integer id, @PathVariable(name="team_key") Integer teamKey) throws Exception {
-		return claimTypeDAO.getClaimTypeById(id, teamKey);
 	}
 	
 	@RequestMapping( path="/claimtypes", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -47,15 +42,11 @@ public class ClaimTypeController {
 			
 	} 
 	
-	@RequestMapping( path="/claimtypes/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<?> deletePerson(@PathVariable(name="id") Integer id){
-		
-		int updatedRows = claimTypeDAO.deleteClaimType(id);
-		
-		if(updatedRows == 0 ){
-			return ResponseEntity.notFound().build();
-		}
-		
-		return ResponseEntity.noContent().build();
+	//If using PathVariable, not all conversions are supported
+	@RequestMapping( path="/claimtypes/{id}", method=RequestMethod.GET)
+	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id") Integer id) throws Exception {
+		return claimTypeDAO.getClaimTypeById(id);
 	}
+	
+	
 }
