@@ -26,7 +26,7 @@ public class OccupationDAO {
 	}
 	
 	/*
-	 * this method allows policy to be viewed by all
+	 * this method allows occupation to be viewed by all
 	 */
 	
 	public Occupation getOccupationList(Integer team_key) throws Exception {
