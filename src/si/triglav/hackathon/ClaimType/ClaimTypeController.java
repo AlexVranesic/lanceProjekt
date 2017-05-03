@@ -45,7 +45,7 @@ public class ClaimTypeController {
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
 			
-	}
+	} 
 	
 	@RequestMapping( path="/claimtypes/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deletePerson(@PathVariable(name="id") Integer id){
