@@ -19,7 +19,7 @@ public class ClaimTypeDAO {
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	private static final String CLAIM_TYPE_COLUMN_LIST = "id_claim_type,claim_type";
-	private static final String TABLE_NAME = "NEWLANCE.CLAIM_TYPE";
+	private static final String TABLE_NAME = "FREELANCE.CLAIM_TYPE";
 	
 	@Autowired
 	public void init(DataSource dataSource) {
