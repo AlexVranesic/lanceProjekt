@@ -1,6 +1,7 @@
 package si.triglav.hackathon.ClaimType;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,7 +23,7 @@ public class ClaimTypeController {
 
 	@RequestMapping( path="/claimtypes", method=RequestMethod.GET)
 	public @ResponseBody List<ClaimType> getClaimTypeList(){
-		return ClaimTypeDAO.getClaimTypeList();
+		return claimTypeDAO.getClaimTypeList();
 	}
 	
 	//If using PathVariable, not all conversions are supported
@@ -39,7 +40,7 @@ public class ClaimTypeController {
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdClaimType.getClaimTypeId()).toUri();
+				.buildAndExpand(createdClaimType.getId_claim_type()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
@@ -49,7 +50,7 @@ public class ClaimTypeController {
 	@RequestMapping( path="/claimtypes/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deletePerson(@PathVariable(name="id") Integer id){
 		
-		int updatedRows = claimTypeDAO.deletePerson(id);
+		int updatedRows = claimTypeDAO.deleteClaimType(id);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
