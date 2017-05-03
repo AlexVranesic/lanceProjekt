@@ -27,9 +27,9 @@ public class ClaimTypeController {
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/claimtypes/{id}", method=RequestMethod.GET)
-	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id") Integer id) throws Exception {
-		return claimTypeDAO.getClaimTypeById(id);
+	@RequestMapping( path="/claimtypes/{id}/{team_key}", method=RequestMethod.GET)
+	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id") Integer id, @PathVariable(name="team_key") Integer teamKey) throws Exception {
+		return claimTypeDAO.getClaimTypeById(id, teamKey);
 	}
 	
 	@RequestMapping( path="/claimtypes", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)

@@ -3,7 +3,14 @@ package si.triglav.hackathon.ClaimType;
 public class ClaimType {
 	private Integer id_claim_type;
 	private String claim_type;
+	private Integer id_team;
 	
+	public Integer getId_team() {
+		return id_team;
+	}
+	public void setId_team(Integer id_team) {
+		this.id_team = id_team;
+	}
 	public Integer getId_claim_type() {
 		return id_claim_type;
 	}

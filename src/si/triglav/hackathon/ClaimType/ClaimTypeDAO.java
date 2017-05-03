@@ -31,16 +31,24 @@ public class ClaimTypeDAO {
 		return claimTypeList;
 	}
 	
-	public ClaimType getClaimTypeById(Integer id_claim_type) {
+	public ClaimType getClaimTypeById(Integer id_claim_type, Integer team_key) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_claim_type", id_claim_type);
-		ClaimType claim_type = jdbcTemplate.queryForObject("select "+CLAIM_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_claim_type = :id_claim_type", params , new BeanPropertyRowMapper<ClaimType>(ClaimType.class));
+		params.addValue("id_claim_type", id_claim_type);
+		params.addValue("team_key", team_key);
+		ClaimType claim_type = jdbcTemplate.queryForObject("SELECT "+CLAIM_TYPE_COLUMN_LIST
+															+" FROM "+ TABLE_NAME +" C "
+															+" LEFT JOIN FREELANCE.TEAM T "
+															+ " ON T.ID_team = C.ID_team"
+															+ " WHERE id_claim_type = :id_claim_type"
+															+ " AND T.team_key = :team_key", 
+															params , new BeanPropertyRowMapper<ClaimType>(ClaimType.class));
 		return claim_type;
 	}
 	
 	public ClaimType createClaimType(ClaimType claim_type) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (claim_type) values (:claim_type)",
+				"insert into "+TABLE_NAME+" (claim_type, ID_team) values (:claim_type, :ID_team)",
 				new BeanPropertySqlParameterSource(claim_type), generatedKeyHolder);
 		
 		ClaimType createdClaimType = getClaimTypeById(generatedKeyHolder.getKey().intValue());
