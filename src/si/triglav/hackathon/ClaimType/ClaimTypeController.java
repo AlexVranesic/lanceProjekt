@@ -19,6 +19,12 @@ public class ClaimTypeController {
 	@Autowired
 	private ClaimTypeDAO claimTypeDAO;
 
+
+	@RequestMapping( path="/claimtypes", method=RequestMethod.GET)
+	public @ResponseBody List<ClaimType> getClaimTypeList(){
+		return ClaimTypeDAO.getClaimTypeList();
+	}
+	
 	//If using PathVariable, not all conversions are supported
 	@RequestMapping( path="/claimtypes/{id}", method=RequestMethod.GET)
 	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id") Integer id) throws Exception {
