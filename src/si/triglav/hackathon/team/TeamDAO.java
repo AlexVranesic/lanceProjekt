@@ -63,7 +63,14 @@ public class TeamDAO {
 		return team;
 	}
 	
+	public Integer getTeamIdByKey(Integer team_key) {
+		MapSqlParameterSource params = new MapSqlParameterSource("team_key", team_key);
+		Team team = jdbcTemplate.queryForObject("select id_team from FREELANCE.TEAM where team_key = :team_key", params , new BeanPropertyRowMapper<Team>(Team.class));
+		return team.getId_team();
+	}
+	
 	public int updateTeam(Team team) {
+		
 		int updatedRowsCount = jdbcTemplate.update(
 				"update "+TABLE_NAME+" set (team_name) = (:team_name) where id_team = :id_team",
 				new BeanPropertySqlParameterSource(team));
@@ -75,5 +82,4 @@ public class TeamDAO {
 		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_team = :id_team", new MapSqlParameterSource("id_team", id_team));
 		return deletedRows;
 	}
-
 }

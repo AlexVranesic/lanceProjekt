@@ -19,7 +19,7 @@ public class ProductDAO {
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	private static final String PRODUCT_COLUMN_LIST = "id_product,product";
-	private static final String TABLE_NAME = "NEWLANCE.product";
+	private static final String TABLE_NAME = "FREELANCE.PRODUCT";
 	
 	@Autowired
 	public void init(DataSource dataSource) {
@@ -45,7 +45,6 @@ public class ProductDAO {
 		
 		Product createdProduct = getProductById(generatedKeyHolder.getKey().intValue());
 		return createdProduct;
-
 	}
 
 	public int updateProduct(Product product) {
@@ -60,5 +59,4 @@ public class ProductDAO {
 		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_product = :id_product", new MapSqlParameterSource("id_product", id_product));
 		return deletedRows;
 	}
-
 }

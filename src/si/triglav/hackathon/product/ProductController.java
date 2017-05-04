@@ -20,17 +20,19 @@ public class ProductController {
 	@Autowired
 	private ProductDAO productDAO;
 
+	//List all products
 	@RequestMapping( path="/products", method=RequestMethod.GET)
 	public @ResponseBody List<Product> getProductList(){
 		return productDAO.getProductList();
 	}
 	
-	//If using PathVariable, not all conversions are supported
+	//List all products with id of Team
 	@RequestMapping( path="/products/{id}", method=RequestMethod.GET)
 	public @ResponseBody Product getProductById(@PathVariable(name="id_product") Integer id_product){
 		return productDAO.getProductById(id_product);
 	}
 	
+	//create new product
 	@RequestMapping( path="/products", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createProduct(@RequestBody Product product){
 				
@@ -70,9 +72,4 @@ public class ProductController {
 		
 		return ResponseEntity.noContent().build();
 	}
-		
-	
-	
-	
-	
 }

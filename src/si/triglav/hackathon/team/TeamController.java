@@ -34,6 +34,12 @@ public class TeamController {
 		return teamDAO.getTeamNameById(id_team);
 	}
 	
+	//Find specific TEAM with ID
+		@RequestMapping( path="/teams/key/{team_key}", method=RequestMethod.GET)
+		public @ResponseBody Integer getTeamIdByKey(@PathVariable(name="team_key") Integer team_key){
+			return teamDAO.getTeamIdByKey(team_key);
+	}
+		
 	//create new TEAM (npr. body: "team_name": "test_team", "team_key": 12345678)
 	@RequestMapping( path="/teams", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createTeam(@RequestBody Team team){
@@ -74,5 +80,4 @@ public class TeamController {
 		
 		return ResponseEntity.noContent().build();
 	}
-
 }
