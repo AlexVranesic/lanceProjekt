@@ -67,15 +67,26 @@ public class TeamDAO {
 	public Team createTeam(Team team) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
-				"insert into "+ TABLE_NAME +" (team_name,team_key) VALUES (:team_name,:team_key)",
+				"insert into "+TABLE_NAME+" (team_name,team_key) VALUES (:team_name,:team_key)",
 				new BeanPropertySqlParameterSource(team), generatedKeyHolder);
+		
+		//INSERT INTO FREELANCE.TEAM (TEAM_NAME,TEAM_KEY) VALUES ('val12', 1234)
 		
 		Team createdTeam = getTeamById(generatedKeyHolder.getKey().intValue());
 		return createdTeam;
 
 	}
-	
-	
+	/*
+	public Team createTeam(Team team) {
+		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(
+				"insert into hack.person (firstname,lastname,date_of_birth,address,created_by) values (:firstname,:lastname,:date_of_birth,:address,:created_by)",
+				new BeanPropertySqlParameterSource(person), generatedKeyHolder);
+		
+		Person createdPeson = getPersonById(generatedKeyHolder.getKey().intValue());
+		return createdPeson;
+
+	}*/
 	
 	/*
 	

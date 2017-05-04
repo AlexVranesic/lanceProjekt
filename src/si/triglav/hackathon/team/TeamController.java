@@ -41,7 +41,7 @@ public class TeamController {
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdTeam.getIdTeam()).toUri();
+				.buildAndExpand(createdTeam.getId_team()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
@@ -50,7 +50,7 @@ public class TeamController {
 
 	@RequestMapping( path="/teams/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateProduct(@PathVariable(name="id_team") Integer id_team, @RequestBody Team team){
-		team.setIdTeam(id_team);
+		team.setId_team(id_team);
 		int updatedRows = teamDAO.updateTeam(team);
 		
 		if(updatedRows == 0 ){
