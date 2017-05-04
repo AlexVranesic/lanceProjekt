@@ -40,67 +40,22 @@ public class TeamDAO {
 	}
 	
 	//preveri spodnjo metodo kaj vraca
-	//public Team getTeamIdByName(String team_name) {
-	//	MapSqlParameterSource params = new MapSqlParameterSource("team_name", team_name);
-	//	Team team_id = jdbcTemplate.queryForObject("select id_team from "+ TABLE_NAME + " where team_name = :team_name", params , new BeanPropertyRowMapper<Team>(Team.class));
-	//	return team_id;
-	//}
-	
-	//preveri spodnjo metodo kaj vraca
 	public Integer getTeamIdByName(String team_name) {
 		MapSqlParameterSource params = new MapSqlParameterSource("team_name", team_name);
 		Integer team_id = jdbcTemplate.queryForObject("select id_team from "+ TABLE_NAME + " where team_name = :team_name", params , new BeanPropertyRowMapper<Integer>(Integer.class));
 		return team_id;
 	}
-	/*
-	public Team createTeam(Team team_name, Integer key) {
-		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (Team) values (:team, :key)",
-				new BeanPropertySqlParameterSource(team_name), generatedKeyHolder);
-		
-		Team createdTeam = getTeamNameById(generatedKeyHolder.getKey().intValue());
-		return createdTeam;
-		
-	}
-	*/
+	
 	public Team createTeam(Team team) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 				"insert into "+TABLE_NAME+" (team_name,team_key) VALUES (:team_name,:team_key)",
 				new BeanPropertySqlParameterSource(team), generatedKeyHolder);
-		
-		//INSERT INTO FREELANCE.TEAM (TEAM_NAME,TEAM_KEY) VALUES ('val12', 1234)
-		
+			
 		Team createdTeam = getTeamById(generatedKeyHolder.getKey().intValue());
 		return createdTeam;
 
 	}
-	/*
-	public Team createTeam(Team team) {
-		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update(
-				"insert into hack.person (firstname,lastname,date_of_birth,address,created_by) values (:firstname,:lastname,:date_of_birth,:address,:created_by)",
-				new BeanPropertySqlParameterSource(person), generatedKeyHolder);
-		
-		Person createdPeson = getPersonById(generatedKeyHolder.getKey().intValue());
-		return createdPeson;
-
-	}*/
-	
-	/*
-	
-	public Team createTeam(Team team) {
-		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update(
-				"insert into FREELANCE.TEAM (team_key,team_name) values (:TEAM_KEY,:TEAM_NAME)",
-				new BeanPropertySqlParameterSource(team), generatedKeyHolder);
-		
-		Team createdTeam = getTeamById(generatedKeyHolder.getKey().intValue());
-		return createdTeam;
-
-	}
-	*/
 	
 	public Team getTeamById(Integer id_team) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
@@ -108,35 +63,9 @@ public class TeamDAO {
 		return team;
 	}
 	
-	/*
-	
-	public Person createPerson(Person person) {
-		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update(
-				"insert into hack.person (firstname,lastname,date_of_birth,address,created_by) values (:firstname,:lastname,:date_of_birth,:address,:created_by)",
-				new BeanPropertySqlParameterSource(person), generatedKeyHolder);
-		
-		Person createdPeson = getPersonById(generatedKeyHolder.getKey().intValue());
-		return createdPeson;
-
-	}
-*/
-	
-	
-	/*
-	jdbcTemplate.update(
-			"insert into hack.person (firstname,lastname,date_of_birth,address,created_by) values (:firstname,:lastname,:date_of_birth,:address,:created_by)",
-			new BeanPropertySqlParameterSource(person), generatedKeyHolder);
-	
-	Person createdPeson = getPersonById(generatedKeyHolder.getKey().intValue());
-	return createdPeson;
-	
-	*/
-	
-	
 	public int updateTeam(Team team) {
 		int updatedRowsCount = jdbcTemplate.update(
-				"update "+TABLE_NAME+" set (team) = (:team) where id_team = :id_team",
+				"update "+TABLE_NAME+" set (team_name) = (:team_name) where id_team = :id_team",
 				new BeanPropertySqlParameterSource(team));
 		return updatedRowsCount;
 		

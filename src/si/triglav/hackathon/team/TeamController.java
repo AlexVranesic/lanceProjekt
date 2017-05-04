@@ -21,22 +21,23 @@ public class TeamController {
 
 	@Autowired
 	private TeamDAO teamDAO;
-
+	
+	//list all TEAMS
 	@RequestMapping( path="/teams", method=RequestMethod.GET)
 	public @ResponseBody List<Team> getTeamList(){
 		return teamDAO.getTeamList();
 	}
 	
-	//If using PathVariable, not all conversions are supported
+	//Find specific TEAM with ID
 	@RequestMapping( path="/teams/{id_team}", method=RequestMethod.GET)
 	public @ResponseBody Team getTeamNameById(@PathVariable(name="id_team") Integer id_team){
 		return teamDAO.getTeamNameById(id_team);
 	}
 	
+	//create new TEAM (npr. body: "team_name": "test_team", "team_key": 12345678)
 	@RequestMapping( path="/teams", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createTeam(@RequestBody Team team){
-	
-		
+
 		Team createdTeam = teamDAO.createTeam(team); // this will set the id on the person object
 		
 		URI location = ServletUriComponentsBuilder
@@ -48,8 +49,9 @@ public class TeamController {
 			
 	}
 
-	@RequestMapping( path="/teams/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateProduct(@PathVariable(name="id_team") Integer id_team, @RequestBody Team team){
+	//updateTeam(Team team)
+	/*@RequestMapping( path="/teams/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateTeam(@PathVariable(name="id_team") Integer id_team, @RequestBody Team team){
 		team.setId_team(id_team);
 		int updatedRows = teamDAO.updateTeam(team);
 		
@@ -59,7 +61,7 @@ public class TeamController {
 		
 		return ResponseEntity.noContent().build();
 		
-	}
+	}*/
 	
 	@RequestMapping( path="/teams/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteTeam(@PathVariable(name="id_team") Integer id_team){
