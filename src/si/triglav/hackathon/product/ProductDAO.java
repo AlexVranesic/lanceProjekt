@@ -13,6 +13,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import si.triglav.hackathon.team.Team;
+
 @Repository
 public class ProductDAO {
 
@@ -40,7 +42,7 @@ public class ProductDAO {
 	public Product createProduct(Product product) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (product) values (:product)",
+				"insert into "+TABLE_NAME+" (product) VALUES (:product)",
 				new BeanPropertySqlParameterSource(product), generatedKeyHolder);
 		
 		Product createdProduct = getProductById(generatedKeyHolder.getKey().intValue());
