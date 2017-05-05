@@ -1,4 +1,4 @@
-package si.triglav.hackathon.person;
+package si.triglav.hackathon.foo_person;
 
 import java.util.Date;
 
