@@ -65,7 +65,7 @@ public class TeamDAO {
 	
 	public Integer getTeamIdByKey(Integer team_key) {
 		MapSqlParameterSource params = new MapSqlParameterSource("team_key", team_key);
-		Team team = jdbcTemplate.queryForObject("select TOP 1 id_team from FREELANCE.TEAM where team_key = :team_key", params , new BeanPropertyRowMapper<Team>(Team.class));
+		Team team = jdbcTemplate.queryForObject("select id_team from FREELANCE.TEAM where team_key = :team_key FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<Team>(Team.class));
 		return team.getId_team();
 	}
 	
