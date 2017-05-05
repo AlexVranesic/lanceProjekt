@@ -555,4 +555,4 @@ ALTER TABLE FREELANCE.CONTRACT ADD CONSTRAINT contra_clients_cl_FK FOREIGN KEY
 	(ID_clients_client)
 	ON DELETE CASCADE;
 	
--- EO EDIT 1 ---
+-- -- EO EDIT 1 ---
