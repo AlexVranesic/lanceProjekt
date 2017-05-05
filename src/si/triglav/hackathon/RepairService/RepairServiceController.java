@@ -25,8 +25,6 @@ public class RepairServiceController {
 		return repairServiceDAO.getRepairServiceList(team_key);
 	}
 	
-	
-	
 	//If using PathVariable, not all conversions are supported
 	@RequestMapping( path="/repairservices/{id}/{team_key}", method=RequestMethod.GET)
 	public @ResponseBody RepairService getRepairServiceById(@PathVariable(name="id") Integer id, 
@@ -34,8 +32,9 @@ public class RepairServiceController {
 		return repairServiceDAO.getRepairServiceById(id, team_key);
 	}
 	
-	@RequestMapping( path="/repairservices", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createRepairService(@RequestBody RepairService repairService){
+	@RequestMapping( path="/repairservices/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createRepairService(	@RequestBody RepairService repairService, 
+													@PathVariable(name="team_key") Integer team_key){
 		
 		/*if(repairService.getCreated_by() == null){
 			//possible extension: use api key header and map from key to user  
@@ -43,11 +42,11 @@ public class RepairServiceController {
 		}*/
 		
 		//optionally validate repairService
-		RepairService createdRepairService = repairServiceDAO.createRepairService(repairService); // this will set the id on the repairService object
+		RepairService createdRepairService = repairServiceDAO.createRepairService(repairService, team_key); // this will set the id on the repairService object
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}/{team_key}")
-				.buildAndExpand(createdRepairService.getID_repair_service(), createdRepairService.getTeam_key()).toUri();
+				.buildAndExpand(createdRepairService.getID_repair_service(), team_key).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
@@ -59,8 +58,7 @@ public class RepairServiceController {
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody RepairService repairService){
 		repairService.setID_repair_service(id);
-		repairService.setTeam_key(team_key);
-		int updatedRows = repairServiceDAO.updateRepairService(repairService);
+		int updatedRows = repairServiceDAO.updateRepairService(repairService, team_key);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();

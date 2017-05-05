@@ -23,7 +23,7 @@ public class RepairServiceDAO {
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String REPAIR_SERVICE_COLUMN_LIST = "ID_repair_service,name,address";
+	private static final String REPAIR_SERVICE_COLUMN_LIST = "ID_repair_service,name,address, ID_team";
 	private static final String TABLE_NAME = "FREELANCE.REPAIR_SERVICE";
 
 	@Autowired
@@ -56,21 +56,24 @@ public class RepairServiceDAO {
 		return repairService;
 	}
 	
-	public RepairService createRepairService(RepairService repairService) {
-		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+	public RepairService createRepairService(RepairService repairService, Integer team_key) {
 		
+		repairService.setId_team(teamDAO.getTeamIdByKey(team_key));
+
+		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (name,address) values (:name,:address)",
+				"insert into "+TABLE_NAME+" (name, address, id_team, id_gear_type) values (:name, :address, :id_team, 2)",
 				new BeanPropertySqlParameterSource(repairService), generatedKeyHolder);
 		
-		RepairService createdRepairService = getRepairServiceById(generatedKeyHolder.getKey().intValue(), repairService.getTeam_key());
+		RepairService createdRepairService = getRepairServiceById(generatedKeyHolder.getKey().intValue(), team_key);
 		return createdRepairService;
 
 	}
 
-	public int updateRepairService(RepairService repairService) {
+	public int updateRepairService(RepairService repairService, Integer team_key) {
 		
-		Integer id_team=teamDAO.getTeamIdByKey(repairService.getTeam_key());
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		repairService.setId_team(id_team);
 
