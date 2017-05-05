@@ -17,7 +17,7 @@ import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
 public class RepairServiceDAO {
-
+	
 	@Autowired
 	private TeamDAO teamDAO;
 	
