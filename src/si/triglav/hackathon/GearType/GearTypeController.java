@@ -22,16 +22,16 @@ public class GearTypeController {
 	@Autowired
 	private GearTypeDAO gearTypeDAO;
 	
-	//list all TEAMS
-	@RequestMapping( path="/geartypes", method=RequestMethod.GET)
-	public @ResponseBody List<GearType> getGearTypeList(){
-		return gearTypeDAO.getGearTypeList();
+	//list all gear_types
+	@RequestMapping( path="/geartypes/{team_key}", method=RequestMethod.GET)
+	public @ResponseBody List<GearType> getGearTypeList(@PathVariable(name="team_key") Integer team_key){
+		return gearTypeDAO.getGearTypeList(team_key);
 	}
 	
 	//Find specific GearType with ID
-	@RequestMapping( path="/geartypes/{id_team}", method=RequestMethod.GET)
-	public @ResponseBody GearType getTeamNameById(@PathVariable(name="id_gear_type") Integer id_gear_type){
-		return gearTypeDAO.getGearTypeNameById(id_gear_type);
+	@RequestMapping( path="/geartypes/{id_gear_type}/{team_key}", method=RequestMethod.GET)
+	public @ResponseBody GearType getTeamNameById(@PathVariable(name="id_gear_type") Integer id_gear_type, @PathVariable(name="team_key") Integer team_key){
+		return gearTypeDAO.getGearTypeNameById(id_gear_type,team_key);
 	}
 /*	
 	//Find specific GearType with ID

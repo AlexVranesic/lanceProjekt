@@ -13,7 +13,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.person.Person;
+import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
 public class GearTypeDAO {
@@ -24,18 +26,30 @@ public class GearTypeDAO {
 	private static final String TABLE_NAME = "FREELANCE.GEAR_TYPE";
 	
 	@Autowired
+	private TeamDAO teamDAO;
+	
+	@Autowired
 	public void init(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public List<GearType> getGearTypeList() {
-		List<GearType> gearTypeList = jdbcTemplate.query("select " + GEAR_TYPE_COLUMN_LIST + " from " + TABLE_NAME, new BeanPropertyRowMapper<GearType>(GearType.class));
+	public List<GearType> getGearTypeList(Integer team_key) {
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		
+		List<GearType> gearTypeList = jdbcTemplate.query("select " + GEAR_TYPE_COLUMN_LIST + " from " + TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<GearType>(GearType.class));
 		return gearTypeList;
 	}
 	
-	public GearType getGearTypeNameById(Integer id_gear_type) {
+	public GearType getGearTypeNameById(Integer id_gear_type,Integer team_key) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_gear_type", id_gear_type);
-		GearType gearType = jdbcTemplate.queryForObject("select "+GEAR_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_gear_type = :id_gear_type", params , new BeanPropertyRowMapper<GearType>(GearType.class));
+		
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		params.addValue("id_team", id_team);
+		
+		GearType gearType = jdbcTemplate.queryForObject("select "+GEAR_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_gear_type = :id_gear_type AND id_team= :id_team ", params , new BeanPropertyRowMapper<GearType>(GearType.class));
 		return gearType;
 	}
 	
