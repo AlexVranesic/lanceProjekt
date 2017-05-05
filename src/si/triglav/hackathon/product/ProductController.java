@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import si.triglav.hackathon.team.Team;
+
 @Controller
 public class ProductController {
 
@@ -36,21 +38,43 @@ public class ProductController {
 	@RequestMapping( path="/products", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createProduct(@RequestBody Product product){
 				
-		//optionally validate person
+		
 		Product createdProduct = productDAO.createProduct(product); // this will set the id on the person object
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdProduct.getIdProduct()).toUri();
+				.buildAndExpand(createdProduct.getId_product()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
 			
 	}
 	
+	
+	
+	
+	/*
+	@RequestMapping( path="/products", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createProduct(@RequestBody Product product){
+				
+		//optionally validate person
+		Product createdProduct = productDAO.createProduct(product); // this will set the id on the person object
+		
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(createdProduct.getId_product()).toUri();
+
+		//by rest conventions we need to repond with the URI for newly created resource 
+		return ResponseEntity.created(location).build();
+			
+	}
+	
+	*/
+	
+	
 	@RequestMapping( path="/products/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateProduct(@PathVariable(name="id_product") Integer id_product, @RequestBody Product product){
-		product.setIdProduct(id_product);
+		product.setId_product(id_product);
 		int updatedRows = productDAO.updateProduct(product);
 		
 		if(updatedRows == 0 ){
