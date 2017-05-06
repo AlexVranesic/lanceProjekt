@@ -64,23 +64,9 @@ public class ClientsClientDAO {
 	
 	public ClientsClient createClientsClient(ClientsClient clientsClient, Integer team_key) {
 		
-		clientsClient.setId_team(teamDAO.getTeamIdByKey(team_key));
+		//clientsClient.setId_team(teamDAO.getTeamIdByKey(team_key));
 		
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		
-		
-		//Integer id_team=teamDAO.getTeamIdByKey(team_key);
-		
-		//Integer id_team=
-		
-		/*
-		 * 
-		 * jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (gear_type,id_team) VALUES (:gear_type,"+teamDAO.getTeamIdByKey(team_key)+")",
-				new BeanPropertySqlParameterSource(gearType), generatedKeyHolder);
-			
-		 * 
-		 */
 		
 		jdbcTemplate.update(
 				"insert into "+TABLE_NAME+" (name,tax_id,id_team,risk_contract_percent) values (:name,:tax_id,"+teamDAO.getTeamIdByKey(team_key)+",:risk_contract_percent)",

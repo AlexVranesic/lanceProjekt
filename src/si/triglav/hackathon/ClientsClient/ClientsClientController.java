@@ -39,17 +39,12 @@ public class ClientsClientController {
 	public ResponseEntity<?> createClientsClient(	@RequestBody ClientsClient clientsClient, 
 													@PathVariable(name="team_key") Integer team_key){
 		
-		/*if(repairService.getCreated_by() == null){
-			//possible extension: use api key header and map from key to user  
-			repairService.setCreated_by("anonymous");	
-		}*/
-		
 		//optionally validate repairService
 		ClientsClient createdClientsClient = clientsClientDAO.createClientsClient(clientsClient, team_key); // this will set the id on the repairService object
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdClientsClient.getID_clients_client(), team_key).toUri();
+				.buildAndExpand(createdClientsClient.getID_clients_client()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
