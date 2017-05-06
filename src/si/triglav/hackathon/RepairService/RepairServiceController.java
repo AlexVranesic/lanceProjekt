@@ -36,28 +36,24 @@ public class RepairServiceController {
 	public ResponseEntity<?> createRepairService(	@RequestBody RepairService repairService, 
 													@PathVariable(name="team_key") Integer team_key){
 		
-		/*if(repairService.getCreated_by() == null){
-			//possible extension: use api key header and map from key to user  
-			repairService.setCreated_by("anonymous");	
-		}*/
-		
 		//optionally validate repairService
+		
 		RepairService createdRepairService = repairServiceDAO.createRepairService(repairService, team_key); // this will set the id on the repairService object
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdRepairService.getID_repair_service()).toUri();
+				.buildAndExpand(createdRepairService.getId_repair_service()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
 			
 	}
 	
-	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateRepairService(	@PathVariable(name="id") Integer id,
+	@RequestMapping( path="/repairservices/{team_key}/{id_repair_service}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateRepairService(	@PathVariable(name="id_repair_service") Integer id_repair_service,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody RepairService repairService){
-		repairService.setID_repair_service(id);
+		repairService.setId_repair_service(id_repair_service);
 		
 		int updatedRows = repairServiceDAO.updateRepairService(repairService, team_key);
 		

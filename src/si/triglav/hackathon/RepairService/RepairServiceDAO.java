@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import si.triglav.hackathon.GearType.GearTypeDAO;
 import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
@@ -21,9 +22,12 @@ public class RepairServiceDAO {
 	@Autowired
 	private TeamDAO teamDAO;
 	
+	@Autowired
+	private GearTypeDAO gearTypeDAO;
+	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String REPAIR_SERVICE_COLUMN_LIST = "ID_repair_service,name,address, ID_team";
+	private static final String REPAIR_SERVICE_COLUMN_LIST = "ID_repair_service,name,address, ID_gear_type, ID_team";
 	private static final String TABLE_NAME = "FREELANCE.REPAIR_SERVICE";
 
 	@Autowired
@@ -37,6 +41,11 @@ public class RepairServiceDAO {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
 
 		List<RepairService> repairServiceList = jdbcTemplate.query("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<RepairService>(RepairService.class));
+		
+		for(RepairService repairService: repairServiceList){
+			repairService.setGear_type(gearTypeDAO.getGearTypeById(repairService.getId_gear_type(), team_key));
+		}
+		
 		return repairServiceList;
 	}
 	
@@ -62,7 +71,7 @@ public class RepairServiceDAO {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (name, address, id_team, id_gear_type) values (:name, :address, "+id_team+", 2)",
+				"insert into "+TABLE_NAME+" (name, address, ID_team, ID_gear_type) values (:name, :address, "+id_team+", :id_gear_type)",
 				new BeanPropertySqlParameterSource(repairService), generatedKeyHolder);
 		
 		RepairService createdRepairService = getRepairServiceById(generatedKeyHolder.getKey().intValue(), team_key);

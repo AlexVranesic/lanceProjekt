@@ -1,15 +1,31 @@
 package si.triglav.hackathon.RepairService;
 
+import si.triglav.hackathon.GearType.GearType;
+
 public class RepairService {
-	private Integer ID_repair_service;
+	private Integer id_repair_service;
 	private String name;
 	private String address;
+	private GearType gear_type;
+	private Integer id_gear_type;
 	
-	public Integer getID_repair_service() {
-		return ID_repair_service;
+	public GearType getGear_type() {
+		return gear_type;
 	}
-	public void setID_repair_service(Integer iD_repair_service) {
-		ID_repair_service = iD_repair_service;
+	public void setGear_type(GearType gear_type) {
+		this.gear_type = gear_type;
+	}
+	public Integer getId_repair_service() {
+		return id_repair_service;
+	}
+	public void setId_repair_service(Integer id_repair_service) {
+		this.id_repair_service = id_repair_service;
+	}
+	public Integer getId_gear_type() {
+		return id_gear_type;
+	}
+	public void setId_gear_type(Integer id_gear_type) {
+		this.id_gear_type = id_gear_type;
 	}
 	public String getName() {
 		return name;
@@ -23,4 +39,7 @@ public class RepairService {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	
+	
 }
