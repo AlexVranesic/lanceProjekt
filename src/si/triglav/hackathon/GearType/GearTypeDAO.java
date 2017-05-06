@@ -21,7 +21,7 @@ public class GearTypeDAO {
 
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String GEAR_TYPE_COLUMN_LIST = "id_gear_type,gear_type,id_team";
+	private static final String GEAR_TYPE_COLUMN_LIST = "id_gear_type, gear_type";
 	private static final String TABLE_NAME = "FREELANCE.GEAR_TYPE";
 	
 	@Autowired
@@ -41,51 +41,45 @@ public class GearTypeDAO {
 		return gearTypeList;
 	}
 	
-	public GearType getGearTypeNameById(Integer id_gear_type,Integer team_key) {
+	
+	public GearType getGearTypeById(Integer id_gear_type,Integer team_key) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_gear_type", id_gear_type);
-		
-		Integer id_team=teamDAO.getTeamIdByKey(team_key);
-		
-		params.addValue("id_team", id_team);
-		
-		GearType gearType = jdbcTemplate.queryForObject("select "+GEAR_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_gear_type = :id_gear_type AND id_team= :id_team ", params , new BeanPropertyRowMapper<GearType>(GearType.class));
+						
+		GearType gearType = jdbcTemplate.queryForObject("select "+GEAR_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_gear_type = :id_gear_type AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<GearType>(GearType.class));
 		return gearType;
 	}
 	
-	public GearType createGearType(GearType gearType) {
+
+	public GearType createGearType(GearType gearType, Integer team_key) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (gear_type,id_team) VALUES (:gear_type,:id_team)",
+				"insert into "+TABLE_NAME+" (gear_type,id_team) VALUES (:gear_type,"+teamDAO.getTeamIdByKey(team_key)+")",
 				new BeanPropertySqlParameterSource(gearType), generatedKeyHolder);
 			
-		GearType created_gearType = getGearTypeById(generatedKeyHolder.getKey().intValue());
+		GearType created_gearType = getGearTypeById(generatedKeyHolder.getKey().intValue(), team_key);
 		return created_gearType;
 
 	}
 	
-	public GearType getGearTypeById(Integer id_gear_type) {
-		MapSqlParameterSource params = new MapSqlParameterSource("id_gear_type", id_gear_type);
-		GearType gearType = jdbcTemplate.queryForObject("select "+GEAR_TYPE_COLUMN_LIST+" from FREELANCE.GEAR_TYPE where id_gear_type = :id_gear_type", params , new BeanPropertyRowMapper<GearType>(GearType.class));
-		return gearType;
-	}
-	/*
-	public Integer getTeamIdByKey(Integer team_key) {
-		MapSqlParameterSource params = new MapSqlParameterSource("team_key", team_key);
-		Team team = jdbcTemplate.queryForObject("select id_team from FREELANCE.TEAM where team_key = :team_key FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<Team>(Team.class));
-		return team.getId_team();
-	}
-	*/
-	public int updateGearType(GearType gearType) {
+	
+	public int updateGearType(GearType gearType, Integer team_key) {
 		
 		int updatedRowsCount = jdbcTemplate.update(
-				"update "+TABLE_NAME+" set (gear_type) = (:gear_type) where id_team = :id_team",
+				"UPDATE "+TABLE_NAME
+				+" SET (gear_type) = (:gear_type) "
+				+" WHERE ID_gear_type = :id_gear_type"
+				+" AND ID_team = "+teamDAO.getTeamIdByKey(team_key),
 				new BeanPropertySqlParameterSource(gearType));
+		
 		return updatedRowsCount;
 		
 	}
 
-	public int deleteGearType(Integer id_team) {
-		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_team = :id_team", new MapSqlParameterSource("id_team", id_team));
+	
+
+	public int deleteGearType(Integer id_gear_type, Integer team_key) {
+		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_gear_type = :id_gear_type AND id_team="+teamDAO.getTeamIdByKey(team_key), new MapSqlParameterSource("id_gear_type", id_gear_type));
 		return deletedRows;
 	}
 }
