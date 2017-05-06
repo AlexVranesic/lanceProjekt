@@ -24,8 +24,15 @@ public class ClientsClientDAO {
 	private TeamDAO teamDAO;
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
-
-	private static final String CLIENT_CLIENTS_COLUMN_LIST = "ID_repair_service,name,address";
+/*
+	ID_clients_client;
+	private String name;
+	private Integer tax_id;
+	private Integer id_team;
+	private Double risk_contract_percent;
+	*/
+	
+	private static final String CLIENT_CLIENTS_COLUMN_LIST = "ID_clients_client,name,tax_id,risk_contract_percent";
 	private static final String TABLE_NAME = "FREELANCE.CLIENTS_CLIENT";
 
 	@Autowired
@@ -38,7 +45,8 @@ public class ClientsClientDAO {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
 
-		List<ClientsClient> repairServiceList = jdbcTemplate.query("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		List<ClientsClient> repairServiceList = jdbcTemplate.query("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team="+id_team, params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		//List<ClientsClient> repairServiceList = jdbcTemplate.query("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
 		return repairServiceList;
 	}
 		
@@ -49,7 +57,8 @@ public class ClientsClientDAO {
 		
 		params.addValue("id_team", id_team);
 		
-		ClientsClient clientsClient = jdbcTemplate.queryForObject("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" where ID_clients_client = :ID_clients_client AND id_team= :id_team", params , new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		ClientsClient clientsClient = jdbcTemplate.queryForObject("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" where ID_clients_client = :ID_clients_client AND id_team="+id_team, params , new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		//ClientsClient clientsClient = jdbcTemplate.queryForObject("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" where ID_clients_client = :ID_clients_client AND id_team= :id_team", params , new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
 		return clientsClient;
 	}
 	
@@ -59,8 +68,22 @@ public class ClientsClientDAO {
 		
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		
+		
+		//Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		//Integer id_team=
+		
+		/*
+		 * 
+		 * jdbcTemplate.update(
+				"insert into "+TABLE_NAME+" (gear_type,id_team) VALUES (:gear_type,"+teamDAO.getTeamIdByKey(team_key)+")",
+				new BeanPropertySqlParameterSource(gearType), generatedKeyHolder);
+			
+		 * 
+		 */
+		
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (name,tax_id,id_team,risk_contract_percent) values (:name,:tax_id,:id_team,:risk_contract_percent)",
+				"insert into "+TABLE_NAME+" (name,tax_id,id_team,risk_contract_percent) values (:name,:tax_id,"+teamDAO.getTeamIdByKey(team_key)+",:risk_contract_percent)",
 				new BeanPropertySqlParameterSource(clientsClient), generatedKeyHolder);
 		
 		ClientsClient createdClientsClient = getClientsClientById(generatedKeyHolder.getKey().intValue(), team_key);

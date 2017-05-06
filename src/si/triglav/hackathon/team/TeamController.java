@@ -32,7 +32,7 @@ public class TeamController {
 		return teamDAO.getTeamNameById(id_team);
 	}
 	
-	//Find specific TEAM with ID
+	//get ID of team with specific key 
 		@RequestMapping( path="/teams/key/{team_key}", method=RequestMethod.GET)
 		public @ResponseBody Integer getTeamIdByKey(@PathVariable(name="team_key") Integer team_key){
 			return teamDAO.getTeamIdByKey(team_key);

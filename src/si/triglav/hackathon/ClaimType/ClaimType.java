@@ -4,7 +4,6 @@ public class ClaimType {
 	private Integer id_claim_type;
 	private String claim_type;
 	
-	
 	public Integer getId_claim_type() {
 		return id_claim_type;
 	}
@@ -16,6 +15,5 @@ public class ClaimType {
 	}
 	public void setClaim_type(String claim_type) {
 		this.claim_type = claim_type;
-	}
-	
+	}	
 }

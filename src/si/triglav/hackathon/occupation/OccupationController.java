@@ -53,13 +53,13 @@ public class OccupationController {
 			
 	}
 	
-	@RequestMapping( path="/occupations/{team_key}/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateOccupation(	@PathVariable(name="id") Integer id,
+	@RequestMapping( path="/occupations/{team_key}/{id_occupation}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateOccupation(	@PathVariable(name="id_occupation") Integer id_occupation,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody Occupation occupation){
 		//occupation.setID_repair_service(id);
 		
-		occupation.setId_occupation(id);
+		occupation.setId_occupation(id_occupation);
 		
 		int updatedRows = occupationDAO.updateOccupation(occupation, team_key);
 		
@@ -69,6 +69,7 @@ public class OccupationController {
 		
 		return ResponseEntity.noContent().build();
 	}
+	
 	
 	
 	

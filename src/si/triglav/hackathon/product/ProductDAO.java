@@ -13,11 +13,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import si.triglav.hackathon.team.Team;
+import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
 public class ProductDAO {
 
+	@Autowired
+	private TeamDAO teamDAO;
+	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	private static final String PRODUCT_COLUMN_LIST = "id_product,product";

@@ -49,7 +49,6 @@ public class GearTypeDAO {
 		return gearType;
 	}
 	
-
 	public GearType createGearType(GearType gearType, Integer team_key) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		
@@ -61,7 +60,6 @@ public class GearTypeDAO {
 		return created_gearType;
 
 	}
-	
 	
 	public int updateGearType(GearType gearType, Integer team_key) {
 		
@@ -75,8 +73,6 @@ public class GearTypeDAO {
 		return updatedRowsCount;
 		
 	}
-
-	
 
 	public int deleteGearType(Integer id_gear_type, Integer team_key) {
 		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_gear_type = :id_gear_type AND id_team="+teamDAO.getTeamIdByKey(team_key), new MapSqlParameterSource("id_gear_type", id_gear_type));

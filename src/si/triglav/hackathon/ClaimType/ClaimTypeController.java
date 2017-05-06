@@ -37,8 +37,7 @@ public class ClaimTypeController {
 				.buildAndExpand(createdClaimType.getId_claim_type()).toUri();
 	
 		//by rest conventions we need to repond with the URI for newly created resource 
-		return ResponseEntity.created(location).build();
-			
+		return ResponseEntity.created(location).build();	
 	} 
 	
 	//If using PathVariable, not all conversions are supported

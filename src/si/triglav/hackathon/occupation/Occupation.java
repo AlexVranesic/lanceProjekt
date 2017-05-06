@@ -14,6 +14,7 @@ public class Occupation {
 	}
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
+		
 	}
 	
 	

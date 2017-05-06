@@ -35,7 +35,6 @@ public class ClientsClientController {
 		return clientsClientDAO.getClientsClientById(id, team_key);
 	}
 	
-	
 	@RequestMapping( path="/clientsclient/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createClientsClient(	@RequestBody ClientsClient clientsClient, 
 													@PathVariable(name="team_key") Integer team_key){
@@ -57,7 +56,7 @@ public class ClientsClientController {
 			
 	}
 	
-	@RequestMapping( path="/clientsclient/{id}/{team_key}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/clientsclient/{team_key}/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateClientsClient(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody ClientsClient clientsClient){
@@ -73,7 +72,7 @@ public class ClientsClientController {
 	}
 	
 	
-	@RequestMapping( path="/clientsclient/{id}/{team_key}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/clientsclient/{team_key}/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteClientsClient(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		
