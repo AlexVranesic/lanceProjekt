@@ -23,19 +23,19 @@ public class ClientsClientController {
 	@Autowired
 	private ClientsClientDAO clientsClientDAO;
 
-	@RequestMapping( path="/clientsclient/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/clientsclients/{team_key}", method=RequestMethod.GET)
 	public @ResponseBody List<ClientsClient> getClientsClientList(@PathVariable(name="team_key") Integer team_key){
 		return clientsClientDAO.getClientsClientList(team_key);
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/clientsclient/{team_key}/{id}", method=RequestMethod.GET)
+	@RequestMapping( path="/clientsclients/{team_key}/{id}", method=RequestMethod.GET)
 	public @ResponseBody ClientsClient getClientsClientById(@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
 		return clientsClientDAO.getClientsClientById(id, team_key);
 	}
 	
-	@RequestMapping( path="/clientsclient/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/clientsclients/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createClientsClient(	@RequestBody ClientsClient clientsClient, 
 													@PathVariable(name="team_key") Integer team_key){
 		
@@ -51,7 +51,7 @@ public class ClientsClientController {
 			
 	}
 	
-	@RequestMapping( path="/clientsclient/{team_key}/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/clientsclients/{team_key}/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateClientsClient(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody ClientsClient clientsClient){
@@ -67,7 +67,7 @@ public class ClientsClientController {
 	}
 	
 	
-	@RequestMapping( path="/clientsclient/{team_key}/{id}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/clientsclients/{team_key}/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteClientsClient(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		
