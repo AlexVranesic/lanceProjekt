@@ -62,6 +62,9 @@ public class RepairServiceDAO {
 		params.addValue("id_team", id_team);
 		
 		RepairService repairService = jdbcTemplate.queryForObject("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME+" where ID_repair_service = :ID_repair_service AND id_team= :id_team", params , new BeanPropertyRowMapper<RepairService>(RepairService.class));
+		
+		repairService.setGear_type(gearTypeDAO.getGearTypeById(repairService.getId_gear_type(), team_key));
+		
 		return repairService;
 	}
 	
@@ -85,8 +88,8 @@ public class RepairServiceDAO {
 		
 		int updatedRowsCount = jdbcTemplate.update(
 						 "UPDATE "+TABLE_NAME
-						+" SET (name,address) = (:name,:address) "
-						+" WHERE ID_repair_service = :ID_repair_service"
+						+" SET (name,address,ID_gear_type) = (:name,:address, :id_gear_type) "
+						+" WHERE ID_repair_service = :id_repair_service"
 						+" AND ID_team = "+id_team,
 				new BeanPropertySqlParameterSource(repairService));
 		return updatedRowsCount;
