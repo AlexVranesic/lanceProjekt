@@ -24,8 +24,8 @@ public class OccupationController {
 	private OccupationDAO OccupationDAO;
 	
 	@RequestMapping( path="/occupations", method=RequestMethod.GET)
-	public @ResponseBody List<Occupation> getOccupationList(){
-		return OccupationDAO.getOccupationList();
+	public @ResponseBody List<Occupation> getOccupationList() throws Exception{
+		return OccupationDAO.getOccupationList(); 
 	}
 	
 	//If using PathVariable, not all conversions are supported

@@ -57,13 +57,12 @@ public class RepairServiceDAO {
 	}
 	
 	public RepairService createRepairService(RepairService repairService, Integer team_key) {
-		
-		repairService.setId_team(teamDAO.getTeamIdByKey(team_key));
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (name, address, id_team, id_gear_type) values (:name, :address, :id_team, 2)",
+				"insert into "+TABLE_NAME+" (name, address, id_team, id_gear_type) values (:name, :address, "+id_team+", 2)",
 				new BeanPropertySqlParameterSource(repairService), generatedKeyHolder);
 		
 		RepairService createdRepairService = getRepairServiceById(generatedKeyHolder.getKey().intValue(), team_key);
@@ -75,13 +74,11 @@ public class RepairServiceDAO {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
-		repairService.setId_team(id_team);
-
 		int updatedRowsCount = jdbcTemplate.update(
 						 "UPDATE "+TABLE_NAME
 						+" SET (name,address) = (:name,:address) "
 						+" WHERE ID_repair_service = :ID_repair_service"
-						+" AND ID_team = :id_team",
+						+" AND ID_team = "+id_team,
 				new BeanPropertySqlParameterSource(repairService));
 		return updatedRowsCount;
 	}

@@ -1,19 +1,10 @@
 package si.triglav.hackathon.RepairService;
 
-import si.triglav.hackathon.team.Team;
-
 public class RepairService {
 	private Integer ID_repair_service;
 	private String name;
 	private String address;
-	private Integer id_team;
 	
-	public Integer getId_team() {
-		return id_team;
-	}
-	public void setId_team(Integer id_team) {
-		this.id_team = id_team;
-	}
 	public Integer getID_repair_service() {
 		return ID_repair_service;
 	}

@@ -1,9 +1,5 @@
 package si.triglav.hackathon.occupation;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class Occupation {
 	private Integer id_occupation;
 	private Integer id_team;

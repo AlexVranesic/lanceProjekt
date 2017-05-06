@@ -1,5 +1,7 @@
 package si.triglav.hackathon.occupation;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +31,9 @@ public class OccupationDAO {
 	 * this method allows occupation to be viewed by all
 	 */
 	
-	public Occupation getOccupationList(Integer team_key) throws Exception {
+	public List<Occupation> getOccupationList() throws Exception {
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		Occupation occupationList = jdbcTemplate.queryForObject("select * from schema.OCCUPATION where team_key = :team_key", params, new BeanPropertyRowMapper<Occupation>(Occupation.class));
+		List<Occupation> occupationList = jdbcTemplate.query("select * from schema.OCCUPATION where team_key = :team_key", params, new BeanPropertyRowMapper<Occupation>(Occupation.class));
 		
 		if (occupationList == null)
 		{

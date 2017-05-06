@@ -26,7 +26,7 @@ public class RepairServiceController {
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/repairservices/{id}/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.GET)
 	public @ResponseBody RepairService getRepairServiceById(@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
 		return repairServiceDAO.getRepairServiceById(id, team_key);
@@ -45,19 +45,20 @@ public class RepairServiceController {
 		RepairService createdRepairService = repairServiceDAO.createRepairService(repairService, team_key); // this will set the id on the repairService object
 		
 		URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest().path("/{id}/{team_key}")
-				.buildAndExpand(createdRepairService.getID_repair_service(), team_key).toUri();
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(createdRepairService.getID_repair_service()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
 			
 	}
 	
-	@RequestMapping( path="/repairservices/{id}/{team_key}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateRepairService(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody RepairService repairService){
 		repairService.setID_repair_service(id);
+		
 		int updatedRows = repairServiceDAO.updateRepairService(repairService, team_key);
 		
 		if(updatedRows == 0 ){
@@ -70,7 +71,7 @@ public class RepairServiceController {
 	
 
 	
-	@RequestMapping( path="/repairservices/{id}/{team_key}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		

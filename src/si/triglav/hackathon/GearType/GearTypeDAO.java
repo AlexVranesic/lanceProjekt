@@ -14,7 +14,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import si.triglav.hackathon.RepairService.RepairService;
-import si.triglav.hackathon.person.Person;
 import si.triglav.hackathon.team.TeamDAO;
 
 @Repository

@@ -19,33 +19,34 @@ public class ClaimTypeController {
 
 	@Autowired
 	private ClaimTypeDAO claimTypeDAO;
-
-
 	
-	@RequestMapping( path="/claimtypes", method=RequestMethod.GET)
-	public @ResponseBody List<ClaimType> getClaimTypeList(){
-		return claimTypeDAO.getClaimTypeList();
+	@RequestMapping( path="/claimtypes/{team_key}", method=RequestMethod.GET)
+	public @ResponseBody List<ClaimType> getClaimTypeList(@PathVariable(name="team_key") Integer team_key){
+		return claimTypeDAO.getClaimTypeList(team_key);
 	}
 	
-	@RequestMapping( path="/claimtypes", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createClaimType(@RequestBody ClaimType calm_type) throws Exception{
+	@RequestMapping( path="/claimtypes/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createClaimType(	@RequestBody ClaimType calm_type,
+												@PathVariable(name="team_key") Integer team_key) throws Exception{
 		
 		//optionally validate person
-		ClaimType createdClaimType = claimTypeDAO.createClaimType(calm_type); // this will set the id on the person object
-		
+		ClaimType createdClaimType = claimTypeDAO.createClaimType(calm_type, team_key); // this will set the id on the person object
+
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(createdClaimType.getId_claim_type()).toUri();
-
+	
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
 			
 	} 
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/claimtypes/{id}", method=RequestMethod.GET)
-	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id") Integer id) throws Exception {
-		return claimTypeDAO.getClaimTypeById(id);
+	@RequestMapping( path="/claimtypes/{team_key}/{id}", method=RequestMethod.GET)
+	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id")Integer id, 
+													@PathVariable(name="team_key") Integer team_key) throws Exception{
+	
+		return claimTypeDAO.getClaimTypeById(id, team_key);
 	}
 	
 	
