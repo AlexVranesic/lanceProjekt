@@ -157,7 +157,7 @@ public class OccupationDAO {
 		int updatedRowsCount = jdbcTemplate.update(
 						 "UPDATE "+TABLE_NAME
 						+" SET (occupation) = (:occupation) "
-						+" WHERE ID_occupation = :ID_occupation"
+						+" WHERE ID_occupation = :id_occupation"
 						+" AND ID_team = "+id_team,
 				new BeanPropertySqlParameterSource(occupation));
 		return updatedRowsCount;
