@@ -26,39 +26,36 @@ public class GearTypeController {
 	public @ResponseBody List<GearType> getGearTypeList(@PathVariable(name="team_key") Integer team_key){
 		return gearTypeDAO.getGearTypeList(team_key);
 	}
-	
-	//Find specific GearType with ID
-	@RequestMapping( path="/geartypes/{id_gear_type}/{team_key}", method=RequestMethod.GET)
-	public @ResponseBody GearType getTeamNameById(@PathVariable(name="id_gear_type") Integer id_gear_type, @PathVariable(name="team_key") Integer team_key){
-		return gearTypeDAO.getGearTypeNameById(id_gear_type,team_key);
-	}
-/*	
-	//Find specific GearType with ID
-		@RequestMapping( path="/teams/key/{team_key}", method=RequestMethod.GET)
-		public @ResponseBody Integer getTeamIdByKey(@PathVariable(name="team_key") Integer team_key){
-			return teamDAO.getTeamIdByKey(team_key);
-	}
-*/		
-	//create new TEAM (npr. body: "team_name": "test_team", "team_key": 12345678)
-	@RequestMapping( path="/geartypes", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createGearType(@RequestBody GearType gearType){
 
-		GearType createdGearType = gearTypeDAO.createGearType(gearType); // this will set the id on the person object
+	//Find specific GearType with ID
+	@RequestMapping( path="/geartypes/{team_key}/{id_gear_type}", method=RequestMethod.GET)
+	public @ResponseBody GearType getTeamNameById(@PathVariable(name="id_gear_type") Integer id_gear_type, @PathVariable(name="team_key") Integer team_key){
+		return gearTypeDAO.getGearTypeById(id_gear_type,team_key);
+	}
+	
+	
+	//create new GEAR_TYPE (npr. body: "gear_type": "computer")
+	@RequestMapping( path="/geartypes/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createGearType(@RequestBody GearType gearType, @PathVariable(name="team_key") Integer team_key){
+
+		GearType createdGearType = gearTypeDAO.createGearType(gearType,team_key); // this will set the id on the person object
 		
 		URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdGearType.getId_team()).toUri();
+				.fromCurrentRequest().path("/{id_gear_type}")
+				.buildAndExpand(createdGearType.getId_gear_type()).toUri();
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
 			
 	}
-
+	
+	
 	//updateTeam(Team team)
-	/*@RequestMapping( path="/teams/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateTeam(@PathVariable(name="id_team") Integer id_team, @RequestBody Team team){
-		team.setId_team(id_team);
-		int updatedRows = teamDAO.updateTeam(team);
+	@RequestMapping( path="/geartypes/{team_key}/{id_gear_type}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateTeam(@PathVariable(name="team_key") Integer team_key, @PathVariable(name="id_gear_type") Integer id_gear_type, @RequestBody GearType gearType){
+		gearType.setId_gear_type(id_gear_type);
+		
+		int updatedRows = gearTypeDAO.updateGearType(gearType, team_key);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
@@ -66,12 +63,14 @@ public class GearTypeController {
 		
 		return ResponseEntity.noContent().build();
 		
-	}*/
+	}
 	
-	@RequestMapping( path="/geartypes/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<?> deleteGearType(@PathVariable(name="id_gear_type") Integer id_gear_type){
+	
+	@RequestMapping( path="/geartypes/{team_key}/{id_gear_type}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> deleteGearType(@PathVariable(name="id_gear_type") Integer id_gear_type, 
+											@PathVariable(name="team_key") Integer team_key){
 		
-		int updatedRows = gearTypeDAO.deleteGearType(id_gear_type);
+		int updatedRows = gearTypeDAO.deleteGearType(id_gear_type, team_key);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
