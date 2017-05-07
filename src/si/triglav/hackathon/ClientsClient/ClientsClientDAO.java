@@ -95,19 +95,25 @@ public class ClientsClientDAO {
 	}
 	
 	*/
-		
 	public int updateClientsClient(ClientsClient clientsClient, Integer team_key) {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
-		clientsClient.setId_team(id_team);
-
+		//clientsClient.setId_team(id_team);
+/*
 		int updatedRowsCount = jdbcTemplate.update(
 				 "UPDATE "+TABLE_NAME
 				+" SET (name,tax_id,risk_contract_percent) = (:name,:tax_id,risk_contract_percent) "
 				+" WHERE ID_clients_client = :ID_clients_client"
 				+" AND ID_team = :id_team",
 		new BeanPropertySqlParameterSource(clientsClient));
+		*/
+		int updatedRowsCount = jdbcTemplate.update(
+				 "UPDATE "+TABLE_NAME
+				+" SET (name,tax_id,risk_contract_percent) = (:name,:tax_id,risk_contract_percent) "
+				+" WHERE ID_clients_client = :ID_clients_client",
+		new BeanPropertySqlParameterSource(clientsClient));
+		
 		
 		return updatedRowsCount;
 	}
