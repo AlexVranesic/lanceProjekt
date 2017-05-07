@@ -5,7 +5,7 @@ import si.triglav.hackathon.ClientsClient.ClientsClient;
 public class ClientsClient {
 	private Integer ID_clients_client;
 	private String name;
-	private Integer tax_id;
+	private String tax_id;
 	//private Integer id_team;
 	private Double risk_contract_percent;
 	
@@ -21,10 +21,10 @@ public class ClientsClient {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getTax_id() {
+	public String getTax_id() {
 		return tax_id;
 	}
-	public void setTax_id(Integer tax_id) {
+	public void setTax_id(String tax_id) {
 		this.tax_id = tax_id;
 	}
 	
