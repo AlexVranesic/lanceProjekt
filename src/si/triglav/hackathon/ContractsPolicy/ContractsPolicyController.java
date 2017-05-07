@@ -73,5 +73,20 @@ public class ContractsPolicyController {
 		
 	}
 	
+
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicies/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="team_key") Integer team_key, 
+													@PathVariable(name="id_client") Integer id_client,
+													@PathVariable(name="id") Integer id_policy_product){
+		
+		int updatedRows = contractsPolicyDAO.deleteContractPolicy(id_client, id_policy_product, team_key);
+		
+		if(updatedRows == 0 ){
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.noContent().build();
+	}
+	
 	
 }
