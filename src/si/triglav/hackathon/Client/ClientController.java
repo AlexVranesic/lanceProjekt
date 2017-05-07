@@ -23,21 +23,21 @@ public class ClientController {
 	@Autowired
 	private ClientDAO clientDAO;
 	
-	@RequestMapping( path="/clients/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clients", method=RequestMethod.GET)
 	public @ResponseBody List<Client> getClientList(@PathVariable(name="team_key") Integer team_key){
-		return clientDAO.getClientList();
+		return clientDAO.getClientList(team_key);
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/clients/{team_key}/{id_client}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clients/{id_client}", method=RequestMethod.GET)
 	public @ResponseBody Client getClientById(@PathVariable(name="id_client") Integer id_client, 
-															@PathVariable(name="team_key") Integer team_key){
+											  @PathVariable(name="team_key") Integer team_key){
 		return clientDAO.getClientById(id_client, team_key);
 	}
 	
-	@RequestMapping( path="/clients/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clients/", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createClient(	@RequestBody Client client, 
-													@PathVariable(name="team_key") Integer team_key){
+											@PathVariable(name="team_key") Integer team_key){
 		
 		//optionally validate repairService
 		
@@ -51,11 +51,11 @@ public class ClientController {
 		return ResponseEntity.created(location).build();
 			
 	}
-	
-	@RequestMapping( path="/clients/{team_key}/{id_client}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+		
+	@RequestMapping( path="/{team_key}/clients/{id_client}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateClient(	@PathVariable(name="id_client") Integer id_client,
-													@PathVariable(name="team_key") Integer team_key,
-													@RequestBody Client client){
+											@PathVariable(name="team_key") Integer team_key,
+											@RequestBody Client client){
 		client.setId_client(id_client);
 		
 		int updatedRows = clientDAO.updateClient(client, team_key);
@@ -68,13 +68,11 @@ public class ClientController {
 		
 	}
 	
-
-	
-	@RequestMapping( path="/clients/{team_key}/{id_client}", method=RequestMethod.DELETE)
-	public ResponseEntity<?> deleteClient(	@PathVariable(name="id_client") Integer id,
+	@RequestMapping( path="/{team_key}/clients/{id_client}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> deleteClient(	@PathVariable(name="id_client") Integer id_client,
 													@PathVariable(name="team_key") Integer team_key){
 		
-		int updatedRows = clientDAO.deleteClient(id, team_key);
+		int updatedRows = clientDAO.deleteClient(id_client, team_key);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
@@ -82,6 +80,4 @@ public class ClientController {
 		
 		return ResponseEntity.noContent().build();
 	}
-		
-	
 }

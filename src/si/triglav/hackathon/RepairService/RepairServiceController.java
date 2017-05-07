@@ -67,7 +67,7 @@ public class RepairServiceController {
 	
 
 	
-	@RequestMapping( path="/repairservices/{id}/{team_key}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		
