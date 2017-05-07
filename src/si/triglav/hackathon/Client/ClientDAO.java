@@ -1,4 +1,4 @@
-package si.triglav.hackathon.team;
+package si.triglav.hackathon.Client;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import si.triglav.hackathon.person.Person;
 
 @Repository
-public class TeamDAO {
+public class ClientDAO {
 
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -28,6 +28,7 @@ public class TeamDAO {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
+	/*
 	public List<Team> getTeamList() {
 		List<Team> teamList = jdbcTemplate.query("select " + TEAM_COLUMN_LIST + " from " + TABLE_NAME, new BeanPropertyRowMapper<Team>(Team.class));
 		return teamList;
@@ -81,5 +82,5 @@ public class TeamDAO {
 	public int deleteTeam(Integer id_team) {
 		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_team = :id_team", new MapSqlParameterSource("id_team", id_team));
 		return deletedRows;
-	}
+	}*/
 }

@@ -1,4 +1,4 @@
-package si.triglav.hackathon.LiabilityClaim;
+package si.triglav.hackathon.LiabilityPolicy;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import si.triglav.hackathon.File.File;
 import si.triglav.hackathon.GearType.GearType;
 
-public class LiabilityClaim {
+public class LiabilityPolicy {
 	
 	private Integer id_liability_claim;
 	private String description;
