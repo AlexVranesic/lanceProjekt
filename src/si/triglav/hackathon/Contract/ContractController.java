@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import si.triglav.hackathon.RepairService.RepairService;
-
 @Controller
 public class ContractController {
 	
@@ -30,7 +28,7 @@ public class ContractController {
 	}
 	
 	@RequestMapping( path="/contracts/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createRepairService(	@RequestBody Contract contract, 
+	public ResponseEntity<?> createContract(	@RequestBody Contract contract, 
 													@PathVariable(name="team_key") Integer team_key){
 		
 		//optionally validate repairService

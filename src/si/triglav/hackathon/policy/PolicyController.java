@@ -1,6 +1,7 @@
 package si.triglav.hackathon.policy;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,12 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import si.triglav.hackathon.RepairService.RepairService;
+
 @Controller
 public class PolicyController {
 
 	@Autowired
 	private PolicyDAO policyDAO;
 
+	@RequestMapping( path="/polices/{team_key}", method=RequestMethod.GET)
+	public @ResponseBody List<Policy> getRepairServiceList(@PathVariable(name="team_key") Integer team_key){
+		return policyDAO.getPolicyList(team_key);
+	}
+	
+	
 	//If using PathVariable, not all conversions are supported
 	@RequestMapping( path="/polices/{id}", method=RequestMethod.GET)
 	public @ResponseBody Policy getPolicyById(@PathVariable(name="id") Integer id) throws Exception {
