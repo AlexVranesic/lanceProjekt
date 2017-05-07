@@ -1,5 +1,6 @@
 package si.triglav.hackathon.Client;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,74 +14,91 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import si.triglav.hackathon.person.Person;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import si.triglav.hackathon.GearType.GearType;
+import si.triglav.hackathon.team.TeamDAO;
+
 
 @Repository
 public class ClientDAO {
 
+	/*
+	 * 
+	private Integer id_client;
+	private String email;
+	private String name;
+	private String surname;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date birth_date;
+	
+	private Integer is_fulltime;
+	private Integer y_of_experience;
+	private Integer annual_income;
+	private String addressl1;
+	private String addressl2;
+	private Integer post;
+	private String city;
+	private String country;
+	private String password;
+	private Integer card_number;
+	private String ccv;
+	 * 
+	 */
+	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String TEAM_COLUMN_LIST = "id_team,team_name,team_key";
-	private static final String TABLE_NAME = "FREELANCE.TEAM";
+	private static final String CLIENT_COLUMN_LIST = "id_client,email,name,surname,birth_date,is_fulltime,y_of_experience,annual_income,addressl1,addressl2,post,city,country,password,card_number,ccv";
+	private static final String TABLE_NAME = "FREELANCE.CLIENT";
+	
+	@Autowired
+	private TeamDAO teamDAO;
 	
 	@Autowired
 	public void init(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	/*
-	public List<Team> getTeamList() {
-		List<Team> teamList = jdbcTemplate.query("select " + TEAM_COLUMN_LIST + " from " + TABLE_NAME, new BeanPropertyRowMapper<Team>(Team.class));
-		return teamList;
+	public List<Client> getClientList() {
+		List<Client> clientList = jdbcTemplate.query("select " + CLIENT_COLUMN_LIST + " from " + TABLE_NAME, new BeanPropertyRowMapper<Client>(Client.class));
+		return clientList;
 	}
 	
-	public Team getTeamNameById(Integer id_team) {
-		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-		Team team = jdbcTemplate.queryForObject("select "+TEAM_COLUMN_LIST+" from "+ TABLE_NAME + " where id_team = :id_team", params , new BeanPropertyRowMapper<Team>(Team.class));
-		return team;
+	public Client getClientById(Integer id_client,Integer team_key) {
+		MapSqlParameterSource params = new MapSqlParameterSource("id_client", id_client);
+						
+		Client client = jdbcTemplate.queryForObject("select "+CLIENT_COLUMN_LIST+" from "+ TABLE_NAME + " where id_client = :id_client AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<Client>(Client.class));
+		return client;
 	}
 	
-	//preveri spodnjo metodo kaj vraca
-	public Integer getTeamIdByName(String team_name) {
-		MapSqlParameterSource params = new MapSqlParameterSource("team_name", team_name);
-		Integer team_id = jdbcTemplate.queryForObject("select id_team from "+ TABLE_NAME + " where team_name = :team_name", params , new BeanPropertyRowMapper<Integer>(Integer.class));
-		return team_id;
-	}
-	
-	public Team createTeam(Team team) {
+	public Client createClient(Client client, Integer team_key) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (team_name,team_key) VALUES (:team_name,:team_key)",
-				new BeanPropertySqlParameterSource(team), generatedKeyHolder);
+				"insert into "+TABLE_NAME+" (client,id_team) VALUES (:client,"+teamDAO.getTeamIdByKey(team_key)+")",
+				new BeanPropertySqlParameterSource(client), generatedKeyHolder);
 			
-		Team createdTeam = getTeamById(generatedKeyHolder.getKey().intValue());
-		return createdTeam;
+		Client created_client = getClientById(generatedKeyHolder.getKey().intValue(), team_key);
+		return created_client;
 
 	}
 	
-	public Team getTeamById(Integer id_team) {
-		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-		Team team = jdbcTemplate.queryForObject("select "+TEAM_COLUMN_LIST+" from FREELANCE.TEAM where id_team = :id_team", params , new BeanPropertyRowMapper<Team>(Team.class));
-		return team;
-	}
-	
-	public Integer getTeamIdByKey(Integer team_key) {
-		MapSqlParameterSource params = new MapSqlParameterSource("team_key", team_key);
-		Team team = jdbcTemplate.queryForObject("select id_team from FREELANCE.TEAM where team_key = :team_key FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<Team>(Team.class));
-		return team.getId_team();
-	}
-	
-	public int updateTeam(Team team) {
+	public int updateClient(Client client, Integer team_key) {
 		
 		int updatedRowsCount = jdbcTemplate.update(
-				"update "+TABLE_NAME+" set (team_name) = (:team_name) where id_team = :id_team",
-				new BeanPropertySqlParameterSource(team));
+				"UPDATE "+TABLE_NAME
+				+" SET (client) = (:client) "
+				+" WHERE ID_client = :id_client"
+				+" AND ID_team = "+teamDAO.getTeamIdByKey(team_key),
+				new BeanPropertySqlParameterSource(client));
+		
 		return updatedRowsCount;
 		
 	}
 
-	public int deleteTeam(Integer id_team) {
-		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_team = :id_team", new MapSqlParameterSource("id_team", id_team));
+	public int deleteClient(Integer id_client, Integer team_key) {
+		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_client = :id_client AND id_team="+teamDAO.getTeamIdByKey(team_key), new MapSqlParameterSource("id_client", id_client));
 		return deletedRows;
-	}*/
+	}
 }
