@@ -4,6 +4,9 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import si.triglav.hackathon.GearType.GearType;
+import si.triglav.hackathon.occupation.Occupation;
+
 public class Client {
 	
 	private Integer id_client;
@@ -26,6 +29,8 @@ public class Client {
 	private Integer card_number;
 	private String ccv;
 	
+	private Occupation occupation;
+	private Integer id_occupation;
 	public Integer getId_client() {
 		return id_client;
 	}
@@ -122,4 +127,21 @@ public class Client {
 	public void setCcv(String ccv) {
 		this.ccv = ccv;
 	}
+	public Occupation getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(Occupation occupation) {
+		this.occupation = occupation;
+	}
+	public Integer getId_occupation() {
+		return id_occupation;
+	}
+	public void setId_occupation(Integer id_occupation) {
+		this.id_occupation = id_occupation;
+	}
+
+	
+
+	
+	
 }
