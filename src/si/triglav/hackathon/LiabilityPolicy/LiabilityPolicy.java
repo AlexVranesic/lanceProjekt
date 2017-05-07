@@ -8,8 +8,8 @@ import si.triglav.hackathon.File.File;
 import si.triglav.hackathon.GearType.GearType;
 
 public class LiabilityPolicy {
-	
-	private Integer id_liability_claim;
+	Integer ID_policies_product;
+
 	private String description;
 	private Integer id_liability;
 	private Integer id_claim;
@@ -21,14 +21,13 @@ public class LiabilityPolicy {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date claim_date;
 
-	public Integer getId_liability_claim() {
-		return id_liability_claim;
+	public Integer getID_policies_product() {
+		return ID_policies_product;
 	}
 
-	public void setId_liability_claim(Integer id_liability_claim) {
-		this.id_liability_claim = id_liability_claim;
+	public void setID_policies_product(Integer iD_policies_product) {
+		ID_policies_product = iD_policies_product;
 	}
-
 	public String getDescription() {
 		return description;
 	}
