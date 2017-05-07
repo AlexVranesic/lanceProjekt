@@ -458,7 +458,7 @@ ALTER TABLE FREELANCE.SICKNESS_INSURANCE ADD CONSTRAINT sick_ins_team_FK FOREIGN
 	ON DELETE CASCADE;
 	
 	
-INSERT INTO FREELANCE.PRODUCT (ID_product, product) VALUES (1,'Policy product');
+INSERT INTO FREELANCE.PRODUCT (ID_product, product) VALUES (1,'Contracts product');
 INSERT INTO FREELANCE.PRODUCT (ID_product, product) VALUES (2,'Sick days product');
 INSERT INTO FREELANCE.PRODUCT (ID_product, product) VALUES (3,'Gear product');
 INSERT INTO FREELANCE.PRODUCT (ID_product, product) VALUES (4,'Liability product');
