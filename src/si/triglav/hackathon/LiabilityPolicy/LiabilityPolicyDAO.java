@@ -1,4 +1,4 @@
-package si.triglav.hackathon.LiabilityClaim;
+/*package si.triglav.hackathon.LiabilityPolicy;
 
 import java.util.Date;
 import java.util.List;
@@ -24,11 +24,11 @@ import si.triglav.hackathon.File.FileDAO;
 import si.triglav.hackathon.File.*;
 
 @Repository
-public class LiabilityClaimDAO {
+public class LiabilityPolicyDAO {
 
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String LIABILITY_CLAIM_COLUMN_LIST = "id_liability_claim, description, id_liability, id_claim, id_team, is_valid, claim_value, claim_date, returnAccountNumber";
+	private static final String LIABILITY_POLICY_COLUMN_LIST = "id_liability_claim, description, id_liability, id_claim, id_team, is_valid, claim_value, claim_date, returnAccountNumber";
 	private static final String TABLE_NAME = "FREELANCE.LIABILITY_CLAIM";
 	
 	@Autowired
@@ -61,7 +61,7 @@ public class LiabilityClaimDAO {
 		List<RepairService> repairServiceList = jdbcTemplate.query("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME, new BeanPropertyRowMapper<RepairService>(RepairService.class));
 		return repairServiceList;
 	}*/
-	
+/*	
 	public LiabilityClaim getLiabilityClaimById(Integer id, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
@@ -107,7 +107,7 @@ public class LiabilityClaimDAO {
 			"insert into "+TABLE_NAME+" (description, id_liability, id_claim, id_team, is_valid, claim_value, claim_date, returnAccountNumber) values (:description, :id_liability,  :id_claim, "+id_team+", :is_valid, :claim_value, :claim_date, :returnAccountNumber)",
 			new BeanPropertySqlParameterSource(liabilityClaim), generatedKeyHolder);
 	*/
-	
+	/*
 	public int deleteLiabilityClaim(Integer id_liability_claim, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		

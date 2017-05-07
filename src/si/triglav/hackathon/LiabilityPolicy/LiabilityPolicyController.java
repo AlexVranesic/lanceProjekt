@@ -1,4 +1,4 @@
-package si.triglav.hackathon.LiabilityClaim;
+/*package si.triglav.hackathon.LiabilityClaim;
 
 import java.net.URI;
 import java.util.List;
@@ -82,3 +82,4 @@ public class LiabilityClaimController {
 		return ResponseEntity.noContent().build();
 	}	
 }
+*/

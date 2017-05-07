@@ -1,4 +1,4 @@
-package si.triglav.hackathon.LiabilityPolicy;
+/*package si.triglav.hackathon.LiabilityPolicy;
 
 import java.util.Date;
 
