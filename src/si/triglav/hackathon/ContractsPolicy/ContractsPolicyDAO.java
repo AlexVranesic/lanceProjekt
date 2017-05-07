@@ -93,7 +93,7 @@ public class ContractsPolicyDAO {
 
 		int updatedRowsCount = jdbcTemplate.update(
 						 "UPDATE "+TABLE_NAME
-						+" SET  (date_from, date_to, ID_client, ID_team) = (:date_from, :date_to, :ID_client, :ID_team) "
+						+" SET  (date_from, date_to, ID_client) = (:date_from, :date_to, :ID_client) "
 						+" WHERE ID_policy_product = :ID_policy_product"
 						+" AND ID_team = :ID_team",
 						params);
