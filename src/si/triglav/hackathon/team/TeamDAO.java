@@ -13,8 +13,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import si.triglav.hackathon.person.Person;
-
 @Repository
 public class TeamDAO {
 
