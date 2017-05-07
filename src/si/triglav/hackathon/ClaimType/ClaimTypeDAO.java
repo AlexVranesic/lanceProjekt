@@ -71,9 +71,9 @@ public class ClaimTypeDAO {
 	
 	
 
-	public int updateClaimType(ClaimType claim_type) {
+	public int updateClaimType(ClaimType claim_type, Integer team_key) {
 		int updatedRowsCount = jdbcTemplate.update(
-				"update "+TABLE_NAME+" set (claim_type) = (:claim_type) where id_claim_type = :id_claim_type",
+				"update "+TABLE_NAME+" set (claim_type) = (:claim_type) where id_claim_type = :id_claim_type AND ID_team="+teamDAO.getTeamIdByKey(team_key),
 				new BeanPropertySqlParameterSource(claim_type));
 		return updatedRowsCount;
 		
