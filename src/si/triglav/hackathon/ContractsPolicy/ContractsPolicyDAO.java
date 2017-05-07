@@ -1,5 +1,6 @@
 package si.triglav.hackathon.ContractsPolicy;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -65,8 +66,22 @@ public class ContractsPolicyDAO {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
-		MapSqlParameterSource params = new MapSqlParameterSource("date_from", contractsPolicy.getDate_from());
-		params.addValue("date_to", contractsPolicy.getDate_to());
+		Date actualDateFrom;
+		Date actualDateTo;
+		//for some reason it substracts a day so we add it
+		if(contractsPolicy.getDate_from()!=null)
+			actualDateFrom = new Date(contractsPolicy.getDate_from().getTime()+(24*60*60*1000));
+		else
+			actualDateFrom = null;
+		
+		if(contractsPolicy.getDate_from()!=null)
+			actualDateTo = new Date(contractsPolicy.getDate_to().getTime()+(24*60*60*1000));
+		else
+			actualDateTo = null;
+		
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("date_from", actualDateFrom);
+		params.addValue("date_to", actualDateTo);
 		params.addValue("ID_client", id_client);
 		params.addValue("ID_team", id_team);
 		
@@ -84,20 +99,50 @@ public class ContractsPolicyDAO {
 	public int updateContractPolicy(Integer id_client, ContractsPolicy contractsPolicy, Integer team_key) {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
-
-		MapSqlParameterSource params = new MapSqlParameterSource("date_from", contractsPolicy.getDate_from());
-		params.addValue("date_to", contractsPolicy.getDate_to());
+		Date actualDateFrom;
+		Date actualDateTo;
+		//for some reason it substracts a day so we add it
+		if(contractsPolicy.getDate_from()!=null)
+			actualDateFrom = new Date(contractsPolicy.getDate_from().getTime()+(24*60*60*1000));
+		else
+			actualDateFrom = null;
+		
+		if(contractsPolicy.getDate_from()!=null)
+			actualDateTo = new Date(contractsPolicy.getDate_to().getTime()+(24*60*60*1000));
+		else
+			actualDateTo = null;
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("date_from", actualDateFrom);
+		params.addValue("date_to", actualDateTo);
 		params.addValue("ID_policy_product", contractsPolicy.getID_policy_product());
 		params.addValue("ID_client", id_client);
 		params.addValue("ID_team", id_team);
+		
+
 
 		int updatedRowsCount = jdbcTemplate.update(
 						 "UPDATE "+TABLE_NAME
-						+" SET  (date_from, date_to, ID_client) = (:date_from, :date_to, :ID_client) "
+						+" SET  (date_from, date_to) = (:date_from, :date_to) "
 						+" WHERE ID_policy_product = :ID_policy_product"
-						+" AND ID_team = :ID_team",
+						+" AND ID_team = :ID_team"
+						+" AND ID_client = :ID_client",
 						params);
 		return updatedRowsCount;
+	}
+	
+	public int deleteContractPolicy(Integer id_client, Integer ID_policy_product, Integer team_key) {
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("ID_policy_product", ID_policy_product);
+		params.addValue("ID_client", id_client);
+
+		
+		int deletedRows = jdbcTemplate.update(	"delete from "+TABLE_NAME
+											 +" where ID_policy_product = :ID_policy_product"
+											 +" AND ID_team = :id_team"
+											 +" AND ID_client = :ID_client", params);
+		return deletedRows;
 	}
 	
 }
