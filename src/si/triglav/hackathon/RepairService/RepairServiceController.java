@@ -26,7 +26,7 @@ public class RepairServiceController {
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.GET)
+	@RequestMapping( path="/repairservices/{id}/{team_key}", method=RequestMethod.GET)
 	public @ResponseBody RepairService getRepairServiceById(@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
 		return repairServiceDAO.getRepairServiceById(id, team_key);
@@ -49,7 +49,7 @@ public class RepairServiceController {
 			
 	}
 	
-	@RequestMapping( path="/repairservices/{team_key}/{id_repair_service}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/repairservices/{id_repair_service}/{team_key}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateRepairService(	@PathVariable(name="id_repair_service") Integer id_repair_service,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody RepairService repairService){
@@ -67,7 +67,7 @@ public class RepairServiceController {
 	
 
 	
-	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/repairservices/{id}/{team_key}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		
