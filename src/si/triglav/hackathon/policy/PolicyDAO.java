@@ -29,7 +29,7 @@ public class PolicyDAO {
 	
 	public Policy getPolicyById(Integer idPolicy) throws Exception {
 		MapSqlParameterSource params = new MapSqlParameterSource("id", idPolicy);
-		Policy policy = jdbcTemplate.queryForObject("select " + POLICY_COLUMN_LIST + " from schema.POLICY where id = :id", params, new BeanPropertyRowMapper<Policy>(Policy.class));
+		Policy policy = jdbcTemplate.queryForObject("select " + POLICY_COLUMN_LIST + " from FREELANCE.POLICY where id = :id", params, new BeanPropertyRowMapper<Policy>(Policy.class));
 		
 		if (policy == null)
 		{
@@ -47,7 +47,7 @@ public class PolicyDAO {
 	
 	public Policy getAllowedPolicyById(Integer idPolicy) throws Exception {
 		MapSqlParameterSource params = new MapSqlParameterSource("id", idPolicy);
-		Policy policy = jdbcTemplate.queryForObject("select " + POLICY_COLUMN_TEAM_LIST + " from schema.POLICY where id = :id", params, new BeanPropertyRowMapper<Policy>(Policy.class));
+		Policy policy = jdbcTemplate.queryForObject("select " + POLICY_COLUMN_TEAM_LIST + " from FREELANCE.POLICY where id = :id", params, new BeanPropertyRowMapper<Policy>(Policy.class));
 		
 		//Integer currentTeamId = null;
 		/* currentTeamId = KeyChecker.getTeamKey(); naceloma se bodo oni prijavili na bazo
