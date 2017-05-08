@@ -21,19 +21,30 @@ public class ContractController {
 	@Autowired
 	private ContractDAO contractDAO;
 	
-
-	@RequestMapping( path="/contracts/{team_key}", method=RequestMethod.GET)
-	public @ResponseBody List<Contract> getRepairServiceList(@PathVariable(name="team_key") Integer team_key){
-		return contractDAO.getContractList(team_key);
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts", method=RequestMethod.GET)
+	public @ResponseBody List<Contract> getRepairServiceList(	@PathVariable(name="id_client") Integer id_client,
+																@PathVariable(name="team_key") Integer team_key){
+		
+		return contractDAO.getContractList(team_key,id_client);
 	}
 	
-	@RequestMapping( path="/contracts/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	
+	//If using PathVariable, not all conversions are supported
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts/{id}", method=RequestMethod.GET)
+	public @ResponseBody Contract getClientsClientById(@PathVariable(name="id_client") Integer id_client,
+															@PathVariable(name="id") Integer id, 
+															@PathVariable(name="team_key") Integer team_key){
+		return contractDAO.getContractById(id, team_key);
+	}
+	
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createContract(	@RequestBody Contract contract, 
-													@PathVariable(name="team_key") Integer team_key){
+												@PathVariable(name="team_key") Integer team_key,
+												@PathVariable(name="id_client") Integer id_client){
 		
 		//optionally validate repairService
 		
-		Contract createdContract = contractDAO.createContract(contract, team_key); // this will set the id on the repairService object
+		Contract createdContract = contractDAO.createContract(team_key,id_client, contract); // this will set the id on the createdContract object
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
@@ -42,6 +53,20 @@ public class ContractController {
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
 			
+	}
+	
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> deleteClientsClient(	@PathVariable(name="id_client") Integer id_client,
+													@PathVariable(name="id") Integer id, 
+													@PathVariable(name="team_key") Integer team_key){
+		
+		int updatedRows = contractDAO.deleteContract(id, team_key);
+		
+		if(updatedRows == 0 ){
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.noContent().build();
 	}
 
 }
