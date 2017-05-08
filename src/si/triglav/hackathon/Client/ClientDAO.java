@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import si.triglav.hackathon.GearType.GearType;
 import si.triglav.hackathon.GearType.GearTypeDAO;
+import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
+import si.triglav.hackathon.MonthlyPayment.MonthlyPaymentDAO;
 import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.occupation.OccupationDAO;
 import si.triglav.hackathon.team.TeamDAO;
@@ -52,7 +54,7 @@ public class ClientDAO {
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String CLIENT_COLUMN_LIST = "id_client,email,name,surname,birth_date,is_fulltime,y_of_experience,annual_income,addressl1,addressl2,post,city,country,password,card_number,ccv,id_occupation,id_team";
+	private static final String CLIENT_COLUMN_LIST = "id_client,email,name,surname,birth_date,is_fulltime,y_of_experience,annual_income,addressl1,addressl2,post,city,country,password,card_number,ccv,id_occupation,id_team,id_payment";
 	private static final String TABLE_NAME = "FREELANCE.CLIENT";
 	
 	@Autowired
@@ -60,6 +62,9 @@ public class ClientDAO {
 	
 	@Autowired
 	private OccupationDAO occupationDAO;
+	
+	@Autowired
+	private MonthlyPaymentDAO monthlyPaymentDAO;
 	
 	@Autowired
 	public void init(DataSource dataSource) {
@@ -75,6 +80,9 @@ public class ClientDAO {
 		
 		for(Client client: clientList){
 			client.setOccupation(occupationDAO.getOccupationById(client.getId_occupation(), team_key));
+			
+			client.setMonthlyPayment(monthlyPaymentDAO.getMonthlyPaymentById(client.getId_payment(), team_key));
+			
 		}
 		
 		return clientList;

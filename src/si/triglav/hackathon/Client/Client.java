@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import si.triglav.hackathon.GearType.GearType;
 import si.triglav.hackathon.occupation.Occupation;
+import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
 
 public class Client {
 	
@@ -30,7 +31,23 @@ public class Client {
 	private String ccv;
 	
 	private Occupation occupation;
+	private MonthlyPayment monthlyPayment;
+	
 	private Integer id_occupation;
+	private Integer id_payment;
+	
+	public Integer getId_payment() {
+		return id_payment;
+	}
+	public void setId_payment(Integer id_payment) {
+		this.id_payment = id_payment;
+	}
+	public MonthlyPayment getMonthlyPayment() {
+		return monthlyPayment;
+	}
+	public void setMonthlyPayment(MonthlyPayment monthlyPayment) {
+		this.monthlyPayment = monthlyPayment;
+	}
 	public Integer getId_client() {
 		return id_client;
 	}
@@ -139,9 +156,4 @@ public class Client {
 	public void setId_occupation(Integer id_occupation) {
 		this.id_occupation = id_occupation;
 	}
-
-	
-
-	
-	
 }

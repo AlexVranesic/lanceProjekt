@@ -22,12 +22,20 @@ public class ClaimTypeController {
 	@Autowired
 	private ClaimTypeDAO claimTypeDAO;
 	
-	@RequestMapping( path="/claimtypes/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/claimtypes", method=RequestMethod.GET)
 	public @ResponseBody List<ClaimType> getClaimTypeList(@PathVariable(name="team_key") Integer team_key){
 		return claimTypeDAO.getClaimTypeList(team_key);
 	}
 	
-	@RequestMapping( path="/claimtypes/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	//If using PathVariable, not all conversions are supported
+		@RequestMapping( path="/{team_key}/claimtypes/{id}", method=RequestMethod.GET)
+		public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id")Integer id, 
+														@PathVariable(name="team_key") Integer team_key) throws Exception{
+		
+			return claimTypeDAO.getClaimTypeById(id, team_key);
+	}
+		
+	@RequestMapping( path="/{team_key}/claimtypes/", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createClaimType(	@RequestBody ClaimType calm_type,
 												@PathVariable(name="team_key") Integer team_key) throws Exception{
 		
@@ -42,15 +50,7 @@ public class ClaimTypeController {
 		return ResponseEntity.created(location).build();	
 	} 
 	
-	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/claimtypes/{team_key}/{id}", method=RequestMethod.GET)
-	public @ResponseBody ClaimType getClaimTypeById(@PathVariable(name="id")Integer id, 
-													@PathVariable(name="team_key") Integer team_key) throws Exception{
-	
-		return claimTypeDAO.getClaimTypeById(id, team_key);
-	}
-	
-	@RequestMapping( path="/claimtypes/{team_key}/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/claimtypes/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateClientsClient(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody ClaimType claim_type){

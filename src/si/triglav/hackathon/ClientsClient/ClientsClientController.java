@@ -21,19 +21,19 @@ public class ClientsClientController {
 	@Autowired
 	private ClientsClientDAO clientsClientDAO;
 
-	@RequestMapping( path="/clientsclients/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clientsclients", method=RequestMethod.GET)
 	public @ResponseBody List<ClientsClient> getClientsClientList(@PathVariable(name="team_key") Integer team_key){
 		return clientsClientDAO.getClientsClientList(team_key);
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/clientsclients/{team_key}/{id}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clientsclients/{id}", method=RequestMethod.GET)
 	public @ResponseBody ClientsClient getClientsClientById(@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
 		return clientsClientDAO.getClientsClientById(id, team_key);
 	}
 	
-	@RequestMapping( path="/clientsclients/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clientsclients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createClientsClient(	@RequestBody ClientsClient clientsClient, 
 													@PathVariable(name="team_key") Integer team_key){
 		
