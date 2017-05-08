@@ -14,14 +14,7 @@ public class Contract {
 	Integer is_paid;
 	Integer id_clients_client;
 	ClientsClient clients_client;
-	Integer id_policy_product;
 	
-	public Integer getiD_policy_product() {
-		return id_policy_product;
-	}
-	public void setiD_policy_product(Integer id_policy_product) {
-		this.id_policy_product = id_policy_product;
-	}
 	public Integer getId_contract() {
 		return id_contract;
 	}

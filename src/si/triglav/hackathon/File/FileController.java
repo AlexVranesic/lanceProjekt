@@ -48,22 +48,6 @@ public class FileController {
 		return ResponseEntity.created(location).build();
 			
 	}
-	/*
-	//create new GEAR_TYPE (npr. body: "gear_type": "computer")
-	@RequestMapping( path="/geartypes/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createGearType(@RequestBody GearType gearType, @PathVariable(name="team_key") Integer team_key){
-
-		GearType createdGearType = gearTypeDAO.createGearType(gearType,team_key); // this will set the id on the person object
-		
-		URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest().path("/{id_gear_type}")
-				.buildAndExpand(createdGearType.getId_gear_type()).toUri();
-
-		//by rest conventions we need to repond with the URI for newly created resource 
-		return ResponseEntity.created(location).build();
-			
-	}
-	*/
 	
 	//updateTeam(Team team)
 	@RequestMapping( path="/files/{team_key}/{id_file}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
