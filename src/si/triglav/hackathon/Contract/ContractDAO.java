@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import si.triglav.hackathon.ClientsClient.ClientsClientDAO;
+import si.triglav.hackathon.File.FileDAO;
 import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
@@ -20,6 +21,8 @@ public class ContractDAO {
 	@Autowired
 	private TeamDAO teamDAO;
 	
+	@Autowired
+	private FileDAO fileDAO;
 
 	@Autowired
 	private ClientsClientDAO clientsClientDAO;
@@ -43,6 +46,7 @@ public class ContractDAO {
 		Contract contract = jdbcTemplate.queryForObject("select "+CONTRACT_COLUMN_LIST+" from "+TABLE_NAME+" where ID_contract = :id_contract AND id_team= :id_team", params , new BeanPropertyRowMapper<Contract>(Contract.class));
 		
 		contract.setClients_client(clientsClientDAO.getClientsClientById(contract.getId_clients_client(), team_key));
+		contract.setFiles(fileDAO.getFileListFromIdContract(team_key, contract.getId_clients_client()));
 		
 		return contract;
 	}
@@ -93,6 +97,7 @@ public class ContractDAO {
 		
 		for(Contract contract: contractList){
 			contract.setClients_client(clientsClientDAO.getClientsClientById(contract.getId_clients_client(), team_key));
+			contract.setFiles(fileDAO.getFileListFromIdContract(team_key, contract.getId_clients_client()));
 		}
 		
 		return contractList;

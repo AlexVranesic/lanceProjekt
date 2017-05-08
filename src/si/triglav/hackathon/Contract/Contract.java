@@ -1,10 +1,11 @@
 package si.triglav.hackathon.Contract;
-
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import si.triglav.hackathon.ClientsClient.ClientsClient;
+import si.triglav.hackathon.File.File;
 
 public class Contract {
 	Integer id_contract;
@@ -15,6 +16,14 @@ public class Contract {
 	Integer id_clients_client;
 	ClientsClient clients_client;
 	
+	List<File> files;
+	
+	public List<File> getFiles() {
+		return files;
+	}
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
 	public Integer getId_contract() {
 		return id_contract;
 	}

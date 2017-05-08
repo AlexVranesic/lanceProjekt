@@ -12,8 +12,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
@@ -38,6 +36,16 @@ public class FileDAO {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
 		
 		List<File> fileList = jdbcTemplate.query("select " + FILE_COLUMN_LIST + " from " + TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<File>(File.class));
+		return fileList;
+	}
+	
+	public List<File> getFileListFromIdContract(Integer team_key, Integer id_contract) {
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_contract", id_contract);
+		
+		List<File> fileList = jdbcTemplate.query("select " + FILE_COLUMN_LIST + " from " + TABLE_NAME+" WHERE ID_contract= :id_contract AND id_team= :id_team", params, new BeanPropertyRowMapper<File>(File.class));
 		return fileList;
 	}
 	
