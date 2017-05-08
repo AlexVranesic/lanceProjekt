@@ -47,7 +47,7 @@ public class LiabilityClaimDAO {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
 
-		List<LiabilityClaim> liabilityClaimList = jdbcTemplate.query("select "+LIABILITY_CLAIM_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<LiabilityClaim>(LiabilityClaim.class));
+		List<LiabilityClaim> liabilityClaimList = jdbcTemplate.query("select "+LIABILITY_CLAIM_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team="+id_team, params, new BeanPropertyRowMapper<LiabilityClaim>(LiabilityClaim.class));
 		
 		for(LiabilityClaim liabilityClaim: liabilityClaimList){
 			liabilityClaim.setFile(fileDAO.getFileById(liabilityClaim.getFile().getId_file(), team_key));

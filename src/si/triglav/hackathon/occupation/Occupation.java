@@ -3,6 +3,9 @@ package si.triglav.hackathon.occupation;
 public class Occupation {
 	private Integer id_occupation;
 	private String occupation;
+	
+	
+	
 	public Integer getId_occupation() {
 		return id_occupation;
 	}
