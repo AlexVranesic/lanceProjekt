@@ -48,28 +48,36 @@ public class ContractDAO {
 		
 		return contract;
 	}
-	
-	public Contract createContract(Contract contract, Integer team_key) {
+
+	public Contract createContract(Integer team_key, Integer id_client, Integer id_policy_product, Contract contract) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("contract_value", contract.getContract_value());
+		params.addValue("payment_due_to", contract.getPayment_due_to());
+		params.addValue("is_paid", contract.getIs_paid());
+		params.addValue("ID_policy_product", id_policy_product);
+		params.addValue("id_clients_client", contract.getId_clients_client());
+		params.addValue("id_team", id_team);
 
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
 		jdbcTemplate.update(
 				"INSERT INTO "+TABLE_NAME+" (contract_value, payment_due_to, is_paid, ID_policy_product, ID_clients_client, ID_team) "
-						+ "VALUES (:contract_value, :payment_due_to, :is_paid, :ID_policy_product, :id_clients_client, "+id_team+")",
-				new BeanPropertySqlParameterSource(contract), generatedKeyHolder);
+						+ "VALUES (:contract_value, :payment_due_to, :is_paid, :ID_policy_product, :id_clients_client, :id_team)",
+						params, generatedKeyHolder);
 		
 		Contract createdContract = getContractById(generatedKeyHolder.getKey().intValue(), team_key);
 		return createdContract;
 	}
 	
 	
-	public List<Contract> getContractList(Integer team_key) {
+	public List<Contract> getContractList(Integer team_key,Integer id_client,Integer id_policy_product) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_policy_product", id_policy_product);
 
-		List<Contract> contractList = jdbcTemplate.query("SELECT "+CONTRACT_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<Contract>(Contract.class));
+		List<Contract> contractList = jdbcTemplate.query("SELECT "+CONTRACT_COLUMN_LIST+" from "+TABLE_NAME+" WHERE ID_policy_product = :id_policy_product AND id_team= :id_team ", params, new BeanPropertyRowMapper<Contract>(Contract.class));
 		
 		for(Contract contract: contractList){
 			contract.setClients_client(clientsClientDAO.getClientsClientById(contract.getId_clients_client(), team_key));

@@ -22,18 +22,22 @@ public class ContractController {
 	private ContractDAO contractDAO;
 	
 
-	@RequestMapping( path="/contracts/{team_key}", method=RequestMethod.GET)
-	public @ResponseBody List<Contract> getRepairServiceList(@PathVariable(name="team_key") Integer team_key){
-		return contractDAO.getContractList(team_key);
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicies/{id_policy_product}/contracts", method=RequestMethod.GET)
+	public @ResponseBody List<Contract> getRepairServiceList(	@PathVariable(name="id_client") Integer id_client,
+																@PathVariable(name="id_policy_product") Integer id_policy_product, 
+																@PathVariable(name="team_key") Integer team_key){
+		return contractDAO.getContractList(team_key,id_client,id_policy_product);
 	}
 	
-	@RequestMapping( path="/contracts/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicies/{id_policy_product}/contracts", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createContract(	@RequestBody Contract contract, 
-													@PathVariable(name="team_key") Integer team_key){
+												@PathVariable(name="team_key") Integer team_key,
+												@PathVariable(name="id_client") Integer id_client,
+												@PathVariable(name="id_policy_product") Integer id_policy_product){
 		
 		//optionally validate repairService
 		
-		Contract createdContract = contractDAO.createContract(contract, team_key); // this will set the id on the repairService object
+		Contract createdContract = contractDAO.createContract(team_key,id_client,id_policy_product, contract); // this will set the id on the createdContract object
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")

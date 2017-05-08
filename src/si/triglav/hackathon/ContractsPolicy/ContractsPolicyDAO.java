@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import si.triglav.hackathon.Contract.Contract;
+import si.triglav.hackathon.Contract.ContractDAO;
 import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.team.TeamDAO;
 
@@ -23,6 +24,10 @@ public class ContractsPolicyDAO {
 
 	@Autowired
 	private TeamDAO teamDAO;
+	
+	@Autowired
+	private ContractDAO contractDAO;
+	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	private static final String CONTRACT_COLUMN_LIST = "ID_policy_product,date_from,date_to";
@@ -42,8 +47,8 @@ public class ContractsPolicyDAO {
 
 		List<ContractsPolicy> contractsPolicyList = jdbcTemplate.query("select "+CONTRACT_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<ContractsPolicy>(ContractsPolicy.class));
 		
-		for(ContractsPolicy repairService: contractsPolicyList){
-			//repairService.setGear_type(gearTypeDAO.getGearTypeById(repairService.getId_gear_type(), team_key));
+		for(ContractsPolicy contractsPolicy: contractsPolicyList){
+			contractsPolicy.setContracts(contractDAO.getContractList(team_key, id_client, contractsPolicy.getID_policy_product()));
 		}
 		
 		return contractsPolicyList;
@@ -57,7 +62,9 @@ public class ContractsPolicyDAO {
 		params.addValue("id_client", id_client);
 
 		ContractsPolicy contractsPolicy = jdbcTemplate.queryForObject("select "+CONTRACT_COLUMN_LIST+" from "+TABLE_NAME+" where ID_policy_product = :ID_policy_product AND id_client=:id_client AND id_team= :id_team", params , new BeanPropertyRowMapper<ContractsPolicy>(ContractsPolicy.class));
-				
+		
+		contractsPolicy.setContracts(contractDAO.getContractList(team_key, id_client, contractsPolicy.getID_policy_product()));
+
 		return contractsPolicy;
 	}
 	

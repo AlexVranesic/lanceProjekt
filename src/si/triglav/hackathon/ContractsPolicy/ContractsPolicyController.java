@@ -43,7 +43,6 @@ public class ContractsPolicyController {
 													@RequestBody ContractsPolicy contractsPolicy){
 		
 		//optionally validate repairService
-		
 		ContractsPolicy createdContractsPolicy = contractsPolicyDAO.createContractPolicy(id_client, contractsPolicy, team_key); // this will set the id on the repairService object
 		
 		URI location = ServletUriComponentsBuilder
@@ -52,7 +51,7 @@ public class ContractsPolicyController {
 
 		//by rest conventions we need to repond with the URI for newly created resource 
 		return ResponseEntity.created(location).build();
-			
+		
 	}
 	
 	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicies/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
