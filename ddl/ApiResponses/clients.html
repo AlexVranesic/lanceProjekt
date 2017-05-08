@@ -1,0 +1,146 @@
+
+<html>
+<head></head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> data = [{ 
+	"id_client": 1,
+	"email": "ana@gmail.com",
+	"name": "Ana",
+	"surname": "Bond",
+	"birth_date": "1990-04-16",
+	"is_fulltime": 1,
+	"y_of_experience": 4,
+	"annual_income": 40000.00,
+	"addressl1": "Vienna street 5",
+	"addressl2": "",
+	"post": 24163,
+	"city": "Graz",
+	"country": "Austria",
+	"password": "password",
+	"card_number": 1960509,
+	"ccv": "435",
+	"occupation": { 
+		"id_occupation": 1,
+		"occupation": "programmer" 
+	},
+	"id_occupation": 1,
+	"contracts_policy":{ 
+		"date_from": "2017-01-29",
+		"date_to": null,
+		"contracts":[{
+			"id_contract": 1,
+			"contract_value": 2123.36,
+			"payment_due_to": "2017-04-30",
+			"is_paid": 0,
+			"id_clients_client": 1,
+			"clients_client": {
+				"id_clients_client": 1,
+				"name": "My favorite client",
+				"tax_id": "12-34-423423-432",
+				"risk_contract_percent": 0.02,
+				"files": [{
+					"id_file":1,
+					"path":"contracts/contract_img_0001.jpg"
+				}]
+            }
+		}]
+	},
+	"gear_policy":	{
+		"date_from": "2017-01-29",
+		"date_to": null,
+		"gear_list":[{
+			"id_gear":1,
+			"gear_value":2343.12,
+			"date_of_purcase":"2016-05-10",
+			"premium_price": 10.00,
+			"id_gear_type":1,
+			"gear_type":{ 
+				"id_gear":1,
+				"gear_type":"computer"
+			},
+			"files": [{
+				"id_file":2,
+				"path":"gear/gear_0001.jpg"
+			}],
+			"gear_claims":[{
+				"event_description":"Computer fell from my hands to the ground when I putting it in the bag.",
+				"event_date":"2017-04-29",
+				"id_gear_claim":1,
+				"return_account_number":"AT243242543232",
+				"claim_date":"2017-04-30",
+				"claim_value":500,
+				"claim_is_valid":1,
+				"id_claim_type":1,
+				"claim_type":{
+					"id_claim_type":1, 
+					"claim_type":"damaged"
+				},
+				"files": [{
+					"id_file":3,
+					"path":"gear/gear_0002.jpg"
+				}],
+				"repair_service":{
+					"id_repair_service":1,
+					"name":"iService",
+					"address":"The main road 1, 20432 Vienna",
+					"id_gear_type":1,
+					"gear_type":{	"id_gear_type":1,
+						"gear_type":"computer"}
+				}
+			}]
+		}],
+	},
+	"liability_policy":{
+		"date_from": "2017-01-29",
+		"date_to": null,
+		"premium_price":5.60,
+		"max_claim_value":250000.00,
+		"liablilty_claims":[{
+			"id_liability_claim":1,
+			"description":"My code didnt work and the webstore had lost a day worth of business.",
+			"return_account_number":"AT243242543232",
+			"claim_date":"2017-04-30",
+			"claim_value":500.00,
+			"claim_is_valid":1,
+			"files": [{
+				"id_file":4,
+				"path":"liability/liability_0001.jpg"
+			}]
+		}]
+	},
+	"sick_days_policy":{
+		"date_from": "2017-01-29",
+		"date_to": null,
+		"premium_price":60.00,
+		"daily_compensation":200.00,
+		"sick_days_claims":[{
+			"id_sick_days_claim":1,
+			"date_from": "2017-03-10",
+			"date_to": "2017-03-15",
+			"claim_is_valid":1,
+			"claim_value":300.00,
+			"return_account_number":"AT243242543232",
+			"claim_date":"2017-04-30",
+			"files": [{
+				"id_file":5,
+				"path":"sick_days/doctors_note_0001.jpg"
+			}]
+		}]
+	},
+	"monthly_payments":[
+		{"payment_date":"2017-03-01",
+			"payment_value":105.60},
+		{"payment_date":"2017-04-01",
+			"payment_value":75.60},
+		{"payment_date":"2017-05-01",
+			"payment_value":75.60}
+	]
+}];
+
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>
