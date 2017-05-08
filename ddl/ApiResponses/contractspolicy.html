@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>ClaimTypes</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = { 
+            "date_from": "2017-01-29",
+            "date_to": null,
+            "contracts":[{
+                "id_contract": 1,
+                "contract_value": 2123.36,
+                "payment_due_to": "2017-04-30",
+                "is_paid": 0,
+                "id_clients_client": 1,
+                "clients_client": {
+                    "id_clients_client": 1,
+                    "name": "My favorite client",
+                    "tax_id": "12-34-423423-432",
+                    "risk_contract_percent": 0.02,
+                    "files": [{
+                        "id_file":1,
+                        "path":"contracts/contract_img_0001.jpg"
+                    }]
+                }
+            }]
+        };
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>

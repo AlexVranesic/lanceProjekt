@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>ClaimTypes</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = {
+            "id_clients_client": 1,
+            "name": "My favorite client",
+            "tax_id": "12-34-423423-432",
+            "risk_contract_percent": 0.02,
+            "files": [{
+                "id_file":1,
+                "path":"contracts/contract_img_0001.jpg"
+            }]
+        };
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>

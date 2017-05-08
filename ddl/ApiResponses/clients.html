@@ -1,10 +1,9 @@
+
 <html>
-<head>
-	<title>Clients</title>
-</head>
+<head></head>
 <body>
 <pre id="json"></pre>
-<script type="text/javascript"> data = { 
+<script type="text/javascript"> data = [{ 
 	"id_client": 1,
 	"email": "ana@gmail.com",
 	"name": "Ana",
@@ -137,7 +136,7 @@
 		{"payment_date":"2017-05-01",
 			"payment_value":75.60}
 	]
-};
+}];
 
 document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
 </script>

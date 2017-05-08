@@ -1,0 +1,32 @@
+
+<html>
+<head>
+    <title>ClaimTypes</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = [
+    {
+        "id_claim_type":1, 
+        "claim_type":"damaged"
+    },
+    {
+        "id_claim_type":2, 
+        "claim_type":"broken"
+    },
+    {
+        "id_claim_type":3, 
+        "claim_type":"unrepairable damage"
+    },
+    {
+        "id_claim_type":4, 
+        "claim_type":"stolen"
+    }
+];
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>
