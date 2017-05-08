@@ -5,7 +5,6 @@ public class Occupation {
 	private String occupation;
 	
 	
-	
 	public Integer getId_occupation() {
 		return id_occupation;
 	}

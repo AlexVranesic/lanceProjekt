@@ -1,4 +1,4 @@
-/*package si.triglav.hackathon.MonthlyPayment;
+package si.triglav.hackathon.MonthlyPayment;
 
 import java.util.Date;
 
@@ -7,12 +7,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class MonthlyPayment {
 	
 	private Integer id_payment;
+	private Double payment_value;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date payment_date;
 	
-	private Double payment_value;
-
 	public Integer getId_payment() {
 		return id_payment;
 	}
