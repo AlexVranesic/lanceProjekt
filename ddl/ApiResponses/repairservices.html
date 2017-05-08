@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>RepairServices</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = [{
+					"id_repair_service":1,
+					"name":"iService",
+					"address":"The main road 1, 20432 Vienna",
+					"id_gear_type":1,
+					"gear_type":{	"id_gear_type":1,
+						"gear_type":"computer"}
+				}];
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>

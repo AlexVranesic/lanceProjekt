@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>Occupations</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = { 
+		"id_occupation": 1,
+		"occupation": "programmer" 
+	},
+    { 
+		"id_occupation": 2,
+		"occupation": "designer" 
+	},
+    { 
+		"id_occupation": 3,
+		"occupation": "photographer" 
+	};
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>

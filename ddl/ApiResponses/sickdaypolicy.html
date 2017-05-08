@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>SickDayPolicy</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = {
+		"date_from": "2017-01-29",
+		"date_to": null,
+		"premium_price":60.00,
+		"daily_compensation":200.00,
+		"sick_days_claims":[{
+			"id_sick_days_claim":1,
+			"date_from": "2017-03-10",
+			"date_to": "2017-03-15",
+			"claim_is_valid":1,
+			"claim_value":300.00,
+			"return_account_number":"AT243242543232",
+			"claim_date":"2017-04-30",
+			"files": [{
+				"id_file":5,
+				"path":"sick_days/doctors_note_0001.jpg"
+			}]
+		}]
+	};
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>

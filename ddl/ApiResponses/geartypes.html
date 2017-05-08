@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>GearTypes</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = [{ 
+            "id_gear":1,
+            "gear_type":"Computer"
+},
+       { 
+            "id_gear":2,
+            "gear_type":"Camera"
+},
+       { 
+            "id_gear":3,
+            "gear_type":"Drone"
+}];
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>

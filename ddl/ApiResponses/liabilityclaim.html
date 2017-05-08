@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>LiabilityClaim</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = {
+			"id_liability_claim":1,
+			"description":"My code didnt work and the webstore had lost a day worth of business.",
+			"return_account_number":"AT243242543232",
+			"claim_date":"2017-04-30",
+			"claim_value":500.00,
+			"claim_is_valid":1,
+			"files": [{
+				"id_file":4,
+				"path":"liability/liability_0001.jpg"
+			}]
+		};
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>

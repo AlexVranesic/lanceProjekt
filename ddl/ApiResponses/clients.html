@@ -1,6 +1,8 @@
 
 <html>
-<head></head>
+    <head>
+        <title>Clients</title>
+    </head>
 <body>
 <pre id="json"></pre>
 <script type="text/javascript"> data = [{ 
@@ -85,8 +87,8 @@
 					"name":"iService",
 					"address":"The main road 1, 20432 Vienna",
 					"id_gear_type":1,
-					"gear_type":{	"id_gear_type":1,
-						"gear_type":"computer"}
+					"gear_type":{ "id_gear_type":1,
+						          "gear_type":"computer"}
 				}
 			}]
 		}],
@@ -129,11 +131,14 @@
 		}]
 	},
 	"monthly_payments":[
-		{"payment_date":"2017-03-01",
+		{   "id_monthly_payment":1,
+            "payment_date":"2017-03-01",
 			"payment_value":105.60},
-		{"payment_date":"2017-04-01",
+		{    "id_monthly_payment":2,
+            "payment_date":"2017-04-01",
 			"payment_value":75.60},
-		{"payment_date":"2017-05-01",
+		{   "id_monthly_payment":3,
+            "payment_date":"2017-05-01",
 			"payment_value":75.60}
 	]
 }];
