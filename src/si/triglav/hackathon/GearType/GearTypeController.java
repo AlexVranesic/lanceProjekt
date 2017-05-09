@@ -22,20 +22,20 @@ public class GearTypeController {
 	private GearTypeDAO gearTypeDAO;
 	
 	//list all gear_types
-	@RequestMapping( path="/geartypes/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/geartypes", method=RequestMethod.GET)
 	public @ResponseBody List<GearType> getGearTypeList(@PathVariable(name="team_key") Integer team_key){
 		return gearTypeDAO.getGearTypeList(team_key);
 	}
 
 	//Find specific GearType with ID
-	@RequestMapping( path="/geartypes/{team_key}/{id_gear_type}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/geartypes/{id_gear_type}", method=RequestMethod.GET)
 	public @ResponseBody GearType getTeamNameById(@PathVariable(name="id_gear_type") Integer id_gear_type, @PathVariable(name="team_key") Integer team_key){
 		return gearTypeDAO.getGearTypeById(id_gear_type,team_key);
 	}
 	
 	
 	//create new GEAR_TYPE (npr. body: "gear_type": "computer")
-	@RequestMapping( path="/geartypes/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/geartypes", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createGearType(@RequestBody GearType gearType, @PathVariable(name="team_key") Integer team_key){
 
 		GearType createdGearType = gearTypeDAO.createGearType(gearType,team_key); // this will set the id on the person object
@@ -51,7 +51,7 @@ public class GearTypeController {
 	
 	
 	//updateTeam(Team team)
-	@RequestMapping( path="/geartypes/{team_key}/{id_gear_type}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/geartypes/{id_gear_type}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateTeam(@PathVariable(name="team_key") Integer team_key, @PathVariable(name="id_gear_type") Integer id_gear_type, @RequestBody GearType gearType){
 		gearType.setId_gear_type(id_gear_type);
 		
@@ -66,7 +66,7 @@ public class GearTypeController {
 	}
 	
 	
-	@RequestMapping( path="/geartypes/{team_key}/{id_gear_type}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/{team_key}/geartypes/{id_gear_type}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteGearType(@PathVariable(name="id_gear_type") Integer id_gear_type, 
 											@PathVariable(name="team_key") Integer team_key){
 		

@@ -24,20 +24,20 @@ public class OccupationController {
 	@Autowired
 	private OccupationDAO occupationDAO;
 	
-	@RequestMapping( path="/occupations/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/occupations", method=RequestMethod.GET)
 	public @ResponseBody List<Occupation> getRepairServiceList(@PathVariable(name="team_key") Integer team_key){
 		return occupationDAO.getOccupationList(team_key);
 	}
 		
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/occupations/{team_key}/{id}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/occupations/{id}", method=RequestMethod.GET)
 	public @ResponseBody Occupation getOccupationById(@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
 		return occupationDAO.getOccupationById(id, team_key);
 		
 	}
 	
-	@RequestMapping( path="/occupations/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/occupations", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createOccupation(	@RequestBody Occupation occupation, 
 													@PathVariable(name="team_key") Integer team_key){
 		
@@ -53,7 +53,7 @@ public class OccupationController {
 			
 	}
 	
-	@RequestMapping( path="/occupations/{team_key}/{id_occupation}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/occupations/{id_occupation}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateOccupation(	@PathVariable(name="id_occupation") Integer id_occupation,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody Occupation occupation){
@@ -73,7 +73,7 @@ public class OccupationController {
 	
 	
 	
-	@RequestMapping( path="/occupations/{team_key}/{id}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/{team_key}/occupations/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		

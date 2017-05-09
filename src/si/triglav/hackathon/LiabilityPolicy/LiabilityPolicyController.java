@@ -23,7 +23,7 @@ public class LiabilityClaimController {
 	@Autowired
 	private LiabilityClaimDAO liabilityClaimDAO;
 
-	@RequestMapping( path="/liabilityclaims/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/liabilityclaims", method=RequestMethod.GET)
 	public @ResponseBody List<LiabilityClaim> getLiabilityClaimList(@PathVariable(name="team_key") Integer team_key){
 		return liabilityClaimDAO.getLiabilityClaimList(team_key);
 	}

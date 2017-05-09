@@ -23,19 +23,19 @@ public class LiabilityClaimController {
 	@Autowired
 	private LiabilityClaimDAO liabilityClaimDAO;
 
-	@RequestMapping( path="/liabilityclaims/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/liabilityclaims", method=RequestMethod.GET)
 	public @ResponseBody List<LiabilityClaim> getLiabilityClaimList(@PathVariable(name="team_key") Integer team_key){
 		return liabilityClaimDAO.getLiabilityClaimList(team_key);
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/liabilityclaims/{team_key}/{id}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/liabilityclaims/{id}", method=RequestMethod.GET)
 	public @ResponseBody LiabilityClaim getLiabilityClaimById(@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
 		return liabilityClaimDAO.getLiabilityClaimById(id, team_key);
 	}
 	
-	@RequestMapping( path="/liabilityclaims/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/liabilityclaims", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createLiabilityClaim(	@RequestBody LiabilityClaim liabilityClaim, 
 													@PathVariable(name="team_key") Integer team_key){
 		
@@ -53,7 +53,7 @@ public class LiabilityClaimController {
 			
 	}
 	
-	@RequestMapping( path="/liabilityclaims/{team_key}/{id_liability_claim}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/liabilityclaims/{id_liability_claim}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateLiabilityClaim(	@PathVariable(name="id_liability_claim") Integer id_liability_claim,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody LiabilityClaim liabilityClaim){	
@@ -69,7 +69,7 @@ public class LiabilityClaimController {
 		
 	}
 
-	@RequestMapping( path="/liabilityclaims/{team_key}/{id}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/{team_key}/liabilityclaims/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		
