@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>GearClaim</title>
+</head>
+<body>
+<pre id="json"></pre>
+<script type="text/javascript"> 
+data = {
+				"event_description":"Computer fell from my hands to the ground when I putting it in the bag.",
+				"event_date":"2017-04-29",
+				"id_gear_claim":1,
+				"return_account_number":"AT243242543232",
+				"claim_date":"2017-04-30",
+				"claim_value":500,
+				"claim_is_valid":1,
+				"id_claim_type":1,
+				"claim_type":{
+					"id_claim_type":1, 
+					"claim_type":"damaged"
+				},
+				"files": [{
+					"id_file":3,
+					"path":"gear/gear_0002.jpg"
+				}],
+				"repair_service":{
+					"id_repair_service":1,
+					"name":"iService",
+					"address":"The main road 1, 20432 Vienna",
+					"id_gear_type":1,
+					"gear_type":{ "id_gear_type":1,
+						          "gear_type":"computer"}
+				}
+			};
+document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+</script>
+
+
+</body>
+</html>
