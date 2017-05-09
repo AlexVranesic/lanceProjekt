@@ -49,6 +49,12 @@ public class ClientDAO {
 	private String password;
 	private Integer card_number;
 	private String ccv;
+	
+	private Occupation occupation;
+	private MonthlyPayment monthlyPayment;
+	
+	private Integer id_occupation;
+	private Integer id_payment;
 	 * 
 	 */
 	
@@ -81,8 +87,8 @@ public class ClientDAO {
 		for(Client client: clientList){
 			client.setOccupation(occupationDAO.getOccupationById(client.getId_occupation(), team_key));
 			
-			client.setMonthlyPayment(monthlyPaymentDAO.getMonthlyPaymentById(client.getId_payment(), team_key));
-			
+			client.setMonthlyPayment(monthlyPaymentDAO.getMonthlyPaymentById(client.getId_payment(),client.getId_client() ,team_key));
+			//public MonthlyPayment getMonthlyPaymentById(Integer ID_payment, Integer id_client, Integer team_key) {
 		}
 		
 		return clientList;
