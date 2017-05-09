@@ -60,7 +60,7 @@ CREATE TABLE FREELANCE.CLIENT (
 		card_number VARCHAR(70), 
 		ccv VARCHAR(30), 
 		ID_occupation INTEGER NOT NULL,
-		ID_payment INTEGER NOT NULL,
+		ID_payment INTEGER,
   		ID_team INTEGER NOT NULL
 	)
 	DATA CAPTURE NONE 
