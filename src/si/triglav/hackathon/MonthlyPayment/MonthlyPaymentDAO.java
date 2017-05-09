@@ -42,12 +42,15 @@ public class MonthlyPaymentDAO {
 	
 	//this method allows occupation to be viewed by all
 	
-	public List<MonthlyPayment> getMonthlyPaymentList(Integer team_key) {
+	public List<MonthlyPayment> getMonthlyPaymentList(Integer id_client, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
 
-		List<MonthlyPayment> monthlyPaymentList = jdbcTemplate.query("select "+MONTHLY_PAYMENTY_COLUMN_TEAM_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team" , params, new BeanPropertyRowMapper<MonthlyPayment>(MonthlyPayment.class));
+		params.addValue("id_client", id_client);
+		
+		
+		List<MonthlyPayment> monthlyPaymentList = jdbcTemplate.query("select "+MONTHLY_PAYMENTY_COLUMN_TEAM_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team AND id_client= :id_client" , params, new BeanPropertyRowMapper<MonthlyPayment>(MonthlyPayment.class));
 		return monthlyPaymentList;
 	}
 	 

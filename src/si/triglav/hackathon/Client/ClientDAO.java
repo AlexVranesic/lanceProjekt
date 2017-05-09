@@ -60,7 +60,7 @@ public class ClientDAO {
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String CLIENT_COLUMN_LIST = "id_client,email,name,surname,birth_date,is_fulltime,y_of_experience,annual_income,addressl1,addressl2,post,city,country,password,card_number,ccv,id_occupation,id_team,id_payment";
+	private static final String CLIENT_COLUMN_LIST = "id_client,email,name,surname,birth_date,is_fulltime,y_of_experience,annual_income,addressl1,addressl2,post,city,country,password,card_number,ccv,id_occupation,id_team";
 	private static final String TABLE_NAME = "FREELANCE.CLIENT";
 	
 	@Autowired
@@ -87,8 +87,11 @@ public class ClientDAO {
 		for(Client client: clientList){
 			client.setOccupation(occupationDAO.getOccupationById(client.getId_occupation(), team_key));
 			
-			client.setMonthlyPayment(monthlyPaymentDAO.getMonthlyPaymentById(client.getId_payment(),client.getId_client() ,team_key));
+			client.setMonthlyPayments(monthlyPaymentDAO.getMonthlyPaymentList(client.getId_client() ,team_key));
 			//public MonthlyPayment getMonthlyPaymentById(Integer ID_payment, Integer id_client, Integer team_key) {
+		
+		
+		
 		}
 		
 		return clientList;
@@ -103,6 +106,7 @@ public class ClientDAO {
 		Client client = jdbcTemplate.queryForObject("select "+CLIENT_COLUMN_LIST+" from "+ TABLE_NAME + " where id_client = :id_client AND id_team= :id_team", params , new BeanPropertyRowMapper<Client>(Client.class));
 		
 		client.setOccupation(occupationDAO.getOccupationById(client.getId_occupation(), team_key));
+		client.setMonthlyPayments(monthlyPaymentDAO.getMonthlyPaymentList(client.getId_client() ,team_key));
 		
 		return client;
 	}

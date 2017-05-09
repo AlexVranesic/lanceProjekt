@@ -35,7 +35,7 @@ public class ClientController {
 		return clientDAO.getClientById(id_client, team_key);
 	}
 	
-	@RequestMapping( path="/{team_key}/clients/", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clients", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createClient(	@RequestBody Client client, 
 											@PathVariable(name="team_key") Integer team_key){
 		

@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import si.triglav.hackathon.Contract.Contract;
-import si.triglav.hackathon.GearType.GearType;
 import si.triglav.hackathon.occupation.Occupation;
 import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
 
@@ -25,18 +23,17 @@ public class Client {
 	private Integer annual_income;
 	private String addressl1;
 	private String addressl2;
-	private Integer post;
+	private String post;
 	private String city;
 	private String country;
 	private String password;
-	private Integer card_number;
+	private String card_number;
 	private String ccv;
 	
 	private Occupation occupation;
 	private MonthlyPayment monthlyPayment;
 	
 	private Integer id_occupation;
-	private Integer id_payment;
 	
 	List<MonthlyPayment> monthlyPayments;
 
@@ -120,11 +117,11 @@ public class Client {
 		this.addressl2 = addressl2;
 	}
 
-	public Integer getPost() {
+	public String getPost() {
 		return post;
 	}
 
-	public void setPost(Integer post) {
+	public void setPost(String post) {
 		this.post = post;
 	}
 
@@ -152,11 +149,11 @@ public class Client {
 		this.password = password;
 	}
 
-	public Integer getCard_number() {
+	public String getCard_number() {
 		return card_number;
 	}
 
-	public void setCard_number(Integer card_number) {
+	public void setCard_number(String card_number) {
 		this.card_number = card_number;
 	}
 
@@ -191,15 +188,6 @@ public class Client {
 	public void setId_occupation(Integer id_occupation) {
 		this.id_occupation = id_occupation;
 	}
-
-	public Integer getId_payment() {
-		return id_payment;
-	}
-
-	public void setId_payment(Integer id_payment) {
-		this.id_payment = id_payment;
-	}
-
 	public List<MonthlyPayment> getMonthlyPayments() {
 		return monthlyPayments;
 	}
@@ -207,6 +195,4 @@ public class Client {
 	public void setMonthlyPayments(List<MonthlyPayment> monthlyPayments) {
 		this.monthlyPayments = monthlyPayments;
 	}
-	
-	
 }
