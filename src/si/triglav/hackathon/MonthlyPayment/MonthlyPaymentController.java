@@ -24,9 +24,10 @@ public class MonthlyPaymentController {
 	@Autowired
 	private MonthlyPaymentDAO monthlyPaymentDAO;
 	
-	@RequestMapping( path="/{team_key}/monthlypayments", method=RequestMethod.GET)
-	public @ResponseBody List<MonthlyPayment> getRepairServiceList(@PathVariable(name="team_key") Integer team_key){
-		return monthlyPaymentDAO.getMonthlyPaymentList(team_key);
+	@RequestMapping( path="/{team_key}/clients/{id_client}/monthlypayments", method=RequestMethod.GET)
+	public @ResponseBody List<MonthlyPayment> getRepairServiceList(@PathVariable(name="id_client") Integer id_client,
+																  @PathVariable(name="team_key") Integer team_key){
+		return monthlyPaymentDAO.getMonthlyPaymentList(id_client, team_key);
 	}
 		
 	@RequestMapping( path="/{team_key}/clients/{id_client}/monthlypayments/{id_payment}", method=RequestMethod.GET)
