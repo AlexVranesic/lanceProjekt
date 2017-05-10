@@ -1,11 +1,11 @@
 package si.triglav.hackathon.Client;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,49 +14,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-import si.triglav.hackathon.GearType.GearType;
-import si.triglav.hackathon.GearType.GearTypeDAO;
-import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
+import si.triglav.hackathon.ContractsPolicy.ContractsPolicyDAO;
 import si.triglav.hackathon.MonthlyPayment.MonthlyPaymentDAO;
-import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.occupation.OccupationDAO;
 import si.triglav.hackathon.team.TeamDAO;
-import si.triglav.hackathon.occupation.Occupation;
 
 @Repository
 public class ClientDAO {
-
-	/*
-	 * 
-	private Integer id_client;
-	private String email;
-	private String name;
-	private String surname;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private Date birth_date;
-	
-	private Integer is_fulltime;
-	private Integer y_of_experience;
-	private Integer annual_income;
-	private String addressl1;
-	private String addressl2;
-	private Integer post;
-	private String city;
-	private String country;
-	private String password;
-	private Integer card_number;
-	private String ccv;
-	
-	private Occupation occupation;
-	private MonthlyPayment monthlyPayment;
-	
-	private Integer id_occupation;
-	private Integer id_payment;
-	 * 
-	 */
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -73,6 +38,9 @@ public class ClientDAO {
 	private MonthlyPaymentDAO monthlyPaymentDAO;
 	
 	@Autowired
+	private ContractsPolicyDAO contractsPolicyDAO;
+	
+	@Autowired
 	public void init(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
@@ -86,12 +54,8 @@ public class ClientDAO {
 		
 		for(Client client: clientList){
 			client.setOccupation(occupationDAO.getOccupationById(client.getId_occupation(), team_key));
-			
 			client.setMonthlyPayments(monthlyPaymentDAO.getMonthlyPaymentList(client.getId_client() ,team_key));
-			//public MonthlyPayment getMonthlyPaymentById(Integer ID_payment, Integer id_client, Integer team_key) {
-		
-		
-		
+			client.setContractsPolicy(contractsPolicyDAO.getContractsPolicy(client.getId_client(), team_key));
 		}
 		
 		return clientList;
@@ -103,10 +67,18 @@ public class ClientDAO {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_client", id_client);
 		params.addValue("id_team", id_team);
 		
-		Client client = jdbcTemplate.queryForObject("select "+CLIENT_COLUMN_LIST+" from "+ TABLE_NAME + " where id_client = :id_client AND id_team= :id_team", params , new BeanPropertyRowMapper<Client>(Client.class));
+		Client client;
+		
+		try{
+			client = jdbcTemplate.queryForObject("select "+CLIENT_COLUMN_LIST+" from "+ TABLE_NAME + " where id_client = :id_client AND id_team= :id_team", params , new BeanPropertyRowMapper<Client>(Client.class));
+		}
+		catch(EmptyResultDataAccessException e){
+			return null;
+		}
 		
 		client.setOccupation(occupationDAO.getOccupationById(client.getId_occupation(), team_key));
 		client.setMonthlyPayments(monthlyPaymentDAO.getMonthlyPaymentList(client.getId_client() ,team_key));
+		client.setContractsPolicy(contractsPolicyDAO.getContractsPolicy(client.getId_client(), team_key));
 		
 		return client;
 	}

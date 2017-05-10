@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import si.triglav.hackathon.occupation.Occupation;
+import si.triglav.hackathon.ContractsPolicy.ContractsPolicy;
 import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
 
 public class Client {
@@ -29,13 +30,21 @@ public class Client {
 	private String password;
 	private String card_number;
 	private String ccv;
-	
-	private Occupation occupation;
-	private MonthlyPayment monthlyPayment;
-	
+
 	private Integer id_occupation;
+	private Occupation occupation;
 	
-	List<MonthlyPayment> monthlyPayments;
+	private List<MonthlyPayment> monthlyPayments;
+	
+	private ContractsPolicy contractsPolicy;
+	
+	public ContractsPolicy getContractsPolicy() {
+		return contractsPolicy;
+	}
+
+	public void setContractsPolicy(ContractsPolicy contractsPolicy) {
+		this.contractsPolicy = contractsPolicy;
+	}
 
 	public Integer getId_client() {
 		return id_client;
@@ -171,14 +180,6 @@ public class Client {
 
 	public void setOccupation(Occupation occupation) {
 		this.occupation = occupation;
-	}
-
-	public MonthlyPayment getMonthlyPayment() {
-		return monthlyPayment;
-	}
-
-	public void setMonthlyPayment(MonthlyPayment monthlyPayment) {
-		this.monthlyPayment = monthlyPayment;
 	}
 
 	public Integer getId_occupation() {
