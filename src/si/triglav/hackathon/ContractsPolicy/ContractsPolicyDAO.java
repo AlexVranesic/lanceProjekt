@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -40,18 +41,19 @@ public class ContractsPolicyDAO {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id_team", id_team);
 		params.addValue("id_client", id_client);
-
-		ContractsPolicy contractsPolicy = jdbcTemplate.queryForObject("select "+CONTRACT_COLUMN_LIST+" from "+TABLE_NAME+" WHERE ID_product=1 AND id_client=:id_client AND id_team= :id_team", params , new BeanPropertyRowMapper<ContractsPolicy>(ContractsPolicy.class));
+		
+		ContractsPolicy contractsPolicy;
+		
+		try{
+			contractsPolicy = jdbcTemplate.queryForObject("select "+CONTRACT_COLUMN_LIST+" from "+TABLE_NAME+" WHERE ID_product=1 AND id_client=:id_client AND id_team= :id_team", params , new BeanPropertyRowMapper<ContractsPolicy>(ContractsPolicy.class));
+		}
+		catch(EmptyResultDataAccessException e){
+			return null;
+		}
 		
 		contractsPolicy.setContracts(contractDAO.getContractList(team_key, id_client));
 
 		return contractsPolicy;
-	}
-	
-	public boolean contractsPolicyExists(Integer id_client, Integer team_key){
-		
-		
-		return false;
 	}
 	
 	public ContractsPolicy createContractPolicy(Integer id_client, ContractsPolicy contractsPolicy, Integer team_key) {
@@ -66,7 +68,7 @@ public class ContractsPolicyDAO {
 		else
 			actualDateFrom = null;
 		
-		if(contractsPolicy.getDate_from()!=null)
+		if(contractsPolicy.getDate_to()!=null)
 			actualDateTo = new Date(contractsPolicy.getDate_to().getTime()+(24*60*60*1000));
 		else
 			actualDateTo = null;
@@ -99,7 +101,7 @@ public class ContractsPolicyDAO {
 		else
 			actualDateFrom = null;
 		
-		if(contractsPolicy.getDate_from()!=null)
+		if(contractsPolicy.getDate_to()!=null)
 			actualDateTo = new Date(contractsPolicy.getDate_to().getTime()+(24*60*60*1000));
 		else
 			actualDateTo = null;
