@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import si.triglav.hackathon.RepairService.RepairService;
-//import si.triglav.hackathon.product.Product;
-//import si.triglav.hackathon.product.ProductDAO;
-
 @Controller
 public class OccupationController {
 
