@@ -1,4 +1,4 @@
-package si.triglav.hackathon.LiabilityClaim;
+package si.triglav.hackathon.GearClaim;
 
 import java.net.URI;
 import java.util.List;
@@ -18,24 +18,28 @@ import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.RepairService.RepairServiceDAO;
 
 @Controller
-public class LiabilityClaimController {
+public class GearClaimController {
 
 	@Autowired
-	private LiabilityClaimDAO liabilityClaimDAO;
-
-	@RequestMapping( path="/{team_key}/liabilityclaims", method=RequestMethod.GET)
-	public @ResponseBody List<LiabilityClaim> getLiabilityClaimList(@PathVariable(name="team_key") Integer team_key){
-		return liabilityClaimDAO.getLiabilityClaimList(team_key);
+	private GearClaimDAO gearClaimDAO;
+	
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear/{id_gear}/gearclaims", method=RequestMethod.GET)
+	public @ResponseBody List<GearClaim> getGearClaimList(@PathVariable(name="team_key") Integer team_key,
+														  @PathVariable(name="id_client") Integer id_client,
+														  @PathVariable(name="id_gear") Integer id_gear){
+														 // @RequestBody GearClaim getGearClaimListDAO){									  
+		return getGearClaimList(team_key, id_client, id_gear);
 	}
 	
-	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/{team_key}/liabilityclaims/{id}", method=RequestMethod.GET)
-	public @ResponseBody LiabilityClaim getLiabilityClaimById(@PathVariable(name="id") Integer id, 
-															@PathVariable(name="team_key") Integer team_key){
-		return liabilityClaimDAO.getLiabilityClaimById(id, team_key);
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear/{id_gear}/gearclaims/{id}", method=RequestMethod.GET)
+	public @ResponseBody GearClaim getGearClaimById(@PathVariable(name="team_key") Integer team_key, 
+													@PathVariable(name="id_client") Integer id_client,
+													@PathVariable(name="id_gear") Integer id_gear,
+													@PathVariable(name="id") Integer id){
+		return getGearClaimById(team_key,id_client,id_gear,id);
 	}
 	
-	@RequestMapping( path="/{team_key}/liabilityclaims", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear/{id_gear}/gearclaims", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createLiabilityClaim(	@RequestBody LiabilityClaim liabilityClaim, 
 													@PathVariable(name="team_key") Integer team_key){
 		

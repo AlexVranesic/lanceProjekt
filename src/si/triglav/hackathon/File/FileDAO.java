@@ -49,6 +49,16 @@ public class FileDAO {
 		return fileList;
 	}
 	
+	public List<File> getFilesOfGearClaimListFromIdGearClaim(Integer team_key, Integer id_gear_claim) {
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_gear_claim", id_gear_claim);
+		
+		List<File> fileList = jdbcTemplate.query("select " + FILE_COLUMN_LIST + " from " + TABLE_NAME+" WHERE ID_gear_claim= :id_gear_claim AND id_team= :id_team", params, new BeanPropertyRowMapper<File>(File.class));
+		return fileList;
+	}
+	
 	public File getFileById(Integer id_file,Integer team_key) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_file", id_file);
 						
