@@ -1,9 +1,11 @@
 package si.triglav.hackathon.Gear;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import si.triglav.hackathon.File.File;
 import si.triglav.hackathon.Gear.Gear;
 
 public class Gear {
@@ -15,6 +17,9 @@ public class Gear {
 	Date date_of_purchase;
 	
 	private Double premium_price;
+
+	//spodaj so razredi od katerih je GearType odvidsen
+	List<File> files;
 
 	public Integer getId_gear() {
 		return id_gear;
@@ -46,5 +51,13 @@ public class Gear {
 
 	public void setPremium_price(Double premium_price) {
 		this.premium_price = premium_price;
+	}
+
+	public List<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<File> files) {
+		this.files = files;
 	}
 }

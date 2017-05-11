@@ -1,4 +1,4 @@
-package si.triglav.hackathon.RepairService;
+package si.triglav.hackathon.Gear;
 
 import java.util.List;
 
@@ -12,12 +12,16 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import si.triglav.hackathon.GearType.GearTypeDAO;
 import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
-public class RepairServiceDAO {
+public class GearDAO {
 	
 	@Autowired
 	private TeamDAO teamDAO;
@@ -27,23 +31,32 @@ public class RepairServiceDAO {
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String REPAIR_SERVICE_COLUMN_LIST = "ID_repair_service,name,address, ID_gear_type, ID_team";
-	private static final String TABLE_NAME = "FREELANCE.REPAIR_SERVICE";
+	private static final String GEAR_COLUMN_LIST = "ID_gear, gear_value, date_of_purchase, premium_price, ID_gear_type, ID_team, ID_policy_product";
+	private static final String TABLE_NAME = "FREELANCE.GEAR";
 
 	@Autowired
 	public void init(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 	
-	public List<RepairService> getRepairServiceList(Integer team_key) {
+	/*
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear", method=RequestMethod.GET)
+	public @ResponseBody List<Gear> getGearList(@PathVariable(name="team_key") Integer team_key,
+												@PathVariable(name="id_client") Integer id_client){
+		return gearDAO.getGearList(team_key,id_client);
+	}
+	*/
+	public List<Gear> getGearList(Integer team_key, Integer id_client) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-
-		List<RepairService> repairServiceList = jdbcTemplate.query("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<RepairService>(RepairService.class));
+		params.addValue("id_client", id_client);
 		
-		for(RepairService repairService: repairServiceList){
-			repairService.setGear_type(gearTypeDAO.getGearTypeById(repairService.getId_gear_type(), team_key));
+		
+		List<Gear> gearList = jdbcTemplate.query("select "+GEAR_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team AND id_client= :id_client", params, new BeanPropertyRowMapper<Gear>(Gear.class));
+		
+		for(Gear repairService: gearList){
+			repairService.setGear_type(gearDAO.getGearById(repairService.getId_gear(), team_key));
 		}
 		
 		return repairServiceList;

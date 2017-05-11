@@ -32,12 +32,10 @@ public class ContractsPolicyController {
 													@RequestBody ContractsPolicy contractsPolicy){
 		  
 		
-		boolean contractsPolicyExists = contractsPolicyDAO.contractsPolicyExists(id_client, team_key); // this will set the id on the repairService object
 
-		//ResponseEntity.badRequest();
 		
 		//optionally validate repairService
-		ContractsPolicy createdContractsPolicy = contractsPolicyDAO.createContractPolicy(id_client, contractsPolicy, team_key); // this will set the id on the repairService object
+		contractsPolicyDAO.createContractPolicy(id_client, contractsPolicy, team_key); 
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().build().toUri();
@@ -63,7 +61,7 @@ public class ContractsPolicyController {
 	}
 	
 
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicies/{id}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="team_key") Integer team_key, 
 													@PathVariable(name="id_client") Integer id_client){
 		

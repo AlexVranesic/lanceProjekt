@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import si.triglav.hackathon.RepairService.RepairService;
-import si.triglav.hackathon.RepairService.RepairServiceDAO;
-
 @Controller
 public class ClientController {
 

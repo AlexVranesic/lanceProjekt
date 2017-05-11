@@ -1,4 +1,4 @@
-package si.triglav.hackathon.RepairService;
+package si.triglav.hackathon.Gear;
 
 import java.net.URI;
 import java.util.List;
@@ -15,14 +15,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Controller
-public class RepairServiceController {
+public class GearController {
 
 	@Autowired
-	private RepairServiceDAO repairServiceDAO;
+	private GearDAO gearDAO;
 
-	@RequestMapping( path="/repairservices/{team_key}", method=RequestMethod.GET)
-	public @ResponseBody List<RepairService> getRepairServiceList(@PathVariable(name="team_key") Integer team_key){
-		return repairServiceDAO.getRepairServiceList(team_key);
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear", method=RequestMethod.GET)
+	public @ResponseBody List<Gear> getGearList(@PathVariable(name="team_key") Integer team_key,
+												@PathVariable(name="id_client") Integer id_client){
+		return gearDAO.getGearList(team_key,id_client);
 	}
 	
 	//If using PathVariable, not all conversions are supported
