@@ -40,7 +40,7 @@ public class GearClaimController {
 													@PathVariable(name="id") Integer id){
 		return getGearClaimById(team_key,id_client,id_gear,id);
 	}
-	
+	/*
 	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear/{id_gear}/gearclaims", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createLiabilityClaim(	@RequestBody GearClaim gearClaim, 
 													@PathVariable(name="team_key") Integer team_key){
@@ -58,7 +58,7 @@ public class GearClaimController {
 		return ResponseEntity.created(location).build();
 			
 	}
-	
+	*/
 	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear/{id_gear}/gearclaims/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateGearClaim(	@PathVariable(name="team_key") Integer team_key,
 												@PathVariable(name="id_client") Integer id_client,
@@ -77,13 +77,13 @@ public class GearClaimController {
 		return ResponseEntity.noContent().build();
 		
 	}
-
+/*
 	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear/{id_gear}/gearclaims/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteGearClaim(	@PathVariable(name="id") Integer id,
 												@PathVariable(name="id_gear") Integer id_gear,
 												@PathVariable(name="id_client") Integer id_client,
 												@PathVariable(name="team_key") Integer team_key){
-		
+	
 		int updatedRows = gearClaimDAO.deleteLiabilityClaim(id, id_gear, id_client, team_key);
 		
 		if(updatedRows == 0 ){
@@ -92,4 +92,6 @@ public class GearClaimController {
 		
 		return ResponseEntity.noContent().build();
 	}	
+	
+	*/
 }

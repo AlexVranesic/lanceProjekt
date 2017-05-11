@@ -31,7 +31,7 @@ public class GearDAO {
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private static final String GEAR_COLUMN_LIST = "ID_gear, gear_value, date_of_purchase, premium_price, ID_gear_type, ID_team, ID_policy_product";
+	private static final String GEAR_COLUMN_LIST = "ID_gear, gear_value, date_of_purchase, premium_price, ID_gear_type";
 	private static final String TABLE_NAME = "FREELANCE.GEAR";
 
 	@Autowired
@@ -53,13 +53,17 @@ public class GearDAO {
 		params.addValue("id_client", id_client);
 		
 		
-		List<Gear> gearList = jdbcTemplate.query("select "+GEAR_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team AND id_client= :id_client", params, new BeanPropertyRowMapper<Gear>(Gear.class));
 		
-		for(Gear repairService: gearList){
-			repairService.setGear_type(gearDAO.getGearById(repairService.getId_gear(), team_key));
+		List<Gear> gearList = jdbcTemplate.query("select "+GEAR_COLUMN_LIST
+												+" from "+TABLE_NAME
+												+" WHERE id_team= :id_team"
+												+" AND ID_policy_product = (select ID_policy_product from FREELANCE.policy_product where id_product = 3 and id_client = :id_client) ", params, new BeanPropertyRowMapper<Gear>(Gear.class));
+		
+		for(Gear gear: gearList){
+			gear.setGearType(gearTypeDAO.getGearTypeById(gear.getId_gear(), team_key));
 		}
 		
-		return repairServiceList;
+		return gearList;
 	}
 	
 	
@@ -71,7 +75,7 @@ public class GearDAO {
 		List<RepairService> repairServiceList = jdbcTemplate.query("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME, new BeanPropertyRowMapper<RepairService>(RepairService.class));
 		return repairServiceList;
 	}*/
-	
+	/*
 	public RepairService getRepairServiceById(Integer id, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
@@ -121,5 +125,5 @@ public class GearDAO {
 		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where ID_repair_service = :ID_repair_service", params);
 		return deletedRows;
 	}
-
+*/
 }

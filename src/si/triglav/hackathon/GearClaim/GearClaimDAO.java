@@ -89,7 +89,7 @@ public class GearClaimDAO {
 					
 		return gearClaim;
 	}
-	
+	/*
 	public GearClaim createGearClaim(GearClaim gearClaim, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
@@ -125,11 +125,11 @@ public class GearClaimDAO {
 		//id gear še moram dobiti..
 		//(Integer team_key, Integer id_client, Integer id_gear, Integer id_gear_claim) {
 		
-		GearClaim createdGearClaim = getGearClaimById(team_key, generatedKeyHolder.getKey(), generatedKeyHolder.getKey().intValue());
+		GearClaim createdGearClaim = getGearClaimById(team_key, generatedKeyHolder.getKey().intValue());
 		return createdGearClaim;
 
 	}
-	
+	*/
 	public int updateGearClaim(GearClaim gearClaim, Integer team_key, Integer  ID_client, Integer id_gear) {
 		
 		Integer id_team = teamDAO.getTeamIdByKey(team_key);

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import si.triglav.hackathon.File.File;
 import si.triglav.hackathon.Gear.Gear;
+import si.triglav.hackathon.GearType.GearType;
 
 public class Gear {
 	
@@ -18,8 +19,18 @@ public class Gear {
 	
 	private Double premium_price;
 
+	private GearType gearType;
+	
 	//spodaj so razredi od katerih je GearType odvidsen
 	List<File> files;
+
+	public GearType getGearType() {
+		return gearType;
+	}
+
+	public void setGearType(GearType gearType) {
+		this.gearType = gearType;
+	}
 
 	public Integer getId_gear() {
 		return id_gear;

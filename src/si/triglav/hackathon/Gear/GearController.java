@@ -26,6 +26,7 @@ public class GearController {
 		return gearDAO.getGearList(team_key,id_client);
 	}
 	
+	/*
 	//If using PathVariable, not all conversions are supported
 	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.GET)
 	public @ResponseBody RepairService getRepairServiceById(@PathVariable(name="id") Integer id, 
@@ -82,7 +83,7 @@ public class GearController {
 	}
 		
 	
-	
+	*/
 	
 	
 }
