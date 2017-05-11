@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -57,8 +58,14 @@ public class ClientsClientDAO {
 		
 		params.addValue("id_team", id_team);
 		
-		ClientsClient clientsClient = jdbcTemplate.queryForObject("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" where ID_clients_client = :ID_clients_client AND id_team="+id_team, params , new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
-		//ClientsClient clientsClient = jdbcTemplate.queryForObject("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" where ID_clients_client = :ID_clients_client AND id_team= :id_team", params , new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		ClientsClient clientsClient;
+		try{
+			 clientsClient = jdbcTemplate.queryForObject("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" where ID_clients_client = :ID_clients_client AND id_team="+id_team, params , new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
 		return clientsClient;
 	}
 	

@@ -39,6 +39,59 @@ public class FileDAO {
 		return fileList;
 	}
 	
+
+	public File createFile(File file, Integer team_key, Integer id_client, String idKeyName, Integer IDKey) {
+		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		MapSqlParameterSource params = new MapSqlParameterSource("idkey", IDKey);
+
+		params.addValue("path", file.getPath());
+
+		jdbcTemplate.update("insert into "+TABLE_NAME+" (path, ID_team, "+idKeyName+") VALUES (:path,"+teamDAO.getTeamIdByKey(team_key)+", :idkey)",
+				params, generatedKeyHolder);
+			
+		File created_File = getFileById(generatedKeyHolder.getKey().intValue(), team_key);
+		return created_File;
+	}
+	
+	public List<File> getFilesByIdOfForeignKey(String idKeyName, Integer IDKey, Integer team_key) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource(idKeyName, IDKey);
+						
+		List<File> fileList = jdbcTemplate.query("select "+FILE_COLUMN_LIST
+												+" from "+ TABLE_NAME
+												+ " where "+idKeyName+" = :"+idKeyName+" "
+												+ "AND id_team= "+teamDAO.getTeamIdByKey(team_key), params,  new BeanPropertyRowMapper<File>(File.class));
+		return fileList;
+	}
+	
+	public File getFileById(Integer id_file,Integer team_key) {
+		MapSqlParameterSource params = new MapSqlParameterSource("id_file", id_file);
+						
+		File file = jdbcTemplate.queryForObject("select "+FILE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_file = :id_file AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<File>(File.class));
+		return file;
+	}
+
+	public int updateFile(File file, Integer team_key) {
+		
+		int updatedRowsCount = jdbcTemplate.update(
+				"UPDATE "+TABLE_NAME
+				+" SET (path) = (:path) "
+				+" WHERE id_file = :id_file"
+				+" AND ID_team = "+teamDAO.getTeamIdByKey(team_key),
+				new BeanPropertySqlParameterSource(file));
+		
+		return updatedRowsCount;
+		
+	}
+
+	public int deleteFile(Integer id_file, Integer team_key) {
+		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_file = :id_file AND id_team="+teamDAO.getTeamIdByKey(team_key), new MapSqlParameterSource("id_file", id_file));
+		return deletedRows;
+	}
+	
+	/*
+	
+	
 	public List<File> getFileListFromIdContract(Integer team_key, Integer id_contract) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
@@ -59,40 +112,6 @@ public class FileDAO {
 		return fileList;
 	}
 	
-	public File getFileById(Integer id_file,Integer team_key) {
-		MapSqlParameterSource params = new MapSqlParameterSource("id_file", id_file);
-						
-		File file = jdbcTemplate.queryForObject("select "+FILE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_file = :id_file AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<File>(File.class));
-		return file;
-	}
 	
-	public File createFile(File file, Integer team_key) {
-		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		
-		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (path,id_team) VALUES (:path,"+teamDAO.getTeamIdByKey(team_key)+")",
-				new BeanPropertySqlParameterSource(file), generatedKeyHolder);
-			
-		File created_File = getFileById(generatedKeyHolder.getKey().intValue(), team_key);
-		return created_File;
-
-	}
-	
-	public int updateFile(File file, Integer team_key) {
-		
-		int updatedRowsCount = jdbcTemplate.update(
-				"UPDATE "+TABLE_NAME
-				+" SET (path) = (:path) "
-				+" WHERE id_file = :id_file"
-				+" AND ID_team = "+teamDAO.getTeamIdByKey(team_key),
-				new BeanPropertySqlParameterSource(file));
-		
-		return updatedRowsCount;
-		
-	}
-
-	public int deleteFile(Integer id_file, Integer team_key) {
-		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_file = :id_file AND id_team="+teamDAO.getTeamIdByKey(team_key), new MapSqlParameterSource("id_file", id_file));
-		return deletedRows;
-	}
+	*/
 }

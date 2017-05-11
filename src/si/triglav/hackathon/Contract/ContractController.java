@@ -21,7 +21,7 @@ public class ContractController {
 	@Autowired
 	private ContractDAO contractDAO;
 	
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy/contracts", method=RequestMethod.GET)
 	public @ResponseBody List<Contract> getRepairServiceList(	@PathVariable(name="id_client") Integer id_client,
 																@PathVariable(name="team_key") Integer team_key){
 		
@@ -30,14 +30,14 @@ public class ContractController {
 	
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts/{id}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy/contracts/{id}", method=RequestMethod.GET)
 	public @ResponseBody Contract getClientsClientById(@PathVariable(name="id_client") Integer id_client,
 															@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
-		return contractDAO.getContractById(id, team_key);
+		return contractDAO.getContractById(id, team_key, id_client);
 	}
 	
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy/contracts", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createContract(	@RequestBody Contract contract, 
 												@PathVariable(name="team_key") Integer team_key,
 												@PathVariable(name="id_client") Integer id_client){
@@ -55,7 +55,40 @@ public class ContractController {
 			
 	}
 	
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy/contracts/{id}", method=RequestMethod.DELETE)
+	//updateContract(Team team)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy/contracts/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateContract(@PathVariable(name="id_client") Integer id_client,
+											@PathVariable(name="id") Integer id, 
+											@PathVariable(name="team_key") Integer team_key,
+											@RequestBody Contract contract){
+		
+		int updatedRows = contractDAO.updateContract(team_key, id_client, id, contract);
+		
+		if(updatedRows == 0 ){
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.noContent().build();
+		
+	}
+	
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy/contracts/{id}/contractclaim", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateContractClaim(@PathVariable(name="id_client") Integer id_client,
+											@PathVariable(name="id") Integer id_contract, 
+											@PathVariable(name="team_key") Integer team_key,
+											@RequestBody Contract contract){
+		
+		int updatedRows = contractDAO.updateContractClaim(team_key, id_client, id_contract, contract);
+		
+		if(updatedRows == 0 ){
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.noContent().build();
+		
+	}
+	
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy/contracts/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteClientsClient(	@PathVariable(name="id_client") Integer id_client,
 													@PathVariable(name="id") Integer id, 
 													@PathVariable(name="team_key") Integer team_key){

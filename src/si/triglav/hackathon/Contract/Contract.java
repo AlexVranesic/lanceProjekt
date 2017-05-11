@@ -12,12 +12,41 @@ public class Contract {
 	Double contract_value;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	Date payment_due_to;
-	Integer is_paid;
+	Integer is_paid;	
+	Integer claim_is_valid;
+	Double claim_value;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	Date claim_date;
+	String return_account_number;
 	Integer id_clients_client;
 	ClientsClient clients_client;
 	
 	List<File> files;
 	
+	public Integer getClaim_is_valid() {
+		return claim_is_valid;
+	}
+	public void setClaim_is_valid(Integer claim_is_valid) {
+		this.claim_is_valid = claim_is_valid;
+	}
+	public Double getClaim_value() {
+		return claim_value;
+	}
+	public void setClaim_value(Double claim_value) {
+		this.claim_value = claim_value;
+	}
+	public Date getClaim_date() {
+		return claim_date;
+	}
+	public void setClaim_date(Date claim_date) {
+		this.claim_date = claim_date;
+	}
+	public String getReturn_account_number() {
+		return return_account_number;
+	}
+	public void setReturn_account_number(String return_account_number) {
+		this.return_account_number = return_account_number;
+	}
 	public List<File> getFiles() {
 		return files;
 	}

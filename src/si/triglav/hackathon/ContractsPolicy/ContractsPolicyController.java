@@ -20,13 +20,13 @@ public class ContractsPolicyController {
 	private ContractsPolicyDAO contractsPolicyDAO;
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy", method=RequestMethod.GET)
 	public @ResponseBody ContractsPolicy getContractPoliciesById(	@PathVariable(name="id_client") Integer id_client,
 																	@PathVariable(name="team_key") Integer team_key){
 		return contractsPolicyDAO.getContractsPolicy(id_client, team_key);
 	}
 	
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createContractPolicy(	@PathVariable(name="team_key") Integer team_key, 
 													@PathVariable(name="id_client") Integer id_client,
 													@RequestBody ContractsPolicy contractsPolicy){
@@ -45,7 +45,7 @@ public class ContractsPolicyController {
 		
 	}
 	
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateRepairService(	@PathVariable(name="team_key") Integer team_key, 
 													@PathVariable(name="id_client") Integer id_client,
 													@RequestBody ContractsPolicy contractsPolicy){
@@ -61,7 +61,7 @@ public class ContractsPolicyController {
 	}
 	
 
-	@RequestMapping( path="/{team_key}/clients/{id_client}/contractpolicy", method=RequestMethod.DELETE)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="team_key") Integer team_key, 
 													@PathVariable(name="id_client") Integer id_client){
 		
