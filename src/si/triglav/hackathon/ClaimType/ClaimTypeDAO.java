@@ -35,7 +35,7 @@ public class ClaimTypeDAO {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", teamDAO.getTeamIdByKey(team_key));
 		
-		List<ClaimType> claimTypeList = jdbcTemplate.query("select " + CLAIM_TYPE_COLUMN_LIST + " from " + TABLE_NAME + " WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<ClaimType>(ClaimType.class));
+		List<ClaimType> claimTypeList = jdbcTemplate.query("select " + CLAIM_TYPE_COLUMN_LIST + " from " + TABLE_NAME + "", params, new BeanPropertyRowMapper<ClaimType>(ClaimType.class));
 		return claimTypeList;
 	}
 	
@@ -63,8 +63,7 @@ public class ClaimTypeDAO {
 		params.addValue("id_team", teamDAO.getTeamIdByKey(team_key));
 		ClaimType claim_type = jdbcTemplate.queryForObject("SELECT "+CLAIM_TYPE_COLUMN_LIST
 															+" FROM "+ TABLE_NAME
-															+ " WHERE id_claim_type = :id_claim_type"
-															+ " AND id_team = :id_team", 
+															+ " WHERE id_claim_type = :id_claim_type", 
 															params , new BeanPropertyRowMapper<ClaimType>(ClaimType.class));
 		return claim_type;
 	}
