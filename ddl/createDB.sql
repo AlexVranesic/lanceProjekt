@@ -465,5 +465,12 @@ INSERT INTO FREELANCE.PRODUCT (ID_product, product) VALUES (3,'Gear product');
 INSERT INTO FREELANCE.PRODUCT (ID_product, product) VALUES (4,'Liability product');
 
 
+INSERT INTO FREELANCE.CLAIM_TYPE (ID_claim_type, claim_type, ID_team) VALUES (1,'Damaged', 1);
+INSERT INTO FREELANCE.CLAIM_TYPE (ID_claim_type, claim_type, ID_team) VALUES (2,'Broken', 1);
+INSERT INTO FREELANCE.CLAIM_TYPE (ID_claim_type, claim_type, ID_team) VALUES (3,'Stolen', 1);
+INSERT INTO FREELANCE.CLAIM_TYPE (ID_claim_type, claim_type, ID_team) VALUES (4,'Unrepearable', 1);
+
+
+
 	
 	
