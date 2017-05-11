@@ -188,9 +188,8 @@ public class ContractDAO {
 		params.addValue("ID_contract", id);
 
 		
-		int deletedRows = jdbcTemplate.update(	"delete from "+TABLE_NAME
-											 +" where ID_product = 1"
-											 +" AND ID_team = :id_team"
+		int deletedRows = jdbcTemplate.update("DELETE FROM "+TABLE_NAME
+											 +" WHERE ID_team = :id_team"
 											 +" AND ID_contract = :ID_contract", params);
 		return deletedRows;
 	}
