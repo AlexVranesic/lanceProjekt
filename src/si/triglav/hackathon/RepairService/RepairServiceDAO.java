@@ -5,6 +5,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,7 +15,13 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import si.triglav.hackathon.Contract.Contract;
+import si.triglav.hackathon.ContractsPolicy.ContractsPolicy;
 import si.triglav.hackathon.GearType.GearTypeDAO;
 import si.triglav.hackathon.team.TeamDAO;
 
@@ -48,21 +57,23 @@ public class RepairServiceDAO {
 		
 		return repairServiceList;
 	}
-	
-/*
-	public List<RepairService> getRepairServiceList() {
-		List<RepairService> repairServiceList = jdbcTemplate.query("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME, new BeanPropertyRowMapper<RepairService>(RepairService.class));
-		return repairServiceList;
-	}*/
-	
+		
 	public RepairService getRepairServiceById(Integer id, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("ID_repair_service", id);
 		params.addValue("id_team", id_team);
 		
-		RepairService repairService = jdbcTemplate.queryForObject("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME+" where ID_repair_service = :ID_repair_service AND id_team= :id_team", params , new BeanPropertyRowMapper<RepairService>(RepairService.class));
+		RepairService repairService;
 		
+		try{
+			repairService = jdbcTemplate.queryForObject("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME+" where ID_repair_service = :ID_repair_service AND id_team= :id_team", params , new BeanPropertyRowMapper<RepairService>(RepairService.class));
+		}
+		catch(EmptyResultDataAccessException e){
+			return null;
+		}
+		
+		//repairService.setGear_type(gearTypeDAO.getGearTypeById(repairService.getId_gear_type(), team_key));
 		repairService.setGear_type(gearTypeDAO.getGearTypeById(repairService.getId_gear_type(), team_key));
 		
 		return repairService;
@@ -81,27 +92,36 @@ public class RepairServiceDAO {
 		return createdRepairService;
 
 	}
-
+	
 	public int updateRepairService(RepairService repairService, Integer team_key) {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		Integer id_repair_service=repairService.getId_repair_service();
 		
+		String address=repairService.getAddress();
+		String name=repairService.getName();
+
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_repair_service", id_repair_service);
+		params.addValue("id_gear_type", repairService.getId_gear_type());
+		params.addValue("address", address);
+		params.addValue("name", name);
+
 		int updatedRowsCount = jdbcTemplate.update(
-						 "UPDATE "+TABLE_NAME
-						+" SET (name,address,ID_gear_type) = (:name,:address, :id_gear_type) "
-						+" WHERE ID_repair_service = :id_repair_service"
-						+" AND ID_team = "+id_team,
-				new BeanPropertySqlParameterSource(repairService));
+						 "UPDATE "+TABLE_NAME+" SET (name,address,id_gear_type) = (:name,:address,:id_gear_type) "
+						+" WHERE id_repair_service = :id_repair_service"
+						+" AND id_team = "+id_team, params);
+		
 		return updatedRowsCount;
 	}
-
-	public int deleteRepairService(Integer ID_repair_service, Integer team_key) {
+	
+	public int deleteRepairService(Integer id_repair_service, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-		params.addValue("ID_repair_service", ID_repair_service);
+		params.addValue("id_repair_service", id_repair_service);
 		
-		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where ID_repair_service = :ID_repair_service", params);
+		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_repair_service = :id_repair_service AND id_team = :id_team", params);
 		return deletedRows;
 	}
 

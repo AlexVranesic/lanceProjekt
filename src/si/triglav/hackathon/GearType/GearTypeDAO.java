@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import si.triglav.hackathon.Gear.Gear;
 import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.team.TeamDAO;
 
@@ -41,14 +43,45 @@ public class GearTypeDAO {
 		return gearTypeList;
 	}
 	
-	
+	//old_tukaj se vcasih zgodi da dobimo list
 	public GearType getGearTypeById(Integer id_gear_type,Integer team_key) {
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		System.out.println(id_gear_type);
+		System.out.println(id_team);
+		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_gear_type", id_gear_type);
 						
-		GearType gearType = jdbcTemplate.queryForObject("select "+GEAR_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_gear_type = :id_gear_type AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<GearType>(GearType.class));
-		return gearType;
+		GearType gearType;
+		
+		try{
+			gearType = jdbcTemplate.queryForObject("select "+GEAR_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_gear_type = :id_gear_type AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<GearType>(GearType.class));
+		}
+		catch(EmptyResultDataAccessException e){
+			return null;
+		}	
+		return gearType;	
 	}
 	
+	
+	/*
+	public List<GearType> getGearTypeById(Integer id_gear_type,Integer team_key) {
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		System.out.println(id_gear_type);
+		System.out.println(id_team);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_gear_type", id_gear_type);
+						
+		List<GearType> gearType = jdbcTemplate.query("select "+GEAR_TYPE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_gear_type = :id_gear_type AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<GearType>(GearType.class));
+		
+	
+		return gearType;
+		
+	}
+	
+	*/
+
 	public GearType createGearType(GearType gearType, Integer team_key) {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		

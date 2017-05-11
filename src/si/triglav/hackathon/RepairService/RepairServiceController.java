@@ -20,19 +20,19 @@ public class RepairServiceController {
 	@Autowired
 	private RepairServiceDAO repairServiceDAO;
 
-	@RequestMapping( path="/repairservices/{team_key}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/repairservices", method=RequestMethod.GET)
 	public @ResponseBody List<RepairService> getRepairServiceList(@PathVariable(name="team_key") Integer team_key){
 		return repairServiceDAO.getRepairServiceList(team_key);
 	}
 	
 	//If using PathVariable, not all conversions are supported
-	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/repairservices/{id}", method=RequestMethod.GET)
 	public @ResponseBody RepairService getRepairServiceById(@PathVariable(name="id") Integer id, 
 															@PathVariable(name="team_key") Integer team_key){
 		return repairServiceDAO.getRepairServiceById(id, team_key);
 	}
 	
-	@RequestMapping( path="/repairservices/{team_key}", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/repairservices", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createRepairService(	@RequestBody RepairService repairService, 
 													@PathVariable(name="team_key") Integer team_key){
 		
@@ -49,7 +49,7 @@ public class RepairServiceController {
 			
 	}
 	
-	@RequestMapping( path="/repairservices/{team_key}/{id_repair_service}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping( path="/{team_key}/repairservices/{id_repair_service}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateRepairService(	@PathVariable(name="id_repair_service") Integer id_repair_service,
 													@PathVariable(name="team_key") Integer team_key,
 													@RequestBody RepairService repairService){
@@ -65,9 +65,7 @@ public class RepairServiceController {
 		
 	}
 	
-
-	
-	@RequestMapping( path="/repairservices/{team_key}/{id}", method=RequestMethod.DELETE)
+	@RequestMapping( path="/{team_key}/repairservices/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteRepairService(	@PathVariable(name="id") Integer id,
 													@PathVariable(name="team_key") Integer team_key){
 		

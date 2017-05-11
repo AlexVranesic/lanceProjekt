@@ -17,12 +17,23 @@ public class Gear {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	Date date_of_purchase;
 	
+	//spodaj so razredi od katerih je GearType odvidsen
+	List<File> files;
+	
 	private Double premium_price;
 
 	private GearType gearType;
+	private Integer id_gear_type;
 	
-	//spodaj so razredi od katerih je GearType odvidsen
-	List<File> files;
+	public Integer getId_gear_type() {
+		return id_gear_type;
+	}
+
+	public void setId_gear_type(Integer id_gear_type) {
+		this.id_gear_type = id_gear_type;
+	}
+
+	
 
 	public GearType getGearType() {
 		return gearType;
