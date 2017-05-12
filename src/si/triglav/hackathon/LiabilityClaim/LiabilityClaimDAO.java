@@ -51,7 +51,8 @@ public class LiabilityClaimDAO {
 																								+ "WHERE ID_policy_product= (SELECT ID_policy_product "
 																																+ "FROM FREELANCE.POLICY_PRODUCT "
 																																+ "WHERE ID_client=:id_client "
-																																+ "AND ID_team=:id_team))" , params, new BeanPropertyRowMapper<LiabilityClaim>(LiabilityClaim.class));
+																																+ "AND ID_team=:id_team "
+																																+ "AND ID_product=4))" , params, new BeanPropertyRowMapper<LiabilityClaim>(LiabilityClaim.class));
 		
 		
 		for(LiabilityClaim liabilityClaim:liabilityClaimList){
