@@ -111,7 +111,7 @@ public class LiabilityPolicyDAO {
 		return createdLiabilityPolicy;
 	}
 	
-	public int deleteContract(Integer id_client, Integer team_key) {
+	/*public int deleteContract(Integer id_client, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
@@ -129,7 +129,7 @@ public class LiabilityPolicyDAO {
 													 +" AND ID_client=:id_client", params);
 		
 		return deletedRows;
-	}
+	}*/
 
 	public int updateLiabilityPolicy(LiabilityPolicy liabilityPolicy, Integer id_client, Integer team_key) {
 		
@@ -139,8 +139,23 @@ public class LiabilityPolicyDAO {
 		params.addValue("id_client", id_client);
 		params.addValue("premium_price", liabilityPolicy.getPremium_price());
 		params.addValue("max_claim_value", liabilityPolicy.getMax_claim_value());
-		params.addValue("date_from", liabilityPolicy.getDate_from());
-		params.addValue("date_to", liabilityPolicy.getDate_to());
+		
+		
+		Date actualDateFrom;
+		Date actualDateTo;
+		//for some reason it substracts a day so we add it
+		if(liabilityPolicy.getDate_from()!=null)
+			actualDateFrom = new Date(liabilityPolicy.getDate_from().getTime()+(24*60*60*1000));
+		else
+			actualDateFrom = null;
+		
+		if(liabilityPolicy.getDate_to()!=null)
+			actualDateTo = new Date(liabilityPolicy.getDate_to().getTime()+(24*60*60*1000));
+		else
+			actualDateTo = null;
+		
+		params.addValue("date_from", actualDateFrom);
+		params.addValue("date_to", actualDateTo);
 
 		int updatedRows = jdbcTemplate.update("UPDATE FREELANCE.LIABILITY "
 											 +" SET (premium_price,max_claim_value) = (:premium_price,:max_claim_value) "
