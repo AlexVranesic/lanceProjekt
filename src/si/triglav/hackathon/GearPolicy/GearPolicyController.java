@@ -15,8 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import si.triglav.hackathon.GearPolicy.GearPolicy;
 import si.triglav.hackathon.GearPolicy.GearPolicyDAO;
-import si.triglav.hackathon.LiabilityPolicy.LiabilityPolicy;
-import si.triglav.hackathon.LiabilityPolicy.LiabilityPolicyDAO;
 
 @Controller
 public class GearPolicyController {
@@ -24,20 +22,20 @@ public class GearPolicyController {
 	@Autowired
 	private GearPolicyDAO gearPolicyDAO;
 	
-	/*@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy", method=RequestMethod.GET)
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy", method=RequestMethod.GET)
 	public @ResponseBody GearPolicy getGearPoliciesById(	@PathVariable(name="id_client") Integer id_client,
-																@PathVariable(name="team_key") Integer team_key){
+															@PathVariable(name="team_key") Integer team_key){
 		return gearPolicyDAO.getGearPolicy(id_client, team_key);
 	}
 	
 	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createGearPolicy(	@PathVariable(name="team_key") Integer team_key, 
 													@PathVariable(name="id_client") Integer id_client,
-													@RequestBody GearPolicy gearpolicy){
-		  
+													@RequestBody GearPolicy gearPolicy){
+		
+		
 		//optionally validate repairService
-		//#####################spodaj zakomentiral
-	//	gearPolicyDAO.createGearPolicy(id_client, gearPolicy, team_key); 
+		GearPolicy createdGearPolicy = gearPolicyDAO.createGearPolicy(id_client, gearPolicy, team_key);
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest().build().toUri();
@@ -46,13 +44,13 @@ public class GearPolicyController {
 		return ResponseEntity.created(location).build();
 		
 	}
-	
-	@RequestMapping( path="/{team_key}/clients/{id_client}/liabilitypolicy", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateLiabilityPolicy(	@PathVariable(name="team_key") Integer team_key, 
+
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateGearPolicy(	@PathVariable(name="team_key") Integer team_key, 
 												@PathVariable(name="id_client") Integer id_client,
-												@RequestBody LiabilityPolicy liabilityPolicy){
+												@RequestBody GearPolicy gearPolicy){
 				
-	int updatedRows = liabilityPolicyDAO.updateLiabilityPolicy(liabilityPolicy, id_client, team_key);
+	int updatedRows = gearPolicyDAO.updateGearPolicy(gearPolicy, id_client, team_key);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
@@ -61,13 +59,13 @@ public class GearPolicyController {
 		return ResponseEntity.noContent().build();
 	}
 
+	
 
-
-	@RequestMapping( path="/{team_key}/clients/{id_client}/liabilitypolicy", method=RequestMethod.DELETE)
-	public ResponseEntity<?> deleteRepairService( @PathVariable(name="id_client") Integer id_client,
-												  @PathVariable(name="team_key") Integer team_key){
+	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy", method=RequestMethod.DELETE)
+	public ResponseEntity<?> deleteGearPolicy( @PathVariable(name="id_client") Integer id_client,
+												 @PathVariable(name="team_key") Integer team_key){
 		
-		int updatedRows = liabilityPolicyDAO.deleteLiabilityPolicy(id_client, team_key);
+		int updatedRows = gearPolicyDAO.deleteGearPolicy(id_client, team_key);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
@@ -76,5 +74,5 @@ public class GearPolicyController {
 		return ResponseEntity.noContent().build();
 		
 	}
-	*/
+	
 }	

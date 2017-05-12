@@ -131,7 +131,6 @@ public class FileController {
 		
 		@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy/gear/{id_gear}/files/{id_file}", method=RequestMethod.DELETE)
 		public ResponseEntity<?> deleteGearFile(@PathVariable(name="id_file") Integer id_file,
-											@PathVariable(name="id_contract") Integer id_contract,
 											@PathVariable(name="id_client") Integer id_client,
 											@PathVariable(name="team_key") Integer team_key){
 			

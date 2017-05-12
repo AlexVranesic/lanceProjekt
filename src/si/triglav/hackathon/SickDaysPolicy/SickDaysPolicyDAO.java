@@ -21,6 +21,7 @@ public class SickDaysPolicyDAO {
 	@Autowired
 	private TeamDAO teamDAO;
 	
+	@Autowired
 	private SickDaysClaimDAO sickDaysClaimDAO;
 
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -53,7 +54,7 @@ public class SickDaysPolicyDAO {
 														+ "AND S.ID_team= :id_team "
 														+ "FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<SickDaysPolicy>(SickDaysPolicy.class));
 			
-			//sickDaysPolicy.setSickDayClaims(sickDaysClaimDAO.getSickDaysClaims(id_client, team_key));
+			sickDaysPolicy.setSickDayClaims(sickDaysClaimDAO.getSickDaysClaims(id_client, team_key));
 
 		}
 		catch(EmptyResultDataAccessException e){
@@ -136,12 +137,14 @@ public class SickDaysPolicyDAO {
 											 +" WHERE ID_policy_product IN (SELECT ID_policy_product "
 											 							+ "FROM FREELANCE.POLICY_PRODUCT "
 											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)", params);
+											 							+ " AND ID_team=:id_team"
+											 							+ " AND ID_product = 2)", params);
 		
 		updatedRows = updatedRows+jdbcTemplate.update("UPDATE FREELANCE.POLICY_PRODUCT "
 													 +" SET(date_from, date_to) = (:date_from, :date_to)"
 													 + "WHERE ID_team = :id_team"
-													 +" AND ID_client=:id_client", params);
+													 +" AND ID_client=:id_client"
+													 +" AND ID_product = 2 ", params);
 		
 		return updatedRows;
 	}
@@ -157,14 +160,16 @@ public class SickDaysPolicyDAO {
 											 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
 											 							+ "FROM FREELANCE.POLICY_PRODUCT "
 											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)"
+											 							+ " AND ID_team=:id_team"
+											 							+ " AND ID_product = 2)"
 											 + "AND ID_team = :id_team", params);
 		
 		 deletedRows = deletedRows+jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
 				 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
 				 							+ "FROM FREELANCE.POLICY_PRODUCT "
 				 							+ " WHERE ID_client= :id_client "
-				 							+ " AND ID_team=:id_team)", params);
+				 							+ " AND ID_team=:id_team"
+				 							+ " AND ID_product = 2)", params);
 		
 		return deletedRows;
 	}

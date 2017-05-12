@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import si.triglav.hackathon.Gear.GearDAO;
 import si.triglav.hackathon.GearClaim.GearClaimDAO;
+import si.triglav.hackathon.LiabilityClaim.LiabilityClaim;
 import si.triglav.hackathon.LiabilityClaim.LiabilityClaimDAO;
 import si.triglav.hackathon.LiabilityPolicy.LiabilityPolicy;
 import si.triglav.hackathon.team.TeamDAO;
@@ -52,17 +53,12 @@ public class GearPolicyDAO {
 		GearPolicy gearPolicy;
 		
 		try{
-			gearPolicy = jdbcTemplate.queryForObject("SELECT ID_GEAR,"
-																+ "date_of_purchase,"
-																+ "gear_value,"
-																+ "premium_price,"
-														+ "FROM FREELANCE.GEAR G "
-														+ "LEFT JOIN FREELANCE.POLICY_PRODUCT P "
-																+ "ON P.ID_policy_product = G.ID_policy_product "
-														+ "WHERE P.ID_product=3 "
-														+ "AND P.ID_client=:id_client "
-														+ "AND G.ID_team= :id_team "
-														+ "FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<GearPolicy>(GearPolicy.class));
+			gearPolicy = jdbcTemplate.queryForObject("SELECT date_from, date_to "
+													+ "FROM FREELANCE.POLICY_PRODUCT "
+													+ "WHERE ID_product=3 "
+													+ "AND ID_client=:id_client "
+													+ "AND ID_team= :id_team "
+													+ "FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<GearPolicy>(GearPolicy.class));
 		}
 		catch(EmptyResultDataAccessException e){
 			return null;
@@ -74,11 +70,11 @@ public class GearPolicyDAO {
 	}
 	
 	public GearPolicy createGearPolicy(Integer id_client, GearPolicy gearPolicy, Integer team_key){
+		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		Date actualDateFrom;
 		Date actualDateTo;
-		Date date_of_purchase;
 		
 		//for some reason it substracts a day so we add it
 		if(gearPolicy.getDate_from()!=null)
@@ -91,12 +87,7 @@ public class GearPolicyDAO {
 		else
 			actualDateTo = null;
 		
-		if(gearPolicy.getDate_to()!=null)
-			date_of_purchase = new Date(gearPolicy.getDate_to().getTime()+(24*60*60*1000));
-		else
-			date_of_purchase = null;
-		
-		MapSqlParameterSource params = new MapSqlParameterSource("date_of_purchase", date_of_purchase);
+		MapSqlParameterSource params = new MapSqlParameterSource("date_from", actualDateFrom);
 		params.addValue("date_to", actualDateTo);
 		params.addValue("ID_client", id_client);
 		params.addValue("ID_team", id_team);
@@ -109,84 +100,46 @@ public class GearPolicyDAO {
 		
 		Integer newIDOfPolicyProduct=generatedKeyHolder.getKey().intValue();
 		
-	//	params = new MapSqlParameterSource("premium_price", liabilityPolicy.getPremium_price());
-	//	params.addValue("max_claim_value", liabilityPolicy.getMax_claim_value());
-		params.addValue("ID_policy_product", newIDOfPolicyProduct);
-		params.addValue("ID_team", id_team);
-		
-		jdbcTemplate.update(
-				"INSERT INTO FREELANCE.GEAR_POLICY (premium_price, max_claim_value, ID_policy_product, ID_team) values (:premium_price, :max_claim_value, :ID_policy_product, :ID_team)",
-				params, generatedKeyHolder);
-	/*	
-		LiabilityPolicy createdLiabilityPolicy = getLiabilityPolicy(id_client, team_key);
-		
-		
-		return createdLiabilityPolicy;*/
-		return null;
+		GearPolicy createdGearPolicy =  getGearPolicy(id_client, team_key); 
+		return createdGearPolicy;
 	}
 	
-	/*public int deleteContract(Integer id_client, Integer team_key) {
-		Integer id_team=teamDAO.getTeamIdByKey(team_key);
-		
-		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-		params.addValue("id_client", id_client);
 
-		int deletedRows = jdbcTemplate.update("DELETE FROM FREELANCE.LIABILITY "
-											 +" WHERE ID_team = :id_team"
-											 +" AND ID_policy_product IN (SELECT ID_policy_product "
-											 							+ "FROM FREELANCE.POLICY_PRODUCT "
-											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)", params);
-		
-		deletedRows = deletedRows+jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
-													 +" WHERE ID_team = :id_team"
-													 +" AND ID_client=:id_client", params);
-		
-		return deletedRows;
-	}*/
-
-	public int updateLiabilityPolicy(LiabilityPolicy liabilityPolicy, Integer id_client, Integer team_key) {
+	public int updateGearPolicy(GearPolicy gearPolicy, Integer id_client, Integer team_key) {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
 		params.addValue("id_client", id_client);
-		params.addValue("premium_price", liabilityPolicy.getPremium_price());
-		params.addValue("max_claim_value", liabilityPolicy.getMax_claim_value());
-		
-		
+
 		Date actualDateFrom;
 		Date actualDateTo;
+		
 		//for some reason it substracts a day so we add it
-		if(liabilityPolicy.getDate_from()!=null)
-			actualDateFrom = new Date(liabilityPolicy.getDate_from().getTime()+(24*60*60*1000));
+		if(gearPolicy.getDate_from()!=null)
+			actualDateFrom = new Date(gearPolicy.getDate_from().getTime()+(24*60*60*1000));
 		else
 			actualDateFrom = null;
 		
-		if(liabilityPolicy.getDate_to()!=null)
-			actualDateTo = new Date(liabilityPolicy.getDate_to().getTime()+(24*60*60*1000));
+		if(gearPolicy.getDate_to()!=null)
+			actualDateTo = new Date(gearPolicy.getDate_to().getTime()+(24*60*60*1000));
 		else
 			actualDateTo = null;
+		
 		
 		params.addValue("date_from", actualDateFrom);
 		params.addValue("date_to", actualDateTo);
 
-		int updatedRows = jdbcTemplate.update("UPDATE FREELANCE.LIABILITY "
-											 +" SET (premium_price,max_claim_value) = (:premium_price,:max_claim_value) "
-											 +" WHERE ID_policy_product IN (SELECT ID_policy_product "
-											 							+ "FROM FREELANCE.POLICY_PRODUCT "
-											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)", params);
-		
-		updatedRows = updatedRows+jdbcTemplate.update("UPDATE FREELANCE.POLICY_PRODUCT "
+		int updatedRows = jdbcTemplate.update("UPDATE FREELANCE.POLICY_PRODUCT "
 													 +" SET(date_from, date_to) = (:date_from, :date_to)"
 													 + "WHERE ID_team = :id_team"
-													 +" AND ID_client=:id_client", params);
+													 +" AND ID_client=:id_client"
+													 +" AND ID_product=3 ", params);
 		
 		return updatedRows;
 	}
 
-	public int deleteLiabilityPolicy(Integer id_client, Integer team_key) {
+	public int deleteGearPolicy(Integer id_client, Integer team_key) {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
@@ -194,18 +147,11 @@ public class GearPolicyDAO {
 		params.addValue("id_client", id_client);
 
 		
-		int deletedRows = jdbcTemplate.update("DELETE FROM FREELANCE.LIABILITY "
-											 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
-											 							+ "FROM FREELANCE.POLICY_PRODUCT "
-											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)"
-											 + "AND ID_team = :id_team", params);
-		
-		 deletedRows = deletedRows+jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
-				 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
+		 int deletedRows = jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
+				 							+" WHERE  ID_policy_product IN (SELECT ID_policy_product "
 				 							+ "FROM FREELANCE.POLICY_PRODUCT "
 				 							+ " WHERE ID_client= :id_client "
-				 							+ " AND ID_team=:id_team)", params);
+				 							+ " AND ID_product=3 )", params);
 		
 		return deletedRows;
 	}

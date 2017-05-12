@@ -58,7 +58,7 @@ public class ContractDAO {
 															+ " AND id_team= :id_team", params , new BeanPropertyRowMapper<Contract>(Contract.class));
 			
 			contract.setClients_client(clientsClientDAO.getClientsClientById(contract.getId_clients_client(), team_key));
-			contract.setFiles(fileDAO.getFilesByIdOfForeignKey("ID_contract", contract.getId_clients_client(), team_key));
+			contract.setFiles(fileDAO.getFilesByIdOfForeignKey("ID_contract", contract.getId_contract(), team_key));
 		}
 		catch(EmptyResultDataAccessException e)
 		{
@@ -187,7 +187,7 @@ public class ContractDAO {
 		
 		for(Contract contract: contractList){
 			contract.setClients_client(clientsClientDAO.getClientsClientById(contract.getId_clients_client(), team_key));
-			contract.setFiles(fileDAO.getFilesByIdOfForeignKey("ID_contract", contract.getId_clients_client(), team_key));
+			contract.setFiles(fileDAO.getFilesByIdOfForeignKey("ID_contract", contract.getId_contract(), team_key));
 		}
 		
 		return contractList;

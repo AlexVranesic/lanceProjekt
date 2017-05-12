@@ -111,26 +111,6 @@ public class LiabilityPolicyDAO {
 		return createdLiabilityPolicy;
 	}
 	
-	/*public int deleteContract(Integer id_client, Integer team_key) {
-		Integer id_team=teamDAO.getTeamIdByKey(team_key);
-		
-		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-		params.addValue("id_client", id_client);
-
-		int deletedRows = jdbcTemplate.update("DELETE FROM FREELANCE.LIABILITY "
-											 +" WHERE ID_team = :id_team"
-											 +" AND ID_policy_product IN (SELECT ID_policy_product "
-											 							+ "FROM FREELANCE.POLICY_PRODUCT "
-											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)", params);
-		
-		deletedRows = deletedRows+jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
-													 +" WHERE ID_team = :id_team"
-													 +" AND ID_client=:id_client", params);
-		
-		return deletedRows;
-	}*/
-
 	public int updateLiabilityPolicy(LiabilityPolicy liabilityPolicy, Integer id_client, Integer team_key) {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
@@ -185,14 +165,16 @@ public class LiabilityPolicyDAO {
 											 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
 											 							+ "FROM FREELANCE.POLICY_PRODUCT "
 											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)"
+											 							+ " AND ID_team=:id_team"
+											 							+ " AND ID_product = 4)"
 											 + "AND ID_team = :id_team", params);
 		
 		 deletedRows = deletedRows+jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
 				 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
 				 							+ "FROM FREELANCE.POLICY_PRODUCT "
 				 							+ " WHERE ID_client= :id_client "
-				 							+ " AND ID_team=:id_team)", params);
+				 							+ " AND ID_team=:id_team"
+				 							+ " AND ID_product = 4)", params);
 		
 		return deletedRows;
 	}
