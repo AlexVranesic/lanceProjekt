@@ -24,7 +24,7 @@ public class GearPolicyController {
 	@Autowired
 	private GearPolicyDAO gearPolicyDAO;
 	
-	@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy", method=RequestMethod.GET)
+	/*@RequestMapping( path="/{team_key}/clients/{id_client}/gearpolicy", method=RequestMethod.GET)
 	public @ResponseBody GearPolicy getGearPoliciesById(	@PathVariable(name="id_client") Integer id_client,
 																@PathVariable(name="team_key") Integer team_key){
 		return gearPolicyDAO.getGearPolicy(id_client, team_key);
@@ -52,14 +52,13 @@ public class GearPolicyController {
 												@PathVariable(name="id_client") Integer id_client,
 												@RequestBody LiabilityPolicy liabilityPolicy){
 				
-	/*	//int updatedRows = liabilityPolicyDAO.updateLiabilityPolicy(liabilityPolicy, id_client, team_key);
+	int updatedRows = liabilityPolicyDAO.updateLiabilityPolicy(liabilityPolicy, id_client, team_key);
 		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.noContent().build();*/
-		return null;
+		return ResponseEntity.noContent().build();
 	}
 
 
@@ -68,13 +67,14 @@ public class GearPolicyController {
 	public ResponseEntity<?> deleteRepairService( @PathVariable(name="id_client") Integer id_client,
 												  @PathVariable(name="team_key") Integer team_key){
 		
-	//	int updatedRows = liabilityPolicyDAO.deleteLiabilityPolicy(id_client, team_key);
-	/*	
+		int updatedRows = liabilityPolicyDAO.deleteLiabilityPolicy(id_client, team_key);
+		
 		if(updatedRows == 0 ){
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.noContent().build();*/
-		return null;
+		return ResponseEntity.noContent().build();
+		
 	}
+	*/
 }	

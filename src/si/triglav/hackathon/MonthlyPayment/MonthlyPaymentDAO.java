@@ -6,19 +6,14 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import si.triglav.hackathon.Client.ClientDAO;
-import si.triglav.hackathon.ContractsPolicy.ContractsPolicy;
-import si.triglav.hackathon.File.FileDAO;
-import si.triglav.hackathon.RepairService.RepairService;
-import si.triglav.hackathon.occupation.Occupation;
 import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
@@ -79,12 +74,15 @@ public class MonthlyPaymentDAO {
 		params.addValue("id_team", id_team);
 		params.addValue("id_client", id_client);
 		
-		//params.addValue("id_team", id_team);
-		//System.out.println("===============================");
-		//System.out.println(id_team);
-		//System.out.println("===============================");
-		MonthlyPayment monthlyPayment = jdbcTemplate.queryForObject("select "+MONTHLY_PAYMENTY_COLUMN_TEAM_LIST+" from "+TABLE_NAME+" where ID_payment = :ID_payment AND id_client=:id_client AND id_team= :id_team",params,  new BeanPropertyRowMapper<MonthlyPayment>(MonthlyPayment.class));
-	
+		MonthlyPayment monthlyPayment;
+		try{
+			monthlyPayment = jdbcTemplate.queryForObject("select "+MONTHLY_PAYMENTY_COLUMN_TEAM_LIST+" from "+TABLE_NAME+" where ID_payment = :ID_payment AND id_client=:id_client AND id_team= :id_team",params,  new BeanPropertyRowMapper<MonthlyPayment>(MonthlyPayment.class));
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
+		
 		return monthlyPayment;
 	}
 	

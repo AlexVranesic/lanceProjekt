@@ -48,7 +48,7 @@ public class LiabilityClaimDAO {
 																			+ "WHERE ID_team= :id_team "
 																			+ "AND ID_liability IN (SELECT ID_liability "
 																								+ "FROM FREELANCE.LIABILITY "
-																								+ "WHERE ID_policy_product= (SELECT ID_policy_product "
+																								+ "WHERE ID_policy_product IN (SELECT ID_policy_product "
 																																+ "FROM FREELANCE.POLICY_PRODUCT "
 																																+ "WHERE ID_client=:id_client "
 																																+ "AND ID_team=:id_team "
@@ -80,10 +80,11 @@ public class LiabilityClaimDAO {
 																+ "claim_date,"
 																+ "return_account_number "
 														+ "FROM FREELANCE.LIABILITY_CLAIM "
-														+ "WHERE ID_liability= (SELECT ID_liability FROM FREELANCE.LIABILITY WHERE ID_policy_product= (SELECT ID_policy_product "
+														+ "WHERE ID_liability IN (SELECT ID_liability FROM FREELANCE.LIABILITY WHERE ID_policy_product IN (SELECT ID_policy_product "
 																																					+ "FROM FREELANCE.POLICY_PRODUCT "
 																																					+ "WHERE ID_client=:id_client "
-																																					+ "AND ID_team=:id_team)) "
+																																					+ "AND ID_team=:id_team "
+																																					+ "AND ID_product=4)) "
 														+ "AND ID_team= :id_team "
 														+ "AND ID_liability_claim = :ID_liability_claim", params , new BeanPropertyRowMapper<LiabilityClaim>(LiabilityClaim.class));
 		}
@@ -126,10 +127,11 @@ public class LiabilityClaimDAO {
 				+ ":claim_is_valid,"
 				+ "(SELECT ID_liability "
 						+ "FROM FREELANCE.LIABILITY "
-						+ "WHERE ID_policy_product= (SELECT ID_policy_product "
+						+ "WHERE ID_policy_product IN (SELECT ID_policy_product "
 												+ "FROM FREELANCE.POLICY_PRODUCT "
 												+ "WHERE ID_client=:id_client "
-												+ "AND ID_team=:id_team)),"
+												+ "AND ID_team=:id_team "
+												+ "AND ID_product=4)),"
 				+ ":id_team)",
 				params, generatedKeyHolder);
 		

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -65,9 +66,16 @@ public class FileDAO {
 	}
 	
 	public File getFileById(Integer id_file,Integer team_key) {
+		File file;
+		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_file", id_file);
-						
-		File file = jdbcTemplate.queryForObject("select "+FILE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_file = :id_file AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<File>(File.class));
+		try{				
+		  file = jdbcTemplate.queryForObject("select "+FILE_COLUMN_LIST+" from "+ TABLE_NAME + " where id_file = :id_file AND id_team= "+teamDAO.getTeamIdByKey(team_key), params , new BeanPropertyRowMapper<File>(File.class));
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
 		return file;
 	}
 

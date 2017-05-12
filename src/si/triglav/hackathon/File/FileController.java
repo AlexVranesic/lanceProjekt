@@ -69,8 +69,8 @@ public class FileController {
 	//Find specific GearType with ID
 	@RequestMapping( path="/{team_key}/clients/{id_client}/contractspolicy/contracts/{id_contract}/files/", method=RequestMethod.GET)
 	public @ResponseBody List<File> getContractFiles(	@PathVariable(name="id_contract") Integer id_contract,
-													@PathVariable(name="id_client") Integer id_client,
-													@PathVariable(name="team_key") Integer team_key){
+														@PathVariable(name="id_client") Integer id_client,
+														@PathVariable(name="team_key") Integer team_key){
 		
 		return fileDAO.getFilesByIdOfForeignKey("ID_contract",id_contract,team_key);
 	}
@@ -262,7 +262,7 @@ public class FileController {
 													@PathVariable(name="id_client") Integer id_client,
 													@PathVariable(name="id_sickday_claim") Integer id_sickday_claim){
 
-				File createdFile = fileDAO.createFile(file,team_key, id_client, "ID_sickday_claim", id_sickday_claim); // this will set the id on the person object
+				File createdFile = fileDAO.createFile(file,team_key, id_client, "ID_sick_day_claim", id_sickday_claim); // this will set the id on the person object
 				
 				URI location = ServletUriComponentsBuilder
 						.fromCurrentRequest().path("/{id_file}")
@@ -275,28 +275,28 @@ public class FileController {
 			
 
 			//Find specific GearType with ID
-			@RequestMapping( path="/{team_key}/clients/{id_client}/sickdaypolicy/sickdayclaims/{id_sickday_claim}/files/{id_file}", method=RequestMethod.GET)
+			@RequestMapping( path="/{team_key}/clients/{id_client}/sickdaypolicy/sickdayclaims/{id_sick_day_claim}/files/{id_file}", method=RequestMethod.GET)
 			public @ResponseBody File getSickDayClaimFileById(	@PathVariable(name="id_file") Integer id_file,
 														@PathVariable(name="id_client") Integer id_client,
 														@PathVariable(name="team_key") Integer team_key,
-														@PathVariable(name="id_sickday_claim") Integer id_sickday_claim){
+														@PathVariable(name="id_sick_day_claim") Integer id_sick_day_claim){
 				return fileDAO.getFileById(id_file,team_key);
 			}
 			
 			//Find specific GearType with ID
-			@RequestMapping( path="/{team_key}/clients/{id_client}/sickdaypolicy/sickdayclaims/{id_sickday_claim}/files", method=RequestMethod.GET)
+			@RequestMapping( path="/{team_key}/clients/{id_client}/sickdaypolicy/sickdayclaims/{id_sick_day_claim}/files", method=RequestMethod.GET)
 			public @ResponseBody List<File> getSickDayClaimFiles(@PathVariable(name="id_client") Integer id_client,
 															@PathVariable(name="team_key") Integer team_key,
-															@PathVariable(name="id_sickday_claim") Integer id_sickday_claim){
+															@PathVariable(name="id_sick_day_claim") Integer id_sick_day_claim){
 				
-				return fileDAO.getFilesByIdOfForeignKey("ID_sickday_claim",id_sickday_claim,team_key);
+				return fileDAO.getFilesByIdOfForeignKey("ID_sick_day_claim",id_sick_day_claim,team_key);
 			}
 			
-			@RequestMapping( path="/{team_key}/clients/{id_client}/sickdaypolicy/sickdayclaims/{id_sickday_claim}/files/{id_file}", method=RequestMethod.DELETE)
+			@RequestMapping( path="/{team_key}/clients/{id_client}/sickdaypolicy/sickdayclaims/{id_sick_day_claim}/files/{id_file}", method=RequestMethod.DELETE)
 			public ResponseEntity<?> deleteSickDayClaimFile(@PathVariable(name="id_file") Integer id_file,
 												@PathVariable(name="id_client") Integer id_client,
 												@PathVariable(name="team_key") Integer team_key,
-												@PathVariable(name="id_sickday_claim") Integer id_sickday_claim){
+												@PathVariable(name="id_sick_day_claim") Integer id_sick_day_claim){
 				
 				int updatedRows = fileDAO.deleteFile(id_file, team_key);
 				

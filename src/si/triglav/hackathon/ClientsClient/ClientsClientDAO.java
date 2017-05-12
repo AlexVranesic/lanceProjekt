@@ -14,8 +14,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import si.triglav.hackathon.GearType.GearType;
-import si.triglav.hackathon.RepairService.RepairService;
 import si.triglav.hackathon.team.TeamDAO;
 
 @Repository
@@ -41,14 +39,21 @@ public class ClientsClientDAO {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 	
-	public List<ClientsClient> getClientsClientList(Integer team_key) {
+	public List<ClientsClient> getClientsClientList(Integer id_client, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-
-		List<ClientsClient> repairServiceList = jdbcTemplate.query("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team="+id_team, params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
-		//List<ClientsClient> repairServiceList = jdbcTemplate.query("select "+CLIENT_CLIENTS_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
-		return repairServiceList;
+		params.addValue("id_client", id_client);
+		
+		List<ClientsClient> clientsClientList = jdbcTemplate.query("select DISTINCT CC."+CLIENT_CLIENTS_COLUMN_LIST
+																	+" from "+TABLE_NAME +" CC "
+																	+ "LEFT JOIN FREELANCE.CONTRACT C ON C.ID_clients_client=CC.ID_clients_client "
+																	+" WHERE ID_policy_product IN (SELECT ID_policy_product "
+																							+" FROM FREELANCE.POLICY_PRODUCT "
+																							+" WHERE ID_client= :id_client "
+																							+" AND ID_product=1 ) "
+																	+ "AND CC.ID_team = :id_team ", params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		return clientsClientList;
 	}
 		
 	public ClientsClient getClientsClientById(Integer ID_clients_client, Integer team_key) {
@@ -69,10 +74,45 @@ public class ClientsClientDAO {
 		return clientsClient;
 	}
 	
+	public ClientsClient getClientsClientByIdViaContract(Integer id_contract, Integer id_client, Integer team_key) {
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_contract", id_contract);
+
+		ClientsClient clientsClient;
+		
+		try{
+		 clientsClient= jdbcTemplate.queryForObject("select CC."+CLIENT_CLIENTS_COLUMN_LIST
+													+" from "+TABLE_NAME +" CC "
+													+ "LEFT JOIN FREELANCE.CONTRACT C ON C.ID_clients_client=CC.ID_clients_client "
+													+" WHERE C.ID_contract = :id_contract "
+													+ "AND CC.ID_team = :id_team ", params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
+		
+		return clientsClient;
+	}
+	
+
+	public List<ClientsClient> getAllClients(Integer team_key) {
+
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		
+		List<ClientsClient> clientsClientList = jdbcTemplate.query("select "+CLIENT_CLIENTS_COLUMN_LIST
+																	+" from "+TABLE_NAME
+																	+" WHERE ID_team = :id_team ", params, new BeanPropertyRowMapper<ClientsClient>(ClientsClient.class));
+		return clientsClientList;
+	}
+	
+	
 	public ClientsClient createClientsClient(ClientsClient clientsClient, Integer team_key) {
-		
-		//clientsClient.setId_team(teamDAO.getTeamIdByKey(team_key));
-		
+				
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		
 		jdbcTemplate.update(
@@ -84,37 +124,19 @@ public class ClientsClientDAO {
 
 	}
 
-	/*
 	
-		public RepairService createRepairService(RepairService repairService, Integer team_key) {
-		
-		repairService.setId_team(teamDAO.getTeamIdByKey(team_key));
-
-		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-
-		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (name, address, id_team, id_gear_type) values (:name, :address, :id_team, 2)",
-				new BeanPropertySqlParameterSource(repairService), generatedKeyHolder);
-		
-		RepairService createdRepairService = getRepairServiceById(generatedKeyHolder.getKey().intValue(), team_key);
-		return createdRepairService;
-
-	}
 	
-	*/
-	public int updateClientsClient(ClientsClient clientsClient, Integer team_key) {
+	
+	public int updateClientsClient(ClientsClient clientsClient, Integer team_key, Integer id_clients_client) {
 		
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
-		//clientsClient.setId_team(id_team);
-/*
-		int updatedRowsCount = jdbcTemplate.update(
-				 "UPDATE "+TABLE_NAME
-				+" SET (name,tax_id,risk_contract_percent) = (:name,:tax_id,risk_contract_percent) "
-				+" WHERE ID_clients_client = :ID_clients_client"
-				+" AND ID_team = :id_team",
-		new BeanPropertySqlParameterSource(clientsClient));
-		*/
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_clients_client", id_clients_client);
+		params.addValue("name", clientsClient.getName());
+		params.addValue("tax_id", clientsClient.getTax_id());
+		params.addValue("risk_contract_percent", clientsClient.getRisk_contract_percent());
+
 		int updatedRowsCount = jdbcTemplate.update(
 				 "UPDATE "+TABLE_NAME
 				+" SET (name,tax_id,risk_contract_percent) = (:name,:tax_id,risk_contract_percent) "
@@ -125,23 +147,6 @@ public class ClientsClientDAO {
 		return updatedRowsCount;
 	}
 
-	/*
-public int updateRepairService(RepairService repairService, Integer team_key) {
-		
-		Integer id_team=teamDAO.getTeamIdByKey(team_key);
-		
-		repairService.setId_team(id_team);
-
-		int updatedRowsCount = jdbcTemplate.update(
-						 "UPDATE "+TABLE_NAME
-						+" SET (name,address) = (:name,:address) "
-						+" WHERE ID_repair_service = :ID_repair_service"
-						+" AND ID_team = :id_team",
-				new BeanPropertySqlParameterSource(repairService));
-		return updatedRowsCount;
-	}
-	
-	*/
 	
 	public int deleteClientsClient(Integer ID_clients_client, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
@@ -152,5 +157,8 @@ public int updateRepairService(RepairService repairService, Integer team_key) {
 		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where ID_clients_client = :ID_clients_client", params);
 		return deletedRows;
 	}
+
+
+	
 
 }

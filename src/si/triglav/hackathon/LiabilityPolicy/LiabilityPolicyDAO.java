@@ -162,7 +162,8 @@ public class LiabilityPolicyDAO {
 											 +" WHERE ID_policy_product IN (SELECT ID_policy_product "
 											 							+ "FROM FREELANCE.POLICY_PRODUCT "
 											 							+ " WHERE ID_client= :id_client "
-											 							+ " AND ID_team=:id_team)", params);
+											 							+ " AND ID_team=:id_team"
+											 							+ " AND ID_product=4)", params);
 		
 		updatedRows = updatedRows+jdbcTemplate.update("UPDATE FREELANCE.POLICY_PRODUCT "
 													 +" SET(date_from, date_to) = (:date_from, :date_to)"

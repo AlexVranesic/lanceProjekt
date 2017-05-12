@@ -6,6 +6,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -44,17 +45,25 @@ public class ContractDAO {
 		MapSqlParameterSource params = new MapSqlParameterSource("id_contract", id);
 		params.addValue("id_team", id_team);
 		params.addValue("ID_client", id_client);
-
-		Contract contract = jdbcTemplate.queryForObject("select "+CONTRACT_COLUMN_LIST
-														+" from "+TABLE_NAME
-														+" WHERE ID_contract = :id_contract"
-														+ " AND ID_policy_product=(SELECT ID_policy_product "
-																				+ "FROM FREELANCE.POLICY_PRODUCT "
-																				+ "WHERE ID_client= :ID_client)"
-														+ " AND id_team= :id_team", params , new BeanPropertyRowMapper<Contract>(Contract.class));
 		
-		contract.setClients_client(clientsClientDAO.getClientsClientById(contract.getId_clients_client(), team_key));
-		contract.setFiles(fileDAO.getFilesByIdOfForeignKey("ID_contract", contract.getId_clients_client(), team_key));
+		Contract contract;
+		try{
+			 contract = jdbcTemplate.queryForObject("select "+CONTRACT_COLUMN_LIST
+															+" from "+TABLE_NAME
+															+" WHERE ID_contract = :id_contract"
+															+ " AND ID_policy_product=(SELECT ID_policy_product "
+																					+ "FROM FREELANCE.POLICY_PRODUCT "
+																					+ "WHERE ID_client= :ID_client "
+																					+ "AND ID_product=1 )"
+															+ " AND id_team= :id_team", params , new BeanPropertyRowMapper<Contract>(Contract.class));
+			
+			contract.setClients_client(clientsClientDAO.getClientsClientById(contract.getId_clients_client(), team_key));
+			contract.setFiles(fileDAO.getFilesByIdOfForeignKey("ID_contract", contract.getId_clients_client(), team_key));
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
 		
 		return contract;
 	}
@@ -85,7 +94,8 @@ public class ContractDAO {
 						+ ":is_paid,"
 						+ "(SELECT ID_policy_product "
 								+ "FROM FREELANCE.POLICY_PRODUCT "
-								+ "WHERE ID_client= :ID_client),"
+								+ "WHERE ID_client= :ID_client "
+								+ "AND ID_product=1 ),"
 						+ ":ID_clients_client,"
 						+ ":ID_team)",
 				params, generatedKeyHolder);
@@ -114,7 +124,8 @@ public class ContractDAO {
 						+ ":ID_clients_client) "
 						+ "WHERE ID_policy_product = (SELECT ID_policy_product "
 													+ "FROM FREELANCE.POLICY_PRODUCT "
-													+ "WHERE ID_client= :ID_client) "
+													+ "WHERE ID_client= :ID_client "
+													+ "AND ID_product = 1) "
 						+ "AND ID_team= :ID_team "
 						+ "AND ID_contract= :ID_contract ",
 						params);
@@ -149,7 +160,8 @@ public class ContractDAO {
 						+ ":return_account_number) "
 						+ "WHERE ID_policy_product = (SELECT ID_policy_product "
 									+ "FROM FREELANCE.POLICY_PRODUCT "
-									+ "WHERE ID_client= :ID_client) "
+									+ " WHERE ID_client= :ID_client"
+									+ " AND ID_product = 1) "
 						+ "AND ID_team= :ID_team "
 						+ "AND ID_contract= :ID_contract ",
 						params);

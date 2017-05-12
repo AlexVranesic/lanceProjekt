@@ -9,6 +9,7 @@ import si.triglav.hackathon.occupation.Occupation;
 import si.triglav.hackathon.ContractsPolicy.ContractsPolicy;
 import si.triglav.hackathon.LiabilityPolicy.LiabilityPolicy;
 import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
+import si.triglav.hackathon.SickDaysPolicy.SickDaysPolicy;
 
 public class Client {
 	
@@ -36,7 +37,19 @@ public class Client {
 	private Occupation occupation;
 	
 	private List<MonthlyPayment> monthlyPayments;
-	
+
+	private ContractsPolicy contractsPolicy;
+	private LiabilityPolicy liabilityPolicy;
+	private SickDaysPolicy sickDaysPolicy;
+
+	public SickDaysPolicy getSickDaysPolicy() {
+		return sickDaysPolicy;
+	}
+
+	public void setSickDaysPolicy(SickDaysPolicy sickDaysPolicy) {
+		this.sickDaysPolicy = sickDaysPolicy;
+	}
+
 	public LiabilityPolicy getLiabilityPolicy() {
 		return liabilityPolicy;
 	}
@@ -45,9 +58,6 @@ public class Client {
 		this.liabilityPolicy = liabilityPolicy;
 	}
 
-	private ContractsPolicy contractsPolicy;
-	private LiabilityPolicy liabilityPolicy;
-	
 	public ContractsPolicy getContractsPolicy() {
 		return contractsPolicy;
 	}
