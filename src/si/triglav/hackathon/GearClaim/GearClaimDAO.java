@@ -68,7 +68,7 @@ public class GearClaimDAO {
 		
 		for(GearClaim gearClaim: gearClaimList){
 					
-			gearClaim.setFiles(fileDAO.getFilesOfGearClaimListFromIdGearClaim(team_key , gearClaim.getId_gear_claim()));
+			gearClaim.setFiles(fileDAO.getFilesByIdOfForeignKey("id_gear_claim", gearClaim.getId_gear_claim(), team_key));
 					
 		}
 		return gearClaimList;
@@ -85,8 +85,12 @@ public class GearClaimDAO {
 		
 		GearClaim gearClaim = jdbcTemplate.queryForObject("select "+GEAR_CLAIM_COLUMN_LIST+" from "+TABLE_NAME+" where id_gear_claim = :id_gear_claim AND id_gear= :id_gear AND id_client= :id_client AND id_team= :id_team", params , new BeanPropertyRowMapper<GearClaim>(GearClaim.class));
 		
-		gearClaim.setFiles(fileDAO.getFilesOfGearClaimListFromIdGearClaim(team_key , gearClaim.getId_gear_claim()));
-					
+		//gearClaim.setFiles(fileDAO.getFilesOfGearClaimListFromIdGearClaim(team_key , gearClaim.getId_gear_claim()));
+		
+		//gearClaim.(fileDAO.getFileById(gearClaim.getId_gear_claim(), team_key));
+		gearClaim.setFiles(fileDAO.getFilesByIdOfForeignKey("id_gear_claim", gearClaim.getId_gear_claim(), team_key));
+
+		
 		return gearClaim;
 	}
 	/*
