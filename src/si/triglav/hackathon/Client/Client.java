@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import si.triglav.hackathon.occupation.Occupation;
 import si.triglav.hackathon.ContractsPolicy.ContractsPolicy;
+import si.triglav.hackathon.LiabilityPolicy.LiabilityPolicy;
 import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
 
 public class Client {
@@ -36,7 +37,16 @@ public class Client {
 	
 	private List<MonthlyPayment> monthlyPayments;
 	
+	public LiabilityPolicy getLiabilityPolicy() {
+		return liabilityPolicy;
+	}
+
+	public void setLiabilityPolicy(LiabilityPolicy liabilityPolicy) {
+		this.liabilityPolicy = liabilityPolicy;
+	}
+
 	private ContractsPolicy contractsPolicy;
+	private LiabilityPolicy liabilityPolicy;
 	
 	public ContractsPolicy getContractsPolicy() {
 		return contractsPolicy;

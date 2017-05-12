@@ -1,121 +1,185 @@
-/*package si.triglav.hackathon.LiabilityPolicy;
+package si.triglav.hackathon.LiabilityPolicy;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import si.triglav.hackathon.GearType.GearType;
-import si.triglav.hackathon.RepairService.RepairService;
+import si.triglav.hackathon.LiabilityClaim.LiabilityClaimDAO;
 import si.triglav.hackathon.team.TeamDAO;
-import si.triglav.hackathon.File.FileDAO;
 
-import si.triglav.hackathon.File.*;
 
 @Repository
 public class LiabilityPolicyDAO {
-
-	private NamedParameterJdbcTemplate jdbcTemplate;
-
-	private static final String LIABILITY_POLICY_COLUMN_LIST = "id_liability_claim, description, id_liability, id_claim, id_team, is_valid, claim_value, claim_date, returnAccountNumber";
-	private static final String TABLE_NAME = "FREELANCE.LIABILITY_CLAIM";
 	
 	@Autowired
 	private TeamDAO teamDAO;
 	
 	@Autowired
-	private FileDAO fileDAO;
+	private LiabilityClaimDAO liabilityClaimDAO;
+	
+	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	public void init(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 	
-	public List<LiabilityClaim> getLiabilityClaimList(Integer team_key) {
+	public LiabilityPolicy getLiabilityPolicy(Integer id_client, Integer team_key){
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
-		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-
-		List<LiabilityClaim> liabilityClaimList = jdbcTemplate.query("select "+LIABILITY_CLAIM_COLUMN_LIST+" from "+TABLE_NAME+" WHERE id_team= :id_team ", params, new BeanPropertyRowMapper<LiabilityClaim>(LiabilityClaim.class));
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("id_team", id_team);
+		params.addValue("id_client", id_client);
 		
-		for(LiabilityClaim liabilityClaim: liabilityClaimList){
-			liabilityClaim.setFile(fileDAO.getFileById(liabilityClaim.getFile().getId_file(), team_key));
+		LiabilityPolicy liabilityPolicy;
+		
+		try{
+			liabilityPolicy = jdbcTemplate.queryForObject("SELECT ID_liability,"
+																+ "date_from,"
+																+ "date_to,"
+																+ "premium_price,"
+																+ "max_claim_value "
+														+ "FROM FREELANCE.LIABILITY L "
+														+ "LEFT JOIN FREELANCE.POLICY_PRODUCT P "
+																+ "ON P.ID_policy_product = L.ID_policy_product "
+														+ "WHERE P.ID_product=4 "
+														+ "AND P.ID_client=:id_client "
+														+ "AND L.ID_team= :id_team "
+														+ "FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<LiabilityPolicy>(LiabilityPolicy.class));
+		}
+		catch(EmptyResultDataAccessException e){
+			return null;
 		}
 		
-		return liabilityClaimList;
-	}
-	
-/*
-	public List<RepairService> getRepairServiceList() {
-		List<RepairService> repairServiceList = jdbcTemplate.query("select "+REPAIR_SERVICE_COLUMN_LIST+" from "+TABLE_NAME, new BeanPropertyRowMapper<RepairService>(RepairService.class));
-		return repairServiceList;
-	}*/
-/*	
-	public LiabilityClaim getLiabilityClaimById(Integer id, Integer team_key) {
-		Integer id_team=teamDAO.getTeamIdByKey(team_key);
-		
-		MapSqlParameterSource params = new MapSqlParameterSource("id_liability_claim", id);
-		params.addValue("id_team", id_team);
-		
-		LiabilityClaim liabilityClaim = jdbcTemplate.queryForObject("select "+LIABILITY_CLAIM_COLUMN_LIST+" from "+TABLE_NAME+" where id_liability_claim = :id_liability_claim AND id_team= :id_team", params , new BeanPropertyRowMapper<LiabilityClaim>(LiabilityClaim.class));
-		
-		liabilityClaim.setFile(fileDAO.getFileById(liabilityClaim.getFile().getId_file(), team_key));
-		
-		return liabilityClaim;
-	}
-	
-	public LiabilityClaim createLiabilityClaim(LiabilityClaim liabilityClaim, Integer team_key) {
-		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		liabilityPolicy.setLiabilityClaims(liabilityClaimDAO.getLiabilityClaims(id_client, team_key));
 
+		return liabilityPolicy;
+		
+	}
+	
+	public LiabilityPolicy createLiabilityPolicy(Integer id_client, LiabilityPolicy liabilityPolicy, Integer team_key){
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		Date actualDateFrom;
+		Date actualDateTo;
+		//for some reason it substracts a day so we add it
+		if(liabilityPolicy.getDate_from()!=null)
+			actualDateFrom = new Date(liabilityPolicy.getDate_from().getTime()+(24*60*60*1000));
+		else
+			actualDateFrom = null;
+		
+		if(liabilityPolicy.getDate_to()!=null)
+			actualDateTo = new Date(liabilityPolicy.getDate_to().getTime()+(24*60*60*1000));
+		else
+			actualDateTo = null;
+		
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("date_from", actualDateFrom);
+		params.addValue("date_to", actualDateTo);
+		params.addValue("ID_client", id_client);
+		params.addValue("ID_team", id_team);
+		
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
 		jdbcTemplate.update(
-				"insert into "+TABLE_NAME+" (description, id_liability, id_claim, id_team, is_valid, claim_value, claim_date, returnAccountNumber) values (:description, :id_liability,  :id_claim, "+id_team+", :is_valid, :claim_value, :claim_date, :returnAccountNumber)",
-				new BeanPropertySqlParameterSource(liabilityClaim), generatedKeyHolder);
+				"INSERT INTO FREELANCE.POLICY_PRODUCT (date_from, date_to, ID_client, ID_team, ID_product) values (:date_from, :date_to, :ID_client, :ID_team, 4)",
+				params, generatedKeyHolder);
 		
-		LiabilityClaim createdLiabilityClaim = getLiabilityClaimById(generatedKeyHolder.getKey().intValue(), team_key);
-		return createdLiabilityClaim;
-
+		Integer newIDOfPolicyProduct=generatedKeyHolder.getKey().intValue();
+		
+		params = new MapSqlParameterSource("premium_price", liabilityPolicy.getPremium_price());
+		params.addValue("max_claim_value", liabilityPolicy.getMax_claim_value());
+		params.addValue("ID_policy_product", newIDOfPolicyProduct);
+		params.addValue("ID_team", id_team);
+		
+		jdbcTemplate.update(
+				"INSERT INTO FREELANCE.LIABILITY (premium_price, max_claim_value, ID_policy_product, ID_team) values (:premium_price, :max_claim_value, :ID_policy_product, :ID_team)",
+				params, generatedKeyHolder);
+		
+		LiabilityPolicy createdLiabilityPolicy = getLiabilityPolicy(id_client, team_key);
+		
+		
+		return createdLiabilityPolicy;
 	}
-
-	public int updateLiabilityClaim(LiabilityClaim liabilityClaim, Integer team_key) {
-		
-		Integer id_team=teamDAO.getTeamIdByKey(team_key);
-		
-		int updatedRowsCount = jdbcTemplate.update(
-						 "UPDATE "+TABLE_NAME
-						+" SET (description, id_liability, id_claim, is_valid, claim_value, claim_date, returnAccountNumber) = (:description, :id_liability,  :id_claim, :is_valid, :claim_value, :claim_date, :returnAccountNumber) "
-						+" WHERE id_liability_claim = :id_liability_claim"
-						+" AND ID_team = "+id_team,
-				new BeanPropertySqlParameterSource(liabilityClaim));
-		return updatedRowsCount;
-	}
-
-	/*
-	jdbcTemplate.update(
-			"insert into "+TABLE_NAME+" (description, id_liability, id_claim, id_team, is_valid, claim_value, claim_date, returnAccountNumber) values (:description, :id_liability,  :id_claim, "+id_team+", :is_valid, :claim_value, :claim_date, :returnAccountNumber)",
-			new BeanPropertySqlParameterSource(liabilityClaim), generatedKeyHolder);
-	*/
-	/*
-	public int deleteLiabilityClaim(Integer id_liability_claim, Integer team_key) {
+	
+	public int deleteContract(Integer id_client, Integer team_key) {
 		Integer id_team=teamDAO.getTeamIdByKey(team_key);
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
-		params.addValue("ID_repair_service", id_liability_claim);
+		params.addValue("id_client", id_client);
+
+		int deletedRows = jdbcTemplate.update("DELETE FROM FREELANCE.LIABILITY "
+											 +" WHERE ID_team = :id_team"
+											 +" AND ID_policy_product IN (SELECT ID_policy_product "
+											 							+ "FROM FREELANCE.POLICY_PRODUCT "
+											 							+ " WHERE ID_client= :id_client "
+											 							+ " AND ID_team=:id_team)", params);
 		
-		int deletedRows = jdbcTemplate.update("delete from "+TABLE_NAME+" where id_liability_claim = :id_liability_claim", params);
+		deletedRows = deletedRows+jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
+													 +" WHERE ID_team = :id_team"
+													 +" AND ID_client=:id_client", params);
+		
 		return deletedRows;
 	}
+
+	public int updateLiabilityPolicy(LiabilityPolicy liabilityPolicy, Integer id_client, Integer team_key) {
+		
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_client", id_client);
+		params.addValue("premium_price", liabilityPolicy.getPremium_price());
+		params.addValue("max_claim_value", liabilityPolicy.getMax_claim_value());
+		params.addValue("date_from", liabilityPolicy.getDate_from());
+		params.addValue("date_to", liabilityPolicy.getDate_to());
+
+		int updatedRows = jdbcTemplate.update("UPDATE FREELANCE.LIABILITY "
+											 +" SET (premium_price,max_claim_value) = (:premium_price,:max_claim_value) "
+											 +" WHERE ID_policy_product IN (SELECT ID_policy_product "
+											 							+ "FROM FREELANCE.POLICY_PRODUCT "
+											 							+ " WHERE ID_client= :id_client "
+											 							+ " AND ID_team=:id_team)", params);
+		
+		updatedRows = updatedRows+jdbcTemplate.update("UPDATE FREELANCE.POLICY_PRODUCT "
+													 +" SET(date_from, date_to) = (:date_from, :date_to)"
+													 + "WHERE ID_team = :id_team"
+													 +" AND ID_client=:id_client", params);
+		
+		return updatedRows;
+	}
+
+	public int deleteLiabilityPolicy(Integer id_client, Integer team_key) {
+		
+		Integer id_team=teamDAO.getTeamIdByKey(team_key);
+		
+		MapSqlParameterSource params = new MapSqlParameterSource("id_team", id_team);
+		params.addValue("id_client", id_client);
+
+		
+		int deletedRows = jdbcTemplate.update("DELETE FROM FREELANCE.LIABILITY "
+											 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
+											 							+ "FROM FREELANCE.POLICY_PRODUCT "
+											 							+ " WHERE ID_client= :id_client "
+											 							+ " AND ID_team=:id_team)"
+											 + "AND ID_team = :id_team", params);
+		
+		 deletedRows = deletedRows+jdbcTemplate.update("DELETE FROM FREELANCE.POLICY_PRODUCT "
+				 +" WHERE  ID_policy_product IN (SELECT ID_policy_product "
+				 							+ "FROM FREELANCE.POLICY_PRODUCT "
+				 							+ " WHERE ID_client= :id_client "
+				 							+ " AND ID_team=:id_team)", params);
+		
+		return deletedRows;
+	}
+	
+	
 }
-*/
