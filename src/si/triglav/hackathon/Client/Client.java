@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import si.triglav.hackathon.occupation.Occupation;
 import si.triglav.hackathon.ContractsPolicy.ContractsPolicy;
+import si.triglav.hackathon.GearPolicy.GearPolicy;
 import si.triglav.hackathon.LiabilityPolicy.LiabilityPolicy;
 import si.triglav.hackathon.MonthlyPayment.MonthlyPayment;
 import si.triglav.hackathon.SickDaysPolicy.SickDaysPolicy;
@@ -41,6 +42,16 @@ public class Client {
 	private ContractsPolicy contractsPolicy;
 	private LiabilityPolicy liabilityPolicy;
 	private SickDaysPolicy sickDaysPolicy;
+	private GearPolicy gearPolicy;
+
+
+	public GearPolicy getGearPolicy() {
+		return gearPolicy;
+	}
+
+	public void setGearPolicy(GearPolicy gearPolicy) {
+		this.gearPolicy = gearPolicy;
+	}
 
 	public SickDaysPolicy getSickDaysPolicy() {
 		return sickDaysPolicy;

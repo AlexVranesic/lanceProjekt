@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 
 import si.triglav.hackathon.ContractsPolicy.ContractsPolicyDAO;
+import si.triglav.hackathon.GearPolicy.GearPolicyDAO;
 import si.triglav.hackathon.LiabilityPolicy.LiabilityPolicyDAO;
 import si.triglav.hackathon.MonthlyPayment.MonthlyPaymentDAO;
 import si.triglav.hackathon.SickDaysPolicy.SickDaysPolicyDAO;
@@ -35,6 +36,9 @@ public class ClientDAO {
 	
 	@Autowired
 	private OccupationDAO occupationDAO;
+	
+	@Autowired
+	private GearPolicyDAO gearPolicyDAO;
 	
 	@Autowired
 	private MonthlyPaymentDAO monthlyPaymentDAO;
@@ -66,6 +70,8 @@ public class ClientDAO {
 			client.setContractsPolicy(contractsPolicyDAO.getContractsPolicy(client.getId_client(), team_key));
 			client.setLiabilityPolicy(liabilityPolicyDAO.getLiabilityPolicy(client.getId_client(), team_key));
 			client.setSickDaysPolicy(sickDaysPolicyDAO.getSickDaysPolicy(client.getId_client(), team_key));
+			client.setGearPolicy(gearPolicyDAO.getGearPolicy(client.getId_client(), team_key));
+
 		}
 		
 		return clientList;
@@ -91,6 +97,7 @@ public class ClientDAO {
 		client.setContractsPolicy(contractsPolicyDAO.getContractsPolicy(client.getId_client(), team_key));
 		client.setLiabilityPolicy(liabilityPolicyDAO.getLiabilityPolicy(client.getId_client(), team_key));
 		client.setSickDaysPolicy(sickDaysPolicyDAO.getSickDaysPolicy(client.getId_client(), team_key));
+		client.setGearPolicy(gearPolicyDAO.getGearPolicy(client.getId_client(), team_key));
 
 		return client;
 	}

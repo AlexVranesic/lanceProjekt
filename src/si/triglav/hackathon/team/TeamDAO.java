@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -63,7 +64,16 @@ public class TeamDAO {
 	
 	public Integer getTeamIdByKey(Integer team_key) {
 		MapSqlParameterSource params = new MapSqlParameterSource("team_key", team_key);
-		Team team = jdbcTemplate.queryForObject("select id_team from FREELANCE.TEAM where team_key = :team_key FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<Team>(Team.class));
+		
+		Team team;
+		
+		try{
+			 team = jdbcTemplate.queryForObject("select id_team from FREELANCE.TEAM where team_key = :team_key FETCH FIRST 1 ROW ONLY", params , new BeanPropertyRowMapper<Team>(Team.class));
+		}
+		catch(EmptyResultDataAccessException e){
+			return null;
+		}
+		
 		return team.getId_team();
 	}
 	
